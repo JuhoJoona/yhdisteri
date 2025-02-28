@@ -12,7 +12,10 @@ const isTenantAdminRoute = createRouteMatcher([
   "/orgId/(.*)/domain",
 ]);
 
+const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+
 export default clerkMiddleware(async (auth, req) => {
+  if (isPublicRoute(req)) return;
   // Restrict admin routes to users with specific permissions
   if (isTenantAdminRoute(req)) {
     await auth.protect((has) => {
@@ -25,6 +28,7 @@ export default clerkMiddleware(async (auth, req) => {
   // Restrict organization routes to signed in users
   if (isTenantRoute(req)) await auth.protect();
   if (isProtectedRoute(req)) await auth.protect();
+  
 });
 
 export const config = {

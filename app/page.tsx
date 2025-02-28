@@ -50,10 +50,10 @@ export default function Home() {
           </nav>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Log in</Link>
+              <Link href="/sign-in">Log in</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link href="/register">Get Started</Link>
+              <Link href="/sign-up">Get Started</Link>
             </Button>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button size="lg" asChild>
-                    <Link href="/register">
+                    <Link href="/sign-up">
                       Get Started <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>

@@ -48,14 +48,6 @@ export default function Home() {
               FAQ
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/sign-in">Log in</Link>
-            </Button>
-            <Button size="sm" asChild>
-              <Link href="/sign-up">Get Started</Link>
-            </Button>
-          </div>
         </div>
       </header>
 

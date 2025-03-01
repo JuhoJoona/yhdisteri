@@ -19,27 +19,26 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
 export default function Setup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [organizationTab, setOrganizationTab] = useState<"join" | "create">(
     "join"
   );
-  const { getToken } = useAuth()
+  const { getToken } = useAuth();
   const [organizationCode, setOrganizationCode] = useState("");
   const [organizationName, setOrganizationName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [phone, setPhone] = useState("");
-  const {user } = useUser();
+  const { user } = useUser();
 
   const { toast } = useToast();
   const router = useRouter();
- 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(user?.emailAddresses[0].emailAddress, "starting submission");
-  
+
     if (organizationTab === "join" && organizationCode.length !== 6) {
       toast({
         title: "Invalid organization code",
@@ -64,10 +63,10 @@ export default function Setup() {
           ? { type: "join" as const, code: organizationCode }
           : { type: "create" as const, name: organizationName };
       console.log(organizationInfo, "organizationInfo");
-      
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
-      const url = `${baseUrl}/api/v1/users/me/create`;
-      
+
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+      const url = `${baseUrl}/users/me/create`;
+
       console.log(url, "url");
       const token = await getToken();
       console.log(token, "token");
@@ -75,8 +74,8 @@ export default function Setup() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           user: {
@@ -86,8 +85,8 @@ export default function Setup() {
             organizationInfo,
             email: user?.emailAddresses[0].emailAddress,
             phone,
-          }
-        })
+          },
+        }),
       });
       console.log(response, "response");
       if (response.ok) {
@@ -125,18 +124,17 @@ export default function Setup() {
       } else {
         toast({
           title: "Registration error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    }} finally {
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
-      
-
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
@@ -178,7 +176,7 @@ export default function Setup() {
                   required
                 />
               </div>
-              <div className="space-y-2"> 
+              <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
                 <Input
                   id="phone"
@@ -190,7 +188,7 @@ export default function Setup() {
                 />
               </div>
             </div>
-            
+
             <Separator className="my-4" />
 
             <div className="space-y-2">

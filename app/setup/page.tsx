@@ -65,7 +65,7 @@ export default function Setup() {
       console.log(organizationInfo, "organizationInfo");
 
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-      const url = `${baseUrl}/users/me/create`;
+      const url = `${baseUrl}/users/create`;
 
       console.log(url, "url");
       const token = await getToken();

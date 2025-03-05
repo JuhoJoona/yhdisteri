@@ -1,4 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { SignInButton } from "@clerk/nextjs";
+import { SignUpButton } from "@clerk/nextjs";
+import { SignedOut } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
 import {
   ChevronRight,
   Users,
@@ -7,16 +12,40 @@ import {
   BarChart,
   Shield,
   Mail,
+  Globe,
+  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+import { useLocale } from 'next-intl';
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale, namespace: 'Home' });
+  
+  return {
+    title: t('meta.title'),
+    description: t('meta.description'),
+  };
+}
 
 export default function Home() {
+  const t = useTranslations('Home');
+  const currentLocale = useLocale();
+  const locales = ['en', 'fi', 'sv'];
+  
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-screen justify-center items-center">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-4">
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Users className="size-4" />
             </div>
@@ -27,26 +56,61 @@ export default function Home() {
               href="#features"
               className="text-sm font-medium hover:text-primary"
             >
-              Features
+              {t('nav.features')}
             </Link>
             <Link
               href="#how-it-works"
               className="text-sm font-medium hover:text-primary"
             >
-              How It Works
+              {t('nav.howItWorks')}
             </Link>
             <Link
               href="#pricing"
               className="text-sm font-medium hover:text-primary"
             >
-              Pricing
+              {t('nav.pricing')}
             </Link>
             <Link
               href="#faq"
               className="text-sm font-medium hover:text-primary"
             >
-              FAQ
+              {t('nav.faq')}
             </Link>
+            
+            {/* Locale Picker */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                  <Globe className="h-4 w-4" />
+                  <span className="uppercase">{currentLocale}</span>
+                  <ChevronDown className="h-3 w-3 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {locales.map((locale) => (
+                  <DropdownMenuItem key={locale} asChild>
+                    <Link 
+                      href={`/${locale}`} 
+                      className={`w-full ${locale === currentLocale ? 'font-bold' : ''}`}
+                    >
+                      {locale === 'en' ? 'English' : locale === 'fi' ? 'Suomi' : locale}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+              <Link href="/dashboard">
+                <Users className="size-4" />
+                {t('nav.dashboard')}
+              </Link>
+              <UserButton />
+            </SignedIn>
           </nav>
         </div>
       </header>
@@ -58,49 +122,29 @@ export default function Home() {
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4 animate-slideUp">
                 <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">
-                  Simplify association management
+                  {t('hero.tip')}
                 </div>
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  All-in-one solution for managing your association
+                  {t('hero.title')}
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Yhdisteri helps associations manage member registers, handle
-                  billing, and streamline operations all in one place.
+                  {t('hero.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button size="lg" asChild>
                     <Link href="/sign-up">
-                      Get Started <ChevronRight className="ml-2 h-4 w-4" />
+                      {t('hero.getStarted')} <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
-                    <Link href="/demo">Request Demo</Link>
+                    <Link href="/demo">{t('hero.requestDemo')}</Link>
                   </Button>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="inline-block h-8 w-8 rounded-full bg-muted overflow-hidden border-2 border-background"
-                      >
-                        <Image
-                          src={`/placeholder.svg?height=32&width=32`}
-                          alt="User"
-                          width={32}
-                          height={32}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <span>Trusted by 500+ associations across Finland</span>
                 </div>
               </div>
               <div className="flex justify-center lg:justify-end animate-fadeIn">
                 <div className="relative w-full max-w-[500px] aspect-video rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/placeholder.svg?height=500&width=800"
+                    src="/happy.avif?height=500&width=800"
                     alt="Yhdisteri Dashboard"
                     width={800}
                     height={500}
@@ -119,14 +163,13 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                  Features
+                  {t('features.features')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Everything you need to run your association
+                  {t('features.title')}
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Yhdisteri provides all the tools you need to manage your
-                  association efficiently.
+                  {t('features.description')}
                 </p>
               </div>
             </div>
@@ -134,46 +177,60 @@ export default function Home() {
               {[
                 {
                   icon: <Users className="h-10 w-10" />,
-                  title: "Member Management",
+                  title: t('features.memberManagement'),
                   description:
-                    "Keep track of all your members, their contact information, and membership status in one place.",
+                    t('features.memberManagementDescription'),
+                  includedInAll: true,
                 },
                 {
                   icon: <CreditCard className="h-10 w-10" />,
-                  title: "Billing & Payments",
+                  title: t('features.billingAndPayments'),
                   description:
-                    "Send invoices, track payments, and manage your association's finances with ease.",
+                    t('features.billingAndPaymentsDescription'),
+                  includedInAll: false,
                 },
                 {
                   icon: <Calendar className="h-10 w-10" />,
-                  title: "Event Management",
+                  title: t('features.eventManagement'),
                   description:
-                    "Create and manage events, handle registrations, and send reminders to participants.",
+                    t('features.eventManagementDescription'),
+                  includedInAll: false,
                 },
                 {
                   icon: <BarChart className="h-10 w-10" />,
-                  title: "Reporting & Analytics",
+                  title: t('features.reportingAndAnalytics'),
                   description:
-                    "Get insights into your association's performance with detailed reports and analytics.",
+                    t('features.reportingAndAnalyticsDescription'),
+                  includedInAll: true,
                 },
                 {
                   icon: <Shield className="h-10 w-10" />,
-                  title: "GDPR Compliance",
+                  title: t('features.gdprCompliance'),
                   description:
-                    "Ensure your member data is handled in compliance with GDPR regulations.",
+                    t('features.gdprComplianceDescription'),
+                  includedInAll: true,
                 },
                 {
                   icon: <Mail className="h-10 w-10" />,
-                  title: "Communication Tools",
+                  title: t('features.communicationTools'),
                   description:
-                    "Send emails, newsletters, and notifications to your members directly from the platform.",
+                    t('features.communicationToolsDescription'),
+                  includedInAll: false,
                 },
               ].map((feature, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-center p-6 bg-card rounded-lg shadow-sm border card-hover animate-fadeIn"
+                  className="flex flex-col items-center p-6 bg-card rounded-lg shadow-sm border card-hover animate-fadeIn relative"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
+                  {!feature.includedInAll ? (
+                    <div className="absolute top-3 right-3 bg-orange-100 text-primary text-xs px-2 py-1 rounded-full">
+                      {t('features.proAndEnterprise')}
+                    </div>
+                  ) : 
+                  <div className="absolute top-3 right-3 bg-green-100 text-primary text-xs px-2 py-1 rounded-full">
+                      {t('features.allPlans')}
+                    </div>}
                   <div className="p-2 rounded-full bg-primary/10 text-primary mb-4">
                     {feature.icon}
                   </div>
@@ -193,13 +250,13 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                  How It Works
+                  {t('howItWorks.howItWorks')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Simple and intuitive process
+                  {t('howItWorks.title')}
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Get started with Yhdisteri in just a few simple steps.
+                  {t('howItWorks.description')}
                 </p>
               </div>
             </div>
@@ -207,21 +264,21 @@ export default function Home() {
               {[
                 {
                   step: "01",
-                  title: "Sign Up",
+                  title: t('howItWorks.signUp'),
                   description:
-                    "Create your account and set up your association profile with basic information.",
+                    t('howItWorks.signUpDescription'),
                 },
                 {
                   step: "02",
-                  title: "Import Members",
+                  title: t('howItWorks.importMembers'),
                   description:
-                    "Import your existing member data or start adding members manually to your register.",
+                    t('howItWorks.importMembersDescription'),
                 },
                 {
                   step: "03",
-                  title: "Start Managing",
+                  title: t('howItWorks.startManaging'),
                   description:
-                    "Begin using all features to manage members, billing, events, and communications.",
+                    t('howItWorks.startManagingDescription'),
                 },
               ].map((step, index) => (
                 <div
@@ -255,14 +312,13 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                  Testimonials
+                  {t('testimonials.testimonials')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  What our users say
+                  {t('testimonials.title')}
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Hear from associations that have transformed their operations
-                  with Yhdisteri.
+                  {t('testimonials.description')}
                 </p>
               </div>
             </div>
@@ -270,21 +326,21 @@ export default function Home() {
               {[
                 {
                   quote:
-                    "Yhdisteri has completely transformed how we manage our sports club. The member management and billing features have saved us countless hours.",
-                  author: "Matti Virtanen",
-                  role: "Chairman, Helsinki Sports Club",
+                    t('testimonials.quote1'),
+                  author: t('testimonials.author1'),
+                  role: t('testimonials.role1'),
                 },
                 {
                   quote:
-                    "As a small cultural association, we needed an affordable solution that could handle all our needs. Yhdisteri delivered beyond our expectations.",
-                  author: "Liisa Korhonen",
-                  role: "Secretary, Tampere Cultural Association",
+                    t('testimonials.quote2'),
+                  author: t('testimonials.author2'),
+                  role: t('testimonials.role2'),
                 },
                 {
                   quote:
-                    "The GDPR compliance features give us peace of mind, and the reporting tools help us make better decisions for our student organization.",
-                  author: "Juha Mäkinen",
-                  role: "Treasurer, Turku Student Union",
+                    t('testimonials.quote3'),
+                  author: t('testimonials.author3'),
+                  role: t('testimonials.role3'),
                 },
               ].map((testimonial, index) => (
                 <div
@@ -294,19 +350,10 @@ export default function Home() {
                 >
                   <div className="flex-1">
                     <p className="italic text-muted-foreground mb-4">
-                      "{testimonial.quote}"
+                      &ldquo;{testimonial.quote}&rdquo;
                     </p>
                   </div>
                   <div className="flex items-center gap-4 mt-4">
-                    <div className="h-10 w-10 rounded-full bg-muted overflow-hidden">
-                      <Image
-                        src={`/placeholder.svg?height=40&width=40`}
-                        alt={testimonial.author}
-                        width={40}
-                        height={40}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
                     <div>
                       <p className="font-medium">{testimonial.author}</p>
                       <p className="text-sm text-muted-foreground">
@@ -326,13 +373,13 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                  Pricing
+                  {t('pricing.pricing')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Simple, transparent pricing
+                  {t('pricing.title')}
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Choose the plan that fits your association's needs.
+                  {t('pricing.description')}
                 </p>
               </div>
             </div>
@@ -344,42 +391,42 @@ export default function Home() {
                   description:
                     "Perfect for small associations with up to 50 members.",
                   features: [
-                    "Member management",
-                    "Basic billing",
-                    "Email notifications",
-                    "GDPR compliance",
-                    "1 admin user",
+                    t('pricing.starterFeature1'),
+                    t('pricing.starterFeature2'),
+                    t('pricing.starterFeature3'),
+                    t('pricing.starterFeature4'),
+                    t('pricing.starterFeature5'),
                   ],
-                  cta: "Get Started",
+                  cta: t('pricing.starterCta'),
                   popular: false,
                 },
                 {
-                  name: "Professional",
+                  name: t('pricing.professional'),
                   price: "€59",
                   description:
-                    "Ideal for growing associations with up to 200 members.",
+                    t('pricing.professionalDescription'),
                   features: [
-                    "Everything in Starter",
-                    "Advanced billing & payments",
-                    "Event management",
-                    "Basic reporting",
-                    "3 admin users",
+                    t('pricing.professionalFeature1'),
+                    t('pricing.professionalFeature2'),
+                    t('pricing.professionalFeature3'),
+                    t('pricing.professionalFeature4'),
+                    t('pricing.professionalFeature5'),
                   ],
-                  cta: "Get Started",
+                  cta: t('pricing.professionalCta'),
                   popular: true,
                 },
                 {
-                  name: "Enterprise",
+                  name: t('pricing.enterprise'),
                   price: "€99",
-                  description: "For large associations with unlimited members.",
+                  description: t('pricing.enterpriseDescription'),
                   features: [
-                    "Everything in Professional",
-                    "Advanced reporting & analytics",
-                    "Custom integrations",
-                    "Priority support",
-                    "Unlimited admin users",
+                    t('pricing.enterpriseFeature1'),
+                    t('pricing.enterpriseFeature2'),
+                    t('pricing.enterpriseFeature3'),
+                    t('pricing.enterpriseFeature4'),
+                    t('pricing.enterpriseFeature5'),
                   ],
-                  cta: "Contact Sales",
+                  cta: t('pricing.enterpriseCta'),
                   popular: false,
                 },
               ].map((plan, index) => (
@@ -394,7 +441,7 @@ export default function Home() {
                 >
                   {plan.popular && (
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full">
-                      Most Popular
+                      {t('pricing.popular')}
                     </div>
                   )}
                   <div className="mb-4">
@@ -422,7 +469,7 @@ export default function Home() {
                   >
                     <Link
                       href={
-                        plan.cta === "Contact Sales" ? "/contact" : "/register"
+                        plan.cta === t('pricing.enterpriseCta') ? "/demo" : "/sign-up"
                       }
                     >
                       {plan.cta}
@@ -440,47 +487,42 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                  FAQ
+                  {t('faq.faq')}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Frequently asked questions
+                  {t('faq.title')}
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Find answers to common questions about Yhdisteri.
+                  {t('faq.description')}
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
               {[
                 {
-                  question: "Can I import my existing member data?",
+                  question: t('faq.question1'),
                   answer:
-                    "Yes, Yhdisteri allows you to import your existing member data from Excel, CSV, or other formats. We also offer assistance with data migration for larger associations.",
+                    t('faq.answer1'),
                 },
                 {
-                  question: "Is Yhdisteri GDPR compliant?",
+                  question: t('faq.question2'),
                   answer:
-                    "Absolutely. Yhdisteri is built with GDPR compliance in mind. We provide tools to manage consent, data access requests, and the right to be forgotten.",
+                    t('faq.answer2'),
                 },
                 {
-                  question: "Can I customize the billing templates?",
+                  question: t('faq.question3'),
                   answer:
-                    "Yes, you can customize invoice templates with your association's logo, colors, and specific information to maintain your brand identity.",
+                    t('faq.answer3'),
                 },
                 {
-                  question: "How secure is my association's data?",
+                  question: t('faq.question4'),
                   answer:
-                    "We take security seriously. All data is encrypted both in transit and at rest. We perform regular security audits and backups to ensure your data is safe.",
+                    t('faq.answer4'),
                 },
                 {
-                  question: "Can multiple people manage the association?",
+                  question: t('faq.question5'),
                   answer:
-                    "Yes, depending on your plan, you can have multiple admin users with different permission levels to manage various aspects of your association.",
-                },
-                {
-                  question: "Is there a mobile app available?",
-                  answer:
-                    "Yhdisteri is fully responsive and works on all devices. We also offer native mobile apps for iOS and Android for on-the-go management.",
+                    t('faq.answer5'),
                 },
               ].map((faq, index) => (
                 <div
@@ -501,16 +543,15 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center bg-primary text-primary-foreground p-8 md:p-12 rounded-lg">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Ready to transform your association?
+                {t('cta.title')}
               </h2>
               <p className="max-w-[700px] md:text-xl">
-                Join hundreds of associations already using Yhdisteri to
-                streamline their operations.
+                {t('cta.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
                 <Button size="lg" variant="secondary" asChild>
-                  <Link href="/register">
-                    Get Started <ChevronRight className="ml-2 h-4 w-4" />
+                    <Link href="/sign-up">
+                    {t('cta.getStarted')} <ChevronRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
@@ -519,7 +560,9 @@ export default function Home() {
                   className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
                   asChild
                 >
-                  <Link href="/demo">Request Demo</Link>
+                  <Link href="/demo">
+                    {t('cta.requestDemo')}
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -538,79 +581,9 @@ export default function Home() {
                 <span className="text-xl font-bold">Yhdisteri</span>
               </div>
               <p className="text-muted-foreground">
-                The all-in-one solution for associations to manage members,
-                billing, and more.
+                {t('footer.description')}
               </p>
               <div className="flex space-x-4">
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                  </svg>
-                  <span className="sr-only">Facebook</span>
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                  </svg>
-                  <span className="sr-only">Twitter</span>
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <rect
-                      width="20"
-                      height="20"
-                      x="2"
-                      y="2"
-                      rx="5"
-                      ry="5"
-                    ></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                  </svg>
-                  <span className="sr-only">Instagram</span>
-                </Link>
                 <Link
                   href="#"
                   className="text-muted-foreground hover:text-primary"
@@ -636,14 +609,14 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">Product</h3>
+              <h3 className="text-lg font-medium mb-4">{t('footer.product')}</h3>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="#features"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Features
+                    {t('footer.features')}
                   </Link>
                 </li>
                 <li>
@@ -651,7 +624,7 @@ export default function Home() {
                     href="#pricing"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Pricing
+                    {t('footer.pricing')}
                   </Link>
                 </li>
                 <li>
@@ -659,7 +632,7 @@ export default function Home() {
                     href="/demo"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Demo
+                    {t('footer.demo')}
                   </Link>
                 </li>
                 <li>
@@ -667,20 +640,20 @@ export default function Home() {
                     href="/roadmap"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Roadmap
+                    {t('footer.roadmap')}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">Resources</h3>
+              <h3 className="text-lg font-medium mb-4">{t('footer.resources')}</h3>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="/blog"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Blog
+                    {t('footer.blog')}
                   </Link>
                 </li>
                 <li>
@@ -688,7 +661,7 @@ export default function Home() {
                     href="/documentation"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Documentation
+                    {t('footer.documentation')}
                   </Link>
                 </li>
                 <li>
@@ -696,7 +669,7 @@ export default function Home() {
                     href="/guides"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Guides
+                    {t('footer.guides')}
                   </Link>
                 </li>
                 <li>
@@ -704,20 +677,20 @@ export default function Home() {
                     href="/support"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Support
+                    {t('footer.support')}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">Company</h3>
+              <h3 className="text-lg font-medium mb-4">{t('footer.company')}</h3>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="/about"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    About
+                    {t('footer.about')}
                   </Link>
                 </li>
                 <li>
@@ -725,7 +698,7 @@ export default function Home() {
                     href="/contact"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Contact
+                    {t('footer.contact')}
                   </Link>
                 </li>
                 <li>
@@ -733,7 +706,7 @@ export default function Home() {
                     href="/privacy"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Privacy Policy
+                    {t('footer.privacy')}
                   </Link>
                 </li>
                 <li>
@@ -741,14 +714,14 @@ export default function Home() {
                     href="/terms"
                     className="text-muted-foreground hover:text-primary"
                   >
-                    Terms of Service
+                    {t('footer.terms')}
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t text-center text-muted-foreground">
-            <p>© {new Date().getFullYear()} Yhdisteri. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Yhdisteri. {t('footer.allRightsReserved')}</p>
           </div>
         </div>
       </footer>

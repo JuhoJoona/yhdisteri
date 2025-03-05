@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   MoreHorizontal,
   Edit,
@@ -39,8 +38,6 @@ export function MemberCard({
   onDelete,
   onClick,
 }: MemberCardProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -64,9 +61,7 @@ export function MemberCard({
   };
 
   const handleCardClick = () => {
-    if (!isMenuOpen) {
-      onClick(member);
-    }
+    onClick(member);
   };
 
   return (
@@ -79,7 +74,7 @@ export function MemberCard({
           <Badge className={getStatusColor(member.status)}>
             {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
           </Badge>
-          <DropdownMenu onOpenChange={setIsMenuOpen}>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <MoreHorizontal className="h-4 w-4" />

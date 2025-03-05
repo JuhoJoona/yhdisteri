@@ -1,5 +1,3 @@
-
-import { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,26 +15,17 @@ type SearchBarProps = {
   onSearch: (value: string) => void;
   onFilter: (filter: string) => void;
   className?: string;
+  searchTerm?: string;
+  status?: string;
 };
 
-export function SearchBar({ onSearch, onFilter, className = "" }: SearchBarProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [status, setStatus] = useState("all");
-
-  const handleSearch = () => {
-    onSearch(searchTerm);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const handleStatusChange = (value: string) => {
-    setStatus(value);
-    onFilter(value);
-  };
+export function SearchBar({ 
+  onSearch, 
+  onFilter, 
+  className = "", 
+  searchTerm = "", 
+  status = "all" 
+}: SearchBarProps) {
 
   return (
     <div className={`flex flex-col gap-3 sm:flex-row ${className}`}>
@@ -45,9 +34,8 @@ export function SearchBar({ onSearch, onFilter, className = "" }: SearchBarProps
           type="search"
           placeholder="Search members by name, email..."
           className="w-full pl-10 pr-4"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleKeyDown}
+          defaultValue={searchTerm}
+          onChange={(e) => onSearch(e.target.value)}
         />
         <div className="absolute inset-y-0 left-0 flex items-center pl-3">
           <Search className="h-4 w-4 text-muted-foreground" />
@@ -66,7 +54,7 @@ export function SearchBar({ onSearch, onFilter, className = "" }: SearchBarProps
               <div className="p-2 text-sm font-medium">Status</div>
               <DropdownMenuRadioGroup
                 value={status}
-                onValueChange={handleStatusChange}
+                onValueChange={onFilter}
               >
                 <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="active">
@@ -98,7 +86,7 @@ export function SearchBar({ onSearch, onFilter, className = "" }: SearchBarProps
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button onClick={handleSearch}>Search</Button>
+        <Button onClick={() => onSearch(searchTerm)}>Search</Button>
       </div>
     </div>
   );

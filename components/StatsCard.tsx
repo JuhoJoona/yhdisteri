@@ -1,7 +1,7 @@
 
-import { useMemo } from "react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, CircleUserRound, Clock, UserCheck, UserX } from "lucide-react";
+import { CircleUserRound, Clock, UserCheck, UserX } from "lucide-react";
 import { MemberStats } from "@/types/member";
 
 type StatCardProps = {
@@ -23,11 +23,11 @@ const StatCard = ({
   trendValue,
   className = "",
 }: StatCardProps) => {
-  const trendColor = useMemo(() => {
+  const trendColor = () => {
     if (trend === "up") return "text-green-500";
     if (trend === "down") return "text-red-500";
     return "text-gray-500";
-  }, [trend]);
+  };
 
   return (
     <Card className={`overflow-hidden ${className} animate-fadeIn`}>

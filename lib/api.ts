@@ -1,6 +1,6 @@
-import createClient from 'openapi-fetch';
-import type { paths } from './types';
-import { getTokenWithClerk } from './utils';
+import createClient from "openapi-fetch";
+import type { paths } from "./types";
+import { getTokenWithClerk } from "./utils";
 
 type PathsWithMethod<T, M extends string> = {
   [P in keyof T]: T[P] extends { [key in M]: unknown } ? P : never;
@@ -10,7 +10,7 @@ type InferResponseType<
   Path extends keyof paths,
   Method extends keyof paths[Path],
 > = paths[Path][Method] extends {
-  responses: { 200: { content: { 'application/json': infer R } } };
+  responses: { 200: { content: { "application/json": infer R } } };
 }
   ? R
   : never;
@@ -19,7 +19,7 @@ type InferRequestType<
   Path extends keyof paths,
   Method extends keyof paths[Path],
 > = paths[Path][Method] extends {
-  requestBody: { content: { 'application/json': infer R } };
+  requestBody: { content: { "application/json": infer R } };
 }
   ? R
   : never;
@@ -48,80 +48,80 @@ type ApiResponse<T> = {
 };
 
 const composeHeaders = async (): Promise<Record<string, string>> => {
-    console.log("composeHeaders in api");
+  console.log("composeHeaders in api");
   const token = await getTokenWithClerk();
   console.log("token in api");
   console.log(token);
   return {
-    Authorization: token
-      ? `Bearer ${token}`
-      : '',
-    'Content-Type': 'application/json',
+    Authorization: token ? `Bearer ${token}` : "",
+    "Content-Type": "application/json",
   };
 };
 
-
 export const api = {
-    get: async <Path extends PathsWithMethod<paths, 'get'>>(
-        path: Path,
-        pathParams?: InferPathParamsType<Path, 'get'>,
-        queryParams?: InferQueryParamsType<Path, 'get'>,
-      ): Promise<ApiResponse<InferResponseType<Path, 'get'>>> => {
-        
-        try {
-          const headers = await composeHeaders();
-          console.log(`Headers for ${path}:`, headers);
-
-          const client = createClient<paths>({
-            baseUrl: process.env.NEXT_PUBLIC_API_URL,
-          });
-      
-          const response = await client.GET(path, {
-            headers,
-            params: {
-              path: pathParams as any,
-              query: queryParams,
-            },
-          });
-      
-          return response;
-        } catch (error) {
-          console.error(`GET ${path} failed:`, error);
-          console.error(`Error cause:`, (error as any)?.cause);
-      
-          if (
-            error instanceof Error &&
-            error.message === 'Base URL not initialized'
-          ) {
-            return {
-              ok: false,
-              error: 'API not initialized',
-              isNetworkError: true,
-            };
-          }
-          return {
-            ok: false,
-            error: error instanceof Error ? error.message : 'Request failed',
-            isNetworkError: true,
-          };
-        }
-      },
-
-  post: async <Path extends PathsWithMethod<paths, 'post'>>(
+  get: async <Path extends PathsWithMethod<paths, "get">>(
     path: Path,
-    body?: InferRequestType<Path, 'post'>,
-    pathParams?: InferPathParamsType<Path, 'post'>,
-    queryParams?: InferQueryParamsType<Path, 'post'>,
-    options?: { isServer?: boolean }
-  ): Promise<ApiResponse<InferResponseType<Path, 'post'>>> => {
+    pathParams?: InferPathParamsType<Path, "get">,
+    queryParams?: InferQueryParamsType<Path, "get">
+  ): Promise<ApiResponse<InferResponseType<Path, "get">>> => {
+    try {
+      const headers = await composeHeaders();
+      console.log(`Headers for ${path}:`, headers);
+
+      const client = createClient<paths>({
+        baseUrl: process.env.NEXT_PUBLIC_API_URL,
+      });
+
+      const { data, error, response } = await client.GET(path as any, {
+        headers,
+        params: {
+          path: pathParams || {},
+          query: queryParams,
+        },
+      });
+
+      return {
+        data,
+        ok: !error,
+        error: error?.message,
+        status: response?.status,
+      };
+    } catch (error) {
+      console.error(`GET ${path} failed:`, error);
+      console.error(`Error cause:`, (error as any)?.cause);
+
+      if (
+        error instanceof Error &&
+        error.message === "Base URL not initialized"
+      ) {
+        return {
+          ok: false,
+          error: "API not initialized",
+          isNetworkError: true,
+        };
+      }
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Request failed",
+        isNetworkError: true,
+      };
+    }
+  },
+
+  post: async <Path extends PathsWithMethod<paths, "post">>(
+    path: Path,
+    body?: InferRequestType<Path, "post">,
+    pathParams?: InferPathParamsType<Path, "post">,
+    queryParams?: InferQueryParamsType<Path, "post">
+  ): Promise<ApiResponse<InferResponseType<Path, "post">>> => {
     console.log(`API POST ${path}`, { body, pathParams, queryParams });
     try {
-        const client = createClient<paths>({
-            baseUrl: process.env.NEXT_PUBLIC_API_URL,
-          });
-      
-      const { response } = await client.POST(path, {
-        headers: await composeHeaders(options),
+      const client = createClient<paths>({
+        baseUrl: process.env.NEXT_PUBLIC_API_URL,
+      });
+
+      const { data, error, response } = await client.POST(path as any, {
+        headers: await composeHeaders(),
         body,
         params: {
           path: pathParams as any,
@@ -129,33 +129,37 @@ export const api = {
         },
       });
 
-      return handleResponse(response, String(path));
+      return {
+        data,
+        ok: !error,
+        error: error?.message,
+        status: response?.status,
+      };
     } catch (error) {
       console.error(`POST ${path} failed:`, error);
       console.error(`Error cause:`, (error as any)?.cause);
       return {
         ok: false,
-        error: error instanceof Error ? error.message : 'Request failed',
+        error: error instanceof Error ? error.message : "Request failed",
         isNetworkError: true,
       };
     }
   },
 
-  put: async <Path extends PathsWithMethod<paths, 'put'>>(
+  put: async <Path extends PathsWithMethod<paths, "put">>(
     path: Path,
-    body: InferRequestType<Path, 'put'>,
-    pathParams?: InferPathParamsType<Path, 'put'>,
-    queryParams?: InferQueryParamsType<Path, 'put'>,
-    options?: { isServer?: boolean }
-  ): Promise<ApiResponse<InferResponseType<Path, 'put'>>> => {
+    body: InferRequestType<Path, "put">,
+    pathParams?: InferPathParamsType<Path, "put">,
+    queryParams?: InferQueryParamsType<Path, "put">
+  ): Promise<ApiResponse<InferResponseType<Path, "put">>> => {
     console.log(`API PUT ${path}`, { body, pathParams, queryParams });
     try {
-        const client = createClient<paths>({
-            baseUrl: process.env.NEXT_PUBLIC_API_URL,
-          });
-      
-      const { response } = await client.PUT(path, {
-        headers: await composeHeaders(options),
+      const client = createClient<paths>({
+        baseUrl: process.env.NEXT_PUBLIC_API_URL,
+      });
+
+      const { data, error, response } = await client.PUT(path as any, {
+        headers: await composeHeaders(),
         body,
         params: {
           path: pathParams as any,
@@ -163,45 +167,54 @@ export const api = {
         },
       });
 
-      return handleResponse(response, String(path));
+      return {
+        data,
+        ok: !error,
+        error: error?.message,
+        status: response?.status,
+      };
     } catch (error) {
       console.error(`PUT ${path} failed:`, error);
       console.error(`Error cause:`, (error as any)?.cause);
       return {
         ok: false,
-        error: error instanceof Error ? error.message : 'Request failed',
+        error: error instanceof Error ? error.message : "Request failed",
         isNetworkError: true,
       };
     }
   },
 
-  delete: async <Path extends PathsWithMethod<paths, 'delete'>>(
+  delete: async <Path extends PathsWithMethod<paths, "delete">>(
     path: Path,
-    pathParams: InferPathParamsType<Path, 'delete'>,
-    queryParams?: InferQueryParamsType<Path, 'delete'>,
-    options?: { isServer?: boolean }
-  ): Promise<ApiResponse<InferResponseType<Path, 'delete'>>> => {
+    pathParams: InferPathParamsType<Path, "delete">,
+    queryParams?: InferQueryParamsType<Path, "delete">
+  ): Promise<ApiResponse<InferResponseType<Path, "delete">>> => {
     console.log(`API DELETE ${path}`, { pathParams, queryParams });
     try {
-        const client = createClient<paths>({
-            baseUrl: process.env.NEXT_PUBLIC_API_URL,
-          });
-      
-      const { response } = await client.DELETE(path, {
-        headers: await composeHeaders(options),
+      const client = createClient<paths>({
+        baseUrl: process.env.NEXT_PUBLIC_API_URL,
+      });
+
+      const { data, error, response } = await client.DELETE(path as any, {
+        headers: await composeHeaders(),
         params: {
           path: pathParams as any,
           query: queryParams,
         },
       });
 
-      return handleResponse(response, String(path));
+      return {
+        data,
+        ok: !error,
+        error: error?.message,
+        status: response?.status,
+      };
     } catch (error) {
       console.error(`DELETE ${path} failed:`, error);
       console.error(`Error cause:`, (error as any)?.cause);
       return {
         ok: false,
-        error: error instanceof Error ? error.message : 'Request failed',
+        error: error instanceof Error ? error.message : "Request failed",
         isNetworkError: true,
       };
     }

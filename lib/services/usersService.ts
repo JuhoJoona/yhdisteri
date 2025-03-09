@@ -1,11 +1,11 @@
-import { typedApiClient } from "../apiClientServer";
+import { typedApiClient } from '../apiClientServer';
 
 export const getUser = async (id: string) => {
   try {
-    const response = await typedApiClient.GET("/users/{id}", {
+    const response = await typedApiClient.GET('/users/{id}', {
       params: {
-        path: { id }
-      }
+        path: { id },
+      },
     });
     if (!response.data) {
       throw new Error(`User with id ${id} not found`);
@@ -19,7 +19,7 @@ export const getUser = async (id: string) => {
 
 export const getUserOrganizations = async () => {
   try {
-    const response = await typedApiClient.GET("/users/organizations");
+    const response = await typedApiClient.GET('/users/organizations');
     return response.data;
   } catch (error) {
     console.error(error);
@@ -29,11 +29,31 @@ export const getUserOrganizations = async () => {
 
 export const getOrganizationMembers = async (organizationId: string) => {
   try {
-    const response = await typedApiClient.GET("/organizations/{id}/members", {
+    const response = await typedApiClient.GET('/organizations/{id}/members', {
       params: {
-        path: { id: organizationId }
-      }
+        path: { id: organizationId },
+      },
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const approveMember = async (
+  organizationId: string,
+  memberId: string
+) => {
+  try {
+    const response = await typedApiClient.POST(
+      '/organizations/{organizationId}/members/{memberId}/approve',
+      {
+        params: {
+          path: { organizationId, memberId },
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);

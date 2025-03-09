@@ -1,8 +1,7 @@
-
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CircleUserRound, Clock, UserCheck, UserX } from "lucide-react";
+import { CircleUserRound, Clock, UserCheck, UserX, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { MemberStats } from "@/types/member";
+import { cn } from "@/lib/utils";
 
 type StatCardProps = {
   title: string;
@@ -23,25 +22,34 @@ const StatCard = ({
   trendValue,
   className = "",
 }: StatCardProps) => {
+  const trendIcon = () => {
+    if (trend === "up") return <TrendingUp className="h-3 w-3" />;
+    if (trend === "down") return <TrendingDown className="h-3 w-3" />;
+    return <Minus className="h-3 w-3" />;
+  };
+
   const trendColor = () => {
-    if (trend === "up") return "text-green-500";
-    if (trend === "down") return "text-red-500";
-    return "text-gray-500";
+    if (trend === "up") return "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30";
+    if (trend === "down") return "text-rose-500 bg-rose-50 dark:bg-rose-950/30";
+    return "text-slate-500 bg-slate-50 dark:bg-slate-800/30";
   };
 
   return (
-    <Card className={`overflow-hidden ${className} animate-fadeIn`}>
+    <Card className={cn("overflow-hidden transition-all hover:shadow-md", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="h-8 w-8 rounded-md bg-primary/10 p-1.5 text-primary">{icon}</div>
+        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+        <div className="h-9 w-9 rounded-full bg-primary/10 p-2 text-primary">{icon}</div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="text-2xl font-bold tracking-tight">{value}</div>
+        <div className="mt-2 flex items-center text-xs">
           {trendValue && (
-            <span className={`mr-1 ${trendColor}`}>{trendValue}</span>
+            <span className={cn("mr-2 flex items-center gap-1 rounded-full px-1.5 py-0.5", trendColor())}>
+              {trendIcon()}
+              {trendValue}
+            </span>
           )}
-          {description && <span>{description}</span>}
+          {description && <span className="text-muted-foreground">{description}</span>}
         </div>
       </CardContent>
     </Card>
@@ -55,7 +63,7 @@ type StatsGridProps = {
 
 export const StatsGrid = ({ stats, className = "" }: StatsGridProps) => {
   return (
-    <div className={`grid gap-4 md:grid-cols-2 lg:grid-cols-4 ${className}`}>
+    <div className={cn("grid gap-4 md:grid-cols-2 lg:grid-cols-4", className)}>
       <StatCard
         title="Total Members"
         value={stats.total}
@@ -66,7 +74,7 @@ export const StatsGrid = ({ stats, className = "" }: StatsGridProps) => {
       <StatCard
         title="Active Members"
         value={stats.active}
-        description={`${Math.round((stats.active / stats.total) * 100)}% of total`}
+        description={`${Math.round((stats.active / (stats.total || 1)) * 100)}% of total`}
         icon={<UserCheck className="h-full w-full" />}
         trend="up"
         trendValue="+3%"
@@ -74,7 +82,7 @@ export const StatsGrid = ({ stats, className = "" }: StatsGridProps) => {
       <StatCard
         title="Inactive Members"
         value={stats.inactive}
-        description={`${Math.round((stats.inactive / stats.total) * 100)}% of total`}
+        description={`${Math.round((stats.inactive / (stats.total || 1)) * 100)}% of total`}
         icon={<UserX className="h-full w-full" />}
         trend="down"
         trendValue="-2%"
@@ -98,11 +106,11 @@ type StatsCardProps = {
 
 export const StatsCard = ({ stats, className = "" }: StatsCardProps) => {
   return (
-    <Card className={`overflow-hidden ${className}`}>
-      <CardHeader>
+    <Card className={cn("overflow-hidden", className)}>
+      <CardHeader className="pb-2">
         <CardTitle className="text-xl">Membership Overview</CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent>
         <StatsGrid stats={stats} />
       </CardContent>
     </Card>

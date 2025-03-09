@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { SignInButton } from "@clerk/nextjs";
-import { SignUpButton } from "@clerk/nextjs";
-import { SignedOut } from "@clerk/nextjs";
-import { UserButton } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
+import { Button } from '@/components/ui/button';
+import { SignInButton } from '@clerk/nextjs';
+import { SignUpButton } from '@clerk/nextjs';
+import { SignedOut } from '@clerk/nextjs';
+import { UserButton } from '@clerk/nextjs';
+import { SignedIn } from '@clerk/nextjs';
 import {
   ChevronRight,
   Users,
@@ -14,22 +14,26 @@ import {
   Mail,
   Globe,
   ChevronDown,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useLocale } from 'next-intl';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
   const t = await getTranslations({ locale, namespace: 'Home' });
-  
+
   return {
     title: t('meta.title'),
     description: t('meta.description'),
@@ -40,7 +44,7 @@ export default function Home() {
   const t = useTranslations('Home');
   const currentLocale = useLocale();
   const locales = ['en', 'fi', 'sv'];
-  
+
   return (
     <div className="flex flex-col min-h-screen w-screen justify-center items-center">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -76,11 +80,15 @@ export default function Home() {
             >
               {t('nav.faq')}
             </Link>
-            
+
             {/* Locale Picker */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1"
+                >
                   <Globe className="h-4 w-4" />
                   <span className="uppercase">{currentLocale}</span>
                   <ChevronDown className="h-3 w-3 opacity-50" />
@@ -89,23 +97,29 @@ export default function Home() {
               <DropdownMenuContent align="end">
                 {locales.map((locale) => (
                   <DropdownMenuItem key={locale} asChild>
-                    <Link 
-                      href={`/${locale}`} 
-                      className={`w-full ${locale === currentLocale ? 'font-bold' : ''}`}
+                    <Link
+                      href={`/${locale}`}
+                      className={`w-full ${
+                        locale === currentLocale ? 'font-bold' : ''
+                      }`}
                     >
-                      {locale === 'en' ? 'English' : locale === 'fi' ? 'Suomi' : locale}
+                      {locale === 'en'
+                        ? 'English'
+                        : locale === 'fi'
+                        ? 'Suomi'
+                        : locale}
                     </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            
+
             <SignedOut>
               <SignInButton />
               <SignUpButton />
             </SignedOut>
             <SignedIn>
-              <Link href="/dashboard">
+              <Link href="/lander">
                 <Users className="size-4" />
                 {t('nav.dashboard')}
               </Link>
@@ -133,7 +147,8 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button size="lg" asChild>
                     <Link href="/sign-up">
-                      {t('hero.getStarted')} <ChevronRight className="ml-2 h-4 w-4" />
+                      {t('hero.getStarted')}{' '}
+                      <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
@@ -178,43 +193,37 @@ export default function Home() {
                 {
                   icon: <Users className="h-10 w-10" />,
                   title: t('features.memberManagement'),
-                  description:
-                    t('features.memberManagementDescription'),
+                  description: t('features.memberManagementDescription'),
                   includedInAll: true,
                 },
                 {
                   icon: <CreditCard className="h-10 w-10" />,
                   title: t('features.billingAndPayments'),
-                  description:
-                    t('features.billingAndPaymentsDescription'),
+                  description: t('features.billingAndPaymentsDescription'),
                   includedInAll: false,
                 },
                 {
                   icon: <Calendar className="h-10 w-10" />,
                   title: t('features.eventManagement'),
-                  description:
-                    t('features.eventManagementDescription'),
+                  description: t('features.eventManagementDescription'),
                   includedInAll: false,
                 },
                 {
                   icon: <BarChart className="h-10 w-10" />,
                   title: t('features.reportingAndAnalytics'),
-                  description:
-                    t('features.reportingAndAnalyticsDescription'),
+                  description: t('features.reportingAndAnalyticsDescription'),
                   includedInAll: true,
                 },
                 {
                   icon: <Shield className="h-10 w-10" />,
                   title: t('features.gdprCompliance'),
-                  description:
-                    t('features.gdprComplianceDescription'),
+                  description: t('features.gdprComplianceDescription'),
                   includedInAll: true,
                 },
                 {
                   icon: <Mail className="h-10 w-10" />,
                   title: t('features.communicationTools'),
-                  description:
-                    t('features.communicationToolsDescription'),
+                  description: t('features.communicationToolsDescription'),
                   includedInAll: false,
                 },
               ].map((feature, index) => (
@@ -227,10 +236,11 @@ export default function Home() {
                     <div className="absolute top-3 right-3 bg-orange-100 text-primary text-xs px-2 py-1 rounded-full">
                       {t('features.proAndEnterprise')}
                     </div>
-                  ) : 
-                  <div className="absolute top-3 right-3 bg-green-100 text-primary text-xs px-2 py-1 rounded-full">
+                  ) : (
+                    <div className="absolute top-3 right-3 bg-green-100 text-primary text-xs px-2 py-1 rounded-full">
                       {t('features.allPlans')}
-                    </div>}
+                    </div>
+                  )}
                   <div className="p-2 rounded-full bg-primary/10 text-primary mb-4">
                     {feature.icon}
                   </div>
@@ -263,22 +273,19 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
               {[
                 {
-                  step: "01",
+                  step: '01',
                   title: t('howItWorks.signUp'),
-                  description:
-                    t('howItWorks.signUpDescription'),
+                  description: t('howItWorks.signUpDescription'),
                 },
                 {
-                  step: "02",
+                  step: '02',
                   title: t('howItWorks.importMembers'),
-                  description:
-                    t('howItWorks.importMembersDescription'),
+                  description: t('howItWorks.importMembersDescription'),
                 },
                 {
-                  step: "03",
+                  step: '03',
                   title: t('howItWorks.startManaging'),
-                  description:
-                    t('howItWorks.startManagingDescription'),
+                  description: t('howItWorks.startManagingDescription'),
                 },
               ].map((step, index) => (
                 <div
@@ -325,20 +332,17 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
               {[
                 {
-                  quote:
-                    t('testimonials.quote1'),
+                  quote: t('testimonials.quote1'),
                   author: t('testimonials.author1'),
                   role: t('testimonials.role1'),
                 },
                 {
-                  quote:
-                    t('testimonials.quote2'),
+                  quote: t('testimonials.quote2'),
                   author: t('testimonials.author2'),
                   role: t('testimonials.role2'),
                 },
                 {
-                  quote:
-                    t('testimonials.quote3'),
+                  quote: t('testimonials.quote3'),
                   author: t('testimonials.author3'),
                   role: t('testimonials.role3'),
                 },
@@ -386,10 +390,10 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
               {[
                 {
-                  name: "Starter",
-                  price: "€29",
+                  name: 'Starter',
+                  price: '€29',
                   description:
-                    "Perfect for small associations with up to 50 members.",
+                    'Perfect for small associations with up to 50 members.',
                   features: [
                     t('pricing.starterFeature1'),
                     t('pricing.starterFeature2'),
@@ -402,9 +406,8 @@ export default function Home() {
                 },
                 {
                   name: t('pricing.professional'),
-                  price: "€59",
-                  description:
-                    t('pricing.professionalDescription'),
+                  price: '€59',
+                  description: t('pricing.professionalDescription'),
                   features: [
                     t('pricing.professionalFeature1'),
                     t('pricing.professionalFeature2'),
@@ -417,7 +420,7 @@ export default function Home() {
                 },
                 {
                   name: t('pricing.enterprise'),
-                  price: "€99",
+                  price: '€99',
                   description: t('pricing.enterpriseDescription'),
                   features: [
                     t('pricing.enterpriseFeature1'),
@@ -434,8 +437,8 @@ export default function Home() {
                   key={index}
                   className={`flex flex-col p-6 rounded-lg shadow-sm border animate-slideUp ${
                     plan.popular
-                      ? "border-primary ring-1 ring-primary relative"
-                      : "bg-card"
+                      ? 'border-primary ring-1 ring-primary relative'
+                      : 'bg-card'
                   }`}
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
@@ -464,12 +467,14 @@ export default function Home() {
                   </ul>
                   <Button
                     className="w-full"
-                    variant={plan.popular ? "default" : "outline"}
+                    variant={plan.popular ? 'default' : 'outline'}
                     asChild
                   >
                     <Link
                       href={
-                        plan.cta === t('pricing.enterpriseCta') ? "/demo" : "/sign-up"
+                        plan.cta === t('pricing.enterpriseCta')
+                          ? '/demo'
+                          : '/sign-up'
                       }
                     >
                       {plan.cta}
@@ -501,28 +506,23 @@ export default function Home() {
               {[
                 {
                   question: t('faq.question1'),
-                  answer:
-                    t('faq.answer1'),
+                  answer: t('faq.answer1'),
                 },
                 {
                   question: t('faq.question2'),
-                  answer:
-                    t('faq.answer2'),
+                  answer: t('faq.answer2'),
                 },
                 {
                   question: t('faq.question3'),
-                  answer:
-                    t('faq.answer3'),
+                  answer: t('faq.answer3'),
                 },
                 {
                   question: t('faq.question4'),
-                  answer:
-                    t('faq.answer4'),
+                  answer: t('faq.answer4'),
                 },
                 {
                   question: t('faq.question5'),
-                  answer:
-                    t('faq.answer5'),
+                  answer: t('faq.answer5'),
                 },
               ].map((faq, index) => (
                 <div
@@ -545,13 +545,12 @@ export default function Home() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 {t('cta.title')}
               </h2>
-              <p className="max-w-[700px] md:text-xl">
-                {t('cta.description')}
-              </p>
+              <p className="max-w-[700px] md:text-xl">{t('cta.description')}</p>
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
                 <Button size="lg" variant="secondary" asChild>
-                    <Link href="/sign-up">
-                    {t('cta.getStarted')} <ChevronRight className="ml-2 h-4 w-4" />
+                  <Link href="/sign-up">
+                    {t('cta.getStarted')}{' '}
+                    <ChevronRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
@@ -560,9 +559,7 @@ export default function Home() {
                   className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
                   asChild
                 >
-                  <Link href="/demo">
-                    {t('cta.requestDemo')}
-                  </Link>
+                  <Link href="/demo">{t('cta.requestDemo')}</Link>
                 </Button>
               </div>
             </div>
@@ -580,9 +577,7 @@ export default function Home() {
                 </div>
                 <span className="text-xl font-bold">Yhdisteri</span>
               </div>
-              <p className="text-muted-foreground">
-                {t('footer.description')}
-              </p>
+              <p className="text-muted-foreground">{t('footer.description')}</p>
               <div className="flex space-x-4">
                 <Link
                   href="#"
@@ -609,7 +604,9 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">{t('footer.product')}</h3>
+              <h3 className="text-lg font-medium mb-4">
+                {t('footer.product')}
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <Link
@@ -646,7 +643,9 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">{t('footer.resources')}</h3>
+              <h3 className="text-lg font-medium mb-4">
+                {t('footer.resources')}
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <Link
@@ -683,7 +682,9 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-4">{t('footer.company')}</h3>
+              <h3 className="text-lg font-medium mb-4">
+                {t('footer.company')}
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <Link
@@ -721,7 +722,10 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t text-center text-muted-foreground">
-            <p>© {new Date().getFullYear()} Yhdisteri. {t('footer.allRightsReserved')}</p>
+            <p>
+              © {new Date().getFullYear()} Yhdisteri.{' '}
+              {t('footer.allRightsReserved')}
+            </p>
           </div>
         </div>
       </footer>

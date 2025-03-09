@@ -1,12 +1,32 @@
 import { typedApiClient } from '../apiClientServer';
 
-export const getUser = async (id: string) => {
+export const getUserByExternalId = async (id: string) => {
   try {
-    const response = await typedApiClient.GET('/users/{id}', {
+    const response = await typedApiClient.GET('/users/external/{id}', {
       params: {
         path: { id },
       },
     });
+    if (!response.data) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getUserById = async (id: string, organizationId: string) => {
+  try {
+    const response = await typedApiClient.GET(
+      '/users/{id}/organization/{organizationId}',
+      {
+        params: {
+          path: { id, organizationId },
+        },
+      }
+    );
     if (!response.data) {
       throw new Error(`User with id ${id} not found`);
     }

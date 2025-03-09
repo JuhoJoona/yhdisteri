@@ -203,12 +203,11 @@ const MembersGrid = ({
     <ScrollArea className="h-[calc(100vh-350px)] min-h-[400px] pr-4">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4">
         {members.map((member) => (
-          <Link
-            href={`/admin/dashboard/organization/members/${member.id}`}
+          <MemberCard
             key={member.id}
-          >
-            <MemberCard member={member} organizationId={organizationId} />
-          </Link>
+            member={member}
+            organizationId={organizationId}
+          />
         ))}
       </div>
     </ScrollArea>

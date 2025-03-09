@@ -5,7 +5,6 @@ import { typedApiClient } from '@/lib/apiClientServer';
 import { auth } from '@clerk/nextjs/server';
 
 export async function createUserAction(formData: FormData) {
-  console.log('createUserAction', formData);
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;
   const phone = formData.get('phone') as string;
@@ -16,13 +15,6 @@ export async function createUserAction(formData: FormData) {
 
   const currentUser = await auth();
   const externalId = currentUser.userId;
-
-  console.log('organizationTab', organizationTab);
-  console.log('organizationCode', organizationCode);
-  console.log('organizationName', organizationName);
-  console.log('firstName', firstName);
-  console.log('lastName', lastName);
-  console.log('phone', phone);
 
   if (organizationTab === 'join' && organizationCode.length !== 6) {
     return { error: 'Invalid organization code' };
@@ -50,7 +42,6 @@ export async function createUserAction(formData: FormData) {
         },
       },
     });
-    console.log('response', response);
 
     if (!response.data) {
       console.error('Registration failed:', response);
@@ -58,7 +49,6 @@ export async function createUserAction(formData: FormData) {
     }
 
     const data = response.data;
-    console.log(data);
 
     revalidatePath('/'); // Revalidate the root path or any relevant paths
 

@@ -127,7 +127,9 @@ const OrganizationPage = async ({
         <div className="bg-card rounded-lg p-6 border border-border">
           <ClientMembersTable
             members={members || []}
-            initialSearchTerm={searchTerm}
+            searchQuery={searchTerm}
+            statusFilter={'all'}
+            organizationId={organizationId}
           />
         </div>
       </div>

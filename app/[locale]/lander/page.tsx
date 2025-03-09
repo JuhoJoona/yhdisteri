@@ -57,8 +57,13 @@ export default async function Dashboard() {
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {organizations.map((org) => (
-            <div
+            <Link
               key={org.id}
+              href={
+                org.role === 'admin'
+                  ? `/admin/dashboard/organization?organizationId=${org.id}`
+                  : `/organization?organizationId=${org.id}`
+              }
               className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all bg-white hover:border-blue-200 cursor-pointer"
             >
               <div className="flex justify-between items-start">
@@ -79,41 +84,8 @@ export default async function Dashboard() {
                     {formatDate(org.createdAt)}
                   </p>
                 </div>
-                <div className="flex space-x-2">
-                  {org.role === 'admin' && (
-                    <>
-                      <Link
-                        href={`/dashboard/${org.id}/settings`}
-                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                      >
-                        <Settings className="w-5 h-5" />
-                      </Link>
-                    </>
-                  )}
-                </div>
               </div>
-              <div className="mt-4 flex justify-end">
-                {org.role === 'admin' && (
-                  <Link
-                    href={`/dashboard/organization?organizationId=${org.id}`}
-                    className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
-                  >
-                    Go to Dashboard
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                )}
-                {org.role === 'member' && (
-                  <Link
-                    href={`/organization?organizationId=${org.id}`}
-                    className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
-                  >
-                    Go to Dashboard
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-              !
-            </div>
+            </Link>
           ))}
         </div>
       )}

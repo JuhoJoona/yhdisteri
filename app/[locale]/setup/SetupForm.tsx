@@ -38,9 +38,6 @@ export default function SetupForm() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    console.log('Form elements:', Array.from(form.elements));
-    console.log('FormData entries:', Array.from(formData.entries()));
-
     // Add required validation for organization fields based on selected tab
     if (organizationTab === 'join' && !formData.get('organizationCode')) {
       setError('Organization code is required');
@@ -55,11 +52,10 @@ export default function SetupForm() {
     }
 
     formData.set('organizationTab', organizationTab);
-    console.log('FormData entries:', Array.from(formData.entries()));
 
     try {
       const result = await createUserAction(formData);
-      console.log('Action result:', result);
+
       if (result.error) {
         setError(result.error);
       } else if (result.success) {

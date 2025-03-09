@@ -1,3 +1,4 @@
+'use client';
 import {
   MoreHorizontal,
   Edit,
@@ -25,7 +26,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Member } from '@/types/member';
-import Link from 'next/link';
+import { useApiClient } from '@/lib/apiClient';
+import { useRouter } from 'next/navigation';
 
 interface MemberCardProps {
   member: Member;
@@ -42,6 +44,9 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const apiClient = useApiClient();
+  const router = useRouter();
+
   const getStatusColor = (status: Member['status']) => {
     switch (status) {
       case 'active':
@@ -52,6 +57,32 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
         return 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-500';
       default:
         return 'bg-gray-500/10 text-gray-700 dark:text-gray-500';
+    }
+  };
+
+  const onApprove = async () => {
+    try {
+      const resp = await apiClient.POST(
+        '/organizations/{organizationId}/members/{memberId}/approve',
+        {
+          params: {
+            path: {
+              organizationId,
+              memberId: member.id,
+            },
+          },
+        }
+      );
+
+      if (resp.response?.ok) {
+        console.log('Member approved successfully');
+        // Refresh the page to show updated status
+        router.refresh();
+      } else {
+        console.error('Failed to approve member:', resp);
+      }
+    } catch (error) {
+      console.error('Error approving member:', error);
     }
   };
 
@@ -73,64 +104,57 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link
-                  href={`/admin/dashboard/organization/members/${member.id}`}
+                <button
+                  onClick={() =>
+                    router.push(
+                      `/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`
+                    )
+                  }
                 >
                   View Profile
-                </Link>
+                </button>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link
-                  href={`/admin/dashboard/organization/edit-member/${member.id}`}
+                <button
+                  onClick={() =>
+                    router.push(
+                      `/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`
+                    )
+                  }
                 >
                   <Edit className="mr-2 h-4 w-4" />
                   Edit
-                </Link>
+                </button>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {member.status === 'pending' && (
                 <>
                   <DropdownMenuItem asChild>
-                    <form
-                      action={`/api/members/${member.id}/approve`}
-                      method="post"
+                    <button
+                      type="submit"
+                      className="flex items-center w-full"
+                      onClick={onApprove}
                     >
-                      <input
-                        type="hidden"
-                        name="organizationId"
-                        value={organizationId}
-                      />
-                      <button
-                        type="submit"
-                        className="flex items-center w-full"
-                      >
-                        <CheckIcon className="mr-2 h-4 w-4" />
-                        Approve Member
-                      </button>
-                    </form>
+                      <CheckIcon className="mr-2 h-4 w-4" />
+                      Approve Member
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
               )}
               <DropdownMenuItem asChild>
-                <form
-                  action={`/api/members/${member.id}/delete`}
-                  method="post"
-                  className="w-full"
+                <button
+                  type="submit"
+                  className="flex items-center text-destructive w-full"
+                  onClick={() =>
+                    router.push(
+                      `/admin/dashboard/organization/members/${member.id}`
+                    )
+                  }
                 >
-                  <input
-                    type="hidden"
-                    name="organizationId"
-                    value={organizationId}
-                  />
-                  <button
-                    type="submit"
-                    className="flex items-center text-destructive w-full"
-                  >
-                    <Trash className="mr-2 h-4 w-4" />
-                    Delete
-                  </button>
-                </form>
+                  <Trash className="mr-2 h-4 w-4" />
+                  Delete
+                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -174,16 +198,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-center border-t bg-muted/50">
-        <Link
-          href={`/admin/dashboard/organization/members/${member.id}`}
-          className="w-full"
-        >
-          <Button variant="outline" size="sm" className="w-full">
-            View Profile
-          </Button>
-        </Link>
-      </CardFooter>
+      <CardFooter className="p-4 pt-0 flex justify-center border-t bg-muted/50"></CardFooter>
     </Card>
   );
 }

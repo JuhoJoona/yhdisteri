@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default async function Dashboard() {
   const organizations = await getUserOrganizations();
 
-  if (!organizations) {
+  if (!organizations || organizations.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1>No organizations found</h1>

@@ -1,38 +1,18 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { redirect } from 'next/navigation';
+import { isAuthenticated } from '@/lib/auth-server';
 
-interface ProtectedRouteProps {
-  requiredRole?: "admin" | "member";
-  children: React.ReactNode;
-}
-
-export function ProtectedRoute({
-  requiredRole,
+export async function ProtectedRoute({
   children,
-}: ProtectedRouteProps) {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  redirectTo = '/sign-in',
+}: {
+  children: React.ReactNode;
+  redirectTo?: string;
+}) {
+  const authenticated = await isAuthenticated();
 
-  // Show loading spinner or skeleton while checking authentication
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
+  if (!authenticated) {
+    redirect(redirectTo);
   }
 
-  // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // If role is required and user doesn't have it, redirect to unauthorized
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  // If authenticated and has the required role, show the protected content
   return <>{children}</>;
 }
-
-export default ProtectedRoute;

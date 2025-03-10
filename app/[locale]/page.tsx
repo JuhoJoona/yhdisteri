@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { SignInButton } from '@clerk/nextjs';
-import { SignUpButton } from '@clerk/nextjs';
-import { SignedOut } from '@clerk/nextjs';
-import { UserButton } from '@clerk/nextjs';
-import { SignedIn } from '@clerk/nextjs';
+import {
+  SignInButton,
+  SignUpButton,
+  SignedOut,
+  SignedIn,
+  UserButton,
+} from '@/components/auth/AuthComponents';
 import {
   ChevronRight,
   Users,
@@ -26,108 +28,31 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLocale } from 'next-intl';
+import { NavBar } from '@/components/NavBar';
 
 export async function generateMetadata({
   params: { locale },
 }: {
   params: { locale: string };
 }) {
-  const t = await getTranslations({ locale, namespace: 'Home' });
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   return {
-    title: t('meta.title'),
-    description: t('meta.description'),
+    title: t('home.title'),
+    description: t('home.description'),
   };
 }
 
-export default function Home() {
-  const t = useTranslations('Home');
-  const currentLocale = useLocale();
-  const locales = ['en', 'fi', 'sv'];
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  const t = await getTranslations({ locale });
 
   return (
-    <div className="flex flex-col min-h-screen w-screen justify-center items-center">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 p-4">
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Users className="size-4" />
-            </div>
-            <span className="text-xl font-bold">Yhdisteri</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="#features"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.features')}
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.howItWorks')}
-            </Link>
-            <Link
-              href="#pricing"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.pricing')}
-            </Link>
-            <Link
-              href="#faq"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.faq')}
-            </Link>
-
-            {/* Locale Picker */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
-                  <Globe className="h-4 w-4" />
-                  <span className="uppercase">{currentLocale}</span>
-                  <ChevronDown className="h-3 w-3 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {locales.map((locale) => (
-                  <DropdownMenuItem key={locale} asChild>
-                    <Link
-                      href={`/${locale}`}
-                      className={`w-full ${
-                        locale === currentLocale ? 'font-bold' : ''
-                      }`}
-                    >
-                      {locale === 'en'
-                        ? 'English'
-                        : locale === 'fi'
-                        ? 'Suomi'
-                        : locale}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <Link href="/lander">
-                <Users className="size-4" />
-                {t('nav.dashboard')}
-              </Link>
-              <UserButton />
-            </SignedIn>
-          </nav>
-        </div>
-      </header>
+    <div className="flex min-h-screen flex-col">
+      <NavBar locale={locale} />
 
       <main className="flex-1">
         {/* Hero Section */}

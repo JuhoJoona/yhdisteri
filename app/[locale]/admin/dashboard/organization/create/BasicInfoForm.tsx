@@ -1,36 +1,48 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function BasicInfoForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   function createOrganization(formData: FormData) {
-    localStorage.setItem("organization", JSON.stringify(Object.fromEntries(formData)))
-    router.push("/dashboard/organization/create/address")
+    localStorage.setItem(
+      'organization',
+      JSON.stringify(Object.fromEntries(formData))
+    );
+    router.push('/admin/dashboard/organization/create/address');
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-    await createOrganization(new FormData(event.currentTarget))
-    setIsLoading(false)
+    event.preventDefault();
+    setIsLoading(true);
+    await createOrganization(new FormData(event.currentTarget));
+    setIsLoading(false);
   }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Create Organization</CardTitle>
-        <CardDescription>Enter your organization&apos;s basic information</CardDescription>
+        <CardDescription>
+          Enter your organization&apos;s basic information
+        </CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
@@ -47,12 +59,11 @@ export default function BasicInfoForm() {
                 Creating...
               </>
             ) : (
-              "Next"
+              'Next'
             )}
           </Button>
         </CardFooter>
       </form>
     </Card>
-  )
+  );
 }
-

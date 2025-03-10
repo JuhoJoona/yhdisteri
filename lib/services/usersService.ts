@@ -20,6 +20,7 @@ export const getUser = async (id: string) => {
 export const getUserOrganizations = async () => {
   try {
     const response = await typedApiClient.GET('/users/organizations');
+    console.log('User Organizations:', response);
     return response.data;
   } catch (error) {
     console.error(error);

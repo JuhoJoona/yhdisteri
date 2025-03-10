@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from '@/components/auth/AuthComponents';
+import { UserButton } from '@/components/auth/AuthComponents';
 import { AuthProvider } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -31,10 +27,10 @@ export function ClientNavActions({
       ) : (
         <div className="flex items-center space-x-4">
           <Button asChild variant="ghost">
-            <Link href="/sign-in">{t('signIn')}</Link>
+            <Link href="/sign-in">{t('nav.signIn')}</Link>
           </Button>
           <Button asChild>
-            <Link href="/sign-up">{t('signUp')}</Link>
+            <Link href="/sign-up">{t('nav.signUp')}</Link>
           </Button>
         </div>
       )}

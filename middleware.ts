@@ -91,7 +91,7 @@ export const config = {
   matcher: [
     // Include routes for internationalization
     '/',
-    '/(de|en)/:path*',
+    '/(en|fi|sv)/:path*',
     // Protected routes
     '/dashboard/:path*',
     '/forum/:path*',

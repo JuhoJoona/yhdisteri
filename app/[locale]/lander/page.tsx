@@ -1,5 +1,5 @@
 import { getUserOrganizations } from '@/lib/services/usersService';
-import { Building, Settings, Users, ChevronRight } from 'lucide-react';
+import { Building, Settings, ChevronRight } from 'lucide-react';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
@@ -10,7 +10,12 @@ export default async function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1>No organizations found</h1>
-        <Link href="/setup">Create organization</Link>
+        <Link
+          href="/admin/dashboard/organization/create"
+          className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-auto"
+        >
+          Create Organization
+        </Link>
       </div>
     );
   }

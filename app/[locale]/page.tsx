@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  SignInButton,
-  SignUpButton,
-  SignedOut,
-  SignedIn,
-  UserButton,
-} from '@/components/auth/AuthComponents';
+
 import {
   ChevronRight,
   Users,
@@ -14,20 +8,10 @@ import {
   BarChart,
   Shield,
   Mail,
-  Globe,
-  ChevronDown,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useLocale } from 'next-intl';
 import { NavBar } from '@/components/NavBar';
 
 export async function generateMetadata({
@@ -48,7 +32,7 @@ export default async function Home({
 }: {
   params: { locale: string };
 }) {
-  const t = await getTranslations({ locale });
+  const t = await getTranslations({ locale, namespace: 'Home' });
 
   return (
     <div className="flex min-h-screen flex-col">

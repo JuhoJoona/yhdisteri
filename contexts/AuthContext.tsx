@@ -1,21 +1,24 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any | null }>;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
   signUp: (
     email: string,
     password: string,
     metadata?: { firstName?: string; lastName?: string }
-  ) => Promise<{ error: any | null; user: User | null }>;
+  ) => Promise<{ error: AuthError | null; user: User | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -26,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const supabaseClient = createClientComponentClient();
 
   useEffect(() => {
     // Get initial session
@@ -34,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await supabaseClient.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
 
@@ -46,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -55,11 +59,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [supabaseClient.auth]);
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabaseClient.auth.signInWithPassword({
         email,
         password,
       });
@@ -67,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error };
     } catch (error) {
       console.error('Error signing in:', error);
-      return { error };
+      return { error: error as AuthError };
     }
   };
 
@@ -77,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     metadata?: { firstName?: string; lastName?: string }
   ) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await supabaseClient.auth.signUp({
         email,
         password,
         options: {
@@ -91,13 +95,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error, user: data?.user || null };
     } catch (error) {
       console.error('Error signing up:', error);
-      return { error, user: null };
+      return { error: error as AuthError, user: null };
     }
   };
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
       router.push('/');
     } catch (error) {
       console.error('Error signing out:', error);

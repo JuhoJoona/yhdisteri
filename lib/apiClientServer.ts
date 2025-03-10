@@ -1,39 +1,36 @@
 import createFetchClient, { type Middleware } from 'openapi-fetch';
 import type { paths } from '@/lib/types';
-import { createClient } from '@supabase/supabase-js';
-
-const customFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-  const response = await fetch(input, {
-    ...init,
-    redirect: 'follow',
-    credentials: 'include',
-  });
-  return response;
-};
+import { supabase } from '@/lib/supabase';
+import { cookies } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const typedApiClient = createFetchClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002',
-  fetch: customFetch,
 });
 
 const middleware: Middleware = {
   async onRequest({ request }) {
     try {
-      // Create a Supabase client for server-side requests
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-      );
+      // Get the current session using server component client
+      let token;
 
-      // Get the session from Supabase
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('No authenticated user found');
+      try {
+        // Try to get the session from the server component client
+        const supabaseServer = createServerComponentClient({ cookies });
+        const { data: sessionData } = await supabaseServer.auth.getSession();
+        console.log('Server Session Data:', sessionData);
+        token = sessionData.session?.access_token;
+      } catch (error) {
+        console.log(
+          'Failed to get server session, falling back to client session:',
+          error
+        );
+        // Fall back to the client-side session if server-side fails
+        const { data: sessionData } = await supabase.auth.getSession();
+        console.log('Client Session Data:', sessionData);
+        token = sessionData.session?.access_token;
       }
 
-      const token = session.access_token;
       if (!token) {
         throw new Error('No authentication token available');
       }
@@ -41,12 +38,6 @@ const middleware: Middleware = {
       request.headers.set('Authorization', `Bearer ${token}`);
       request.headers.set('Content-Type', 'application/json');
       request.headers.set('Accept', 'application/json');
-
-      console.log('API Request:', {
-        url: request.url,
-        method: request.method,
-        headers: Object.fromEntries(request.headers.entries()),
-      });
 
       return request;
     } catch (error) {

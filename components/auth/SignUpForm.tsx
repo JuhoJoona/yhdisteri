@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export function SignUpForm() {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export function SignUpForm() {
 
       if (user) {
         // Redirect to setup page or dashboard
-        router.push('/setup');
+        router.push('/lander');
       }
     } catch (err) {
       setError('An unexpected error occurred');
@@ -49,7 +50,7 @@ export function SignUpForm() {
   return (
     <div className="w-full max-w-md mx-auto p-6 space-y-6 bg-white rounded-lg shadow-md">
       <div className="text-center">
-        <h1 className="text-2xl font-bold">{t('signUp')}</h1>
+        <h1 className="text-2xl font-bold">{t('nav.signUp')}</h1>
         <p className="text-gray-500 mt-2">
           {t('howItWorks.signUpDescription')}
         </p>
@@ -108,16 +109,16 @@ export function SignUpForm() {
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? t('common.loading') : t('signUp')}
+          {isLoading ? t('common.loading') : t('nav.signUp')}
         </Button>
       </form>
 
       <div className="text-center text-sm">
         <p>
           {t('common.alreadyHaveAccount')}{' '}
-          <a href="/sign-in" className="text-blue-600 hover:underline">
-            {t('signIn')}
-          </a>
+          <Link href="/sign-in" className="text-blue-600 hover:underline">
+            {t('nav.signIn')}
+          </Link>
         </p>
       </div>
     </div>

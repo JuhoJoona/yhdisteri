@@ -1,28 +1,36 @@
-import { redirect } from "next/navigation"
-import PlanSelectionForm from "./PlanSelectionForm"
-import { createOrganization, CreateOrganizationRequest } from "@/lib/services/organizationService"
-import { getPlans } from "@/lib/services/plansService"
-
+import { redirect } from 'next/navigation';
+import PlanSelectionForm from './PlanSelectionForm';
+import {
+  createOrganization,
+  CreateOrganizationRequest,
+} from '@/lib/services/organizationService';
+import { getPlans } from '@/lib/services/plansService';
 
 export default async function PlanPage() {
-  async function submitOrganization(organization: CreateOrganizationRequest, planId: string) {
-    "use server"
-    console.log("submitOrganization", organization, planId)
-    const response = await createOrganization(organization, planId)
-    console.log("response", response)
+  async function submitOrganization(
+    organization: CreateOrganizationRequest,
+    planId: string
+  ) {
+    'use server';
+    console.log('submitOrganization', organization, planId);
+    const response = await createOrganization(organization, planId);
+    console.log('response', response);
     if (response) {
-      redirect(`/dashboard/organization?organizationId=${response?.organization?.id}`)
+      redirect(
+        `/admin/dashboard/organization?organizationId=${response?.organization?.id}`
+      );
     } else {
-      return { error: "Organization creation failed" }
+      return { error: 'Organization creation failed' };
     }
   }
 
-  const plans = await getPlans()
-  console.log("plans", plans)
+  const plans = await getPlans();
+  console.log('plans', plans);
   if (!plans || plans.length === 0) {
-    return <div>No plans found</div>
+    return <div>No plans found</div>;
   }
 
-  return <PlanSelectionForm plans={plans} submitOrganization={submitOrganization} />
+  return (
+    <PlanSelectionForm plans={plans} submitOrganization={submitOrganization} />
+  );
 }
-

@@ -4,15 +4,6 @@
       "title": "Yhdisteri",
       "description": "Yhdisteri"
     },
-    "nav": {
-      "features": "Features",
-      "howItWorks": "How It Works",
-      "pricing": "Pricing",
-      "faq": "FAQ",
-      "dashboard": "Dashboard",
-      "signIn": "Sign In",
-      "signUp": "Sign Up"
-    },
     "hero": {
       "tip": "Simplify association management",
       "title": "All-in-one solution for managing your association",
@@ -153,5 +144,47 @@
     "and": " and ",
     "termsOfService": "Terms of Service",
     "requestDemo": "Request Your Demo"
+  },
+  "common": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "loading": "Loading...",
+    "welcomeBack": "Welcome back!"
+  },
+  "Metadata": {
+    "title": "Yhdisteri",
+    "description": "Yhdisteri",
+    "home": {
+      "title": "Yhdisteri",
+      "description": "Yhdisteri"
+    },
+    "signUp": {
+      "title": "Sign Up",
+      "description": "Sign Up"
+    },
+    "signIn": {
+      "title": "Sign In",
+      "description": "Sign In"
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "description": "How It Works",
+    "signUpDescription": "Create your account and set up your association profile with basic information."
+  },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "dashboard": "Dashboard",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "plans": "Plans",
+    "about": "About"
   }
 }

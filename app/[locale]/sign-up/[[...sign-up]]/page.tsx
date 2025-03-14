@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export async function generateMetadata({
   params,
@@ -34,29 +33,29 @@ export default async function SignUpPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'SignUp' });
+  const t = await getTranslations({ locale });
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          {t('title')}
+          {t('common.signUp')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          {t('subtitle')}{' '}
+          {t('common.alreadyHaveAccount')}{' '}
           <Link
             href={`/${locale}/sign-in`}
-            className="font-medium text-primary hover:text-primary/90"
+            className="font-medium text-primary hover:text-primary/90 hover:underline"
           >
-            {t('alreadyHaveAccount')}
+            {t('common.signIn')}
           </Link>
         </p>
       </div>
 
       <Card className="w-full mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <CardHeader>
-          <CardTitle>{t('createAccount')}</CardTitle>
-          <CardDescription>{t('fillDetails')}</CardDescription>
+          <CardTitle>{t('common.createAccount')}</CardTitle>
+          <CardDescription>{t('common.fillDetails')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -69,34 +68,34 @@ export default async function SignUpPage({
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <Label htmlFor="first_name" className="text-sm font-medium">
-                  {t('first_name')}
+                  {t('common.firstName')}
                 </Label>
                 <Input
                   id="first_name"
                   name="first_name"
                   required
                   className="mt-1 block w-full"
-                  placeholder={t('firstNamePlaceholder')}
+                  placeholder={t('common.firstNamePlaceholder')}
                 />
               </div>
 
               <div>
                 <Label htmlFor="last_name" className="text-sm font-medium">
-                  {t('last_name')}
+                  {t('common.lastName')}
                 </Label>
                 <Input
                   id="last_name"
                   name="last_name"
                   required
                   className="mt-1 block w-full"
-                  placeholder={t('lastNamePlaceholder')}
+                  placeholder={t('common.lastNamePlaceholder')}
                 />
               </div>
             </div>
 
             <div>
               <Label htmlFor="email" className="text-sm font-medium">
-                {t('email')}
+                {t('common.email')}
               </Label>
               <Input
                 id="email"
@@ -104,13 +103,13 @@ export default async function SignUpPage({
                 type="email"
                 required
                 className="mt-1 block w-full"
-                placeholder={t('emailPlaceholder')}
+                placeholder={t('common.emailPlaceholder')}
               />
             </div>
 
             <div>
               <Label htmlFor="password" className="text-sm font-medium">
-                {t('password')}
+                {t('common.password')}
               </Label>
               <Input
                 id="password"
@@ -118,46 +117,46 @@ export default async function SignUpPage({
                 type="password"
                 required
                 className="mt-1 block w-full"
-                placeholder={t('passwordPlaceholder')}
+                placeholder={t('common.passwordPlaceholder')}
               />
               <p className="mt-1 text-xs text-gray-500">
-                {t('passwordRequirements')}
+                {t('common.passwordRequirements')}
               </p>
             </div>
 
             <div>
               <Label htmlFor="phone" className="text-sm font-medium">
-                {t('phone')}
+                {t('common.phone')}
               </Label>
               <Input
                 id="phone"
                 name="phone"
                 required
                 className="mt-1 block w-full"
-                placeholder={t('phonePlaceholder')}
+                placeholder={t('common.phonePlaceholder')}
               />
             </div>
 
             <div className="pt-2">
               <Button type="submit" className="w-full py-2 font-semibold">
-                {t('signup')}
+                {t('common.signUp')}
               </Button>
             </div>
 
             <p className="text-xs text-center text-gray-500 mt-4">
-              {t('termsNotice')}{' '}
+              {t('common.termsNotice')}{' '}
               <Link
                 href={`/${locale}/terms`}
                 className="text-primary hover:underline"
               >
-                {t('terms')}
+                {t('common.terms')}
               </Link>{' '}
-              {t('and')}{' '}
+              {t('common.and')}{' '}
               <Link
                 href={`/${locale}/privacy`}
                 className="text-primary hover:underline"
               >
-                {t('privacy')}
+                {t('common.privacyPolicy')}
               </Link>
             </p>
           </form>

@@ -153,7 +153,22 @@
     "alreadyHaveAccount": "Already have an account?",
     "dontHaveAccount": "Don't have an account?",
     "loading": "Loading...",
-    "welcomeBack": "Welcome back!"
+    "welcomeBack": "Welcome back!",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms",
+    "and": "and",
+    "termsNotice": "By signing up, you agree to our ",
+    "createAccount": "Create Account",
+    "fillDetails": "Fill in your details to create an account.",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNamePlaceholder": "Enter your last name",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+    "phone": "Phone",
+    "phonePlaceholder": "Enter your phone number"
   },
   "Metadata": {
     "title": "Yhdisteri",
@@ -169,6 +184,10 @@
     "signIn": {
       "title": "Sign In",
       "description": "Sign In"
+    },
+    "plans": {
+      "title": "Plans",
+      "description": "Plans"
     }
   },
   "howItWorks": {
@@ -186,5 +205,47 @@
     "signUp": "Sign Up",
     "plans": "Plans",
     "about": "About"
+  },
+  "plans": {
+    "title": "Plans",
+    "description": "Plans",
+    "free": "Free",
+    "basic": "Basic",
+    "pro": "Pro",
+    "enterprise": "Enterprise",
+    "starter": "Starter",
+    "trialInfo": "30-day free trial",
+    "needHelp": "Need help?",
+    "mostPopular": "Most Popular"
+  },
+  "lander": {
+    "noOrganizations": "No organizations found",
+    "createOrganization": "Create Organization",
+    "noOrganizationsDescription": "Get started by creating your first organization",
+    "joinOrganization": "Join Organization"
+  },
+  "inputCode": {
+    "title": "Join Organization",
+    "description": "Join Organization",
+    "joinOrganization": "Join Organization",
+    "enterJoinCode": "Enter Join Code",
+    "enterJoinCodeDescription": "Enter the join code to join the organization.",
+    "joinCodeExample": "Example: 123456",
+    "emptyCodeError": "Please enter a join code.",
+    "createOrganization": "Create Organization",
+    "dontHaveCode": "Don't have a join code?",
+    "createOrganizationDescription": "Create an organization and get a join code to share with your members.",
+    "backToLander": "Back to Lander",
+    "joinCodeHelp": "Join Code Help"
+  },
+  "Join": {
+    "title": "Join Organization",
+    "organizationDetails": "Organization Details",
+    "name": "Name",
+    "code": "Code",
+    "confirmJoin": "Confirm Join",
+    "organizationNotFound": "Organization not found",
+    "invalidCode": "Invalid code",
+    "areYouSure": "Are you sure you want to join this organization?"
   }
 }

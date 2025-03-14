@@ -55,4 +55,28 @@ const getOrganizationByCode = async (code: string) => {
     return null;
   }
 };
-export { createOrganization, getOrganization, getOrganizationByCode };
+
+const joinOrganizationByCode = async (code: string) => {
+  try {
+    console.log('joinOrganizationByCode', code);
+    const response = await typedApiClient.POST(
+      '/organizations/code/{code}/join',
+      {
+        params: {
+          path: { code },
+        },
+      }
+    );
+    console.log('response', response);
+    return response.data;
+  } catch (error) {
+    console.error('error', error);
+    return null;
+  }
+};
+export {
+  createOrganization,
+  getOrganization,
+  getOrganizationByCode,
+  joinOrganizationByCode,
+};

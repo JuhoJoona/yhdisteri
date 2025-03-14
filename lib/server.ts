@@ -1,7 +1,6 @@
 import createFetchClient, { type Middleware } from 'openapi-fetch';
 import type { paths } from '@/lib/types';
 import { supabase } from '@/lib/supabase';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -40,6 +39,21 @@ export const typedApiClient = createFetchClient<paths>({
 const middleware: Middleware = {
   async onRequest({ request }) {
     try {
+      // Routes that don't require authentication
+      const publicRoutes = [
+        `${process.env.NEXT_PUBLIC_API_URL}/plans`,
+        `${process.env.NEXT_PUBLIC_API_URL}/health`,
+      ];
+
+      // Skip authentication for public routes
+      console.log('Request URL:', request.url);
+      if (publicRoutes.includes(request.url)) {
+        console.log('Skipping authentication for public route:', request.url);
+        request.headers.set('Content-Type', 'application/json');
+        request.headers.set('Accept', 'application/json');
+        return request;
+      }
+
       // Get the current session using server component client
       let token;
 

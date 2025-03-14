@@ -478,7 +478,7 @@ export default async function Home({
 
       <footer className="border-t py-12 md:py-16">
         <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col space-y-4">
               <div className="flex items-center gap-2">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -551,66 +551,12 @@ export default async function Home({
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">
-                {t('footer.resources')}
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/blog"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.blog')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/documentation"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.documentation')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/guides"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.guides')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/support"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.support')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
+
             <div>
               <h3 className="text-lg font-medium mb-4">
                 {t('footer.company')}
               </h3>
               <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.about')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.contact')}
-                  </Link>
-                </li>
                 <li>
                   <Link
                     href="/privacy"

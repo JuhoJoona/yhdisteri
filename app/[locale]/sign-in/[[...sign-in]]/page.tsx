@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { login } from '@/lib/actions/authActions';
-import { signup } from '@/lib/actions/authActions';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export async function generateMetadata({
   params,
@@ -26,12 +26,12 @@ export default async function SignInPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'SignIn' });
+  const t = await getTranslations({ locale });
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          {t('title')}
+          {t('common.signIn')}
         </h2>
       </div>
 
@@ -45,7 +45,7 @@ export default async function SignInPage({
           className="space-y-6"
         >
           <div>
-            <Label htmlFor="email">{t('email')}</Label>
+            <Label htmlFor="email">{t('common.email')}</Label>
             <Input
               id="email"
               name="email"
@@ -56,7 +56,7 @@ export default async function SignInPage({
           </div>
 
           <div>
-            <Label htmlFor="password">{t('password')}</Label>
+            <Label htmlFor="password">{t('common.password')}</Label>
             <Input
               id="password"
               name="password"
@@ -75,8 +75,20 @@ export default async function SignInPage({
               }}
               className="w-full"
             >
-              {t('signup')}
+              {t('common.signIn')}
             </Button>
+          </div>
+          <div className="flex space-x-4 justify-between flex-row">
+            <Link href="/sign-up">
+              <h3 className="text-sm text-gray-500 hover:text-gray-700 hover:underline">
+                {t('common.dontHaveAccount')}
+              </h3>
+            </Link>
+            <Link href="/privacy-policy">
+              <h3 className="text-sm text-gray-500 hover:text-gray-700 hover:underline">
+                {t('common.privacyPolicy')}
+              </h3>
+            </Link>
           </div>
         </form>
       </div>

@@ -74,7 +74,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
-                  href={`/admin/dashboard/organization/members/${member.id}`}
+                  href={`/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`}
                 >
                   View Profile
                 </Link>
@@ -176,7 +176,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-center border-t bg-muted/50">
         <Link
-          href={`/admin/dashboard/organization/members/${member.id}`}
+          href={`/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`}
           className="w-full"
         >
           <Button variant="outline" size="sm" className="w-full">

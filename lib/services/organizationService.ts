@@ -1,4 +1,4 @@
-import { typedApiClient } from '../apiClientServer';
+import { typedApiClient } from '../server';
 import { paths } from '../types';
 
 export type CreateOrganizationRequest =
@@ -40,4 +40,19 @@ const getOrganization = async (organizationId: string) => {
   }
 };
 
-export { createOrganization, getOrganization };
+const getOrganizationByCode = async (code: string) => {
+  try {
+    console.log('getOrganizationByCode', code);
+    const response = await typedApiClient.GET('/organizations/code/{code}', {
+      params: {
+        path: { code },
+      },
+    });
+    console.log('response', response);
+    return response.data;
+  } catch (error) {
+    console.error('error', error);
+    return null;
+  }
+};
+export { createOrganization, getOrganization, getOrganizationByCode };

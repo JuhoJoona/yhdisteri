@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/card';
 import { Check, Star } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { AuthProvider } from '@/components/auth/AuthProvider';
 
 interface Plan {
   id: string;

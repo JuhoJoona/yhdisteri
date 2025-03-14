@@ -1,4 +1,4 @@
-import { typedApiClient } from '../apiClientServer';
+import { typedApiClient } from '../server';
 
 export const getUser = async (id: string) => {
   try {

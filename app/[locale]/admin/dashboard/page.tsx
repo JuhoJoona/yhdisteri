@@ -10,7 +10,9 @@ export default async function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1>No organizations found</h1>
-        <Link href="/setup">Create organization</Link>
+        <Link href="/admin/dashboard/organization/create">
+          Create organization
+        </Link>
       </div>
     );
   }
@@ -28,7 +30,7 @@ export default async function Dashboard() {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Your Organizations</h1>
         <Link
-          href="/dashboard/organization/create"
+          href="/admin/dashboard/organization/create"
           className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus className="w-4 h-4 mr-2" />

@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { isAuthenticated } from '@/lib/auth-server';
 import { ClientNavActions } from './ClientNavActions';
+import { createClient } from '@/lib/server';
+import { User } from '@supabase/supabase-js';
 
 export async function NavBar({ locale }: { locale: string }) {
   const t = await getTranslations({ locale });
-  const authenticated = await isAuthenticated();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <header className="bg-white shadow">
@@ -24,7 +28,7 @@ export async function NavBar({ locale }: { locale: string }) {
               <Link href="/about" className="text-gray-500 hover:text-gray-900">
                 {t('nav.about')}
               </Link>
-              {authenticated && (
+              {user && (
                 <Link
                   href="/dashboard"
                   className="text-gray-500 hover:text-gray-900"
@@ -35,7 +39,7 @@ export async function NavBar({ locale }: { locale: string }) {
             </nav>
           </div>
 
-          <ClientNavActions authenticated={authenticated} />
+          <ClientNavActions user={user as User} />
         </div>
       </div>
     </header>

@@ -3,7 +3,11 @@ import { Building, Settings, ChevronRight } from 'lucide-react';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
-export default async function Dashboard() {
+export default async function Dashboard({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
   const organizations = await getUserOrganizations();
 
   if (!organizations || organizations.length === 0) {
@@ -19,6 +23,7 @@ export default async function Dashboard() {
       </div>
     );
   }
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -97,27 +102,24 @@ export default async function Dashboard() {
                   )}
                 </div>
               </div>
-              <div className="mt-4 flex justify-end">
-                {org.role === 'admin' && (
-                  <Link
-                    href={`/dashboard/organization?organizationId=${org.id}`}
-                    className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
-                  >
-                    Go to Dashboard
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                )}
-                {org.role === 'member' && (
-                  <Link
-                    href={`/organization?organizationId=${org.id}`}
-                    className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
-                  >
-                    Go to Dashboard
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-              !
+              {org.role === 'admin' && (
+                <Link
+                  href={`/dashboard/organization?organizationId=${org.id}`}
+                  className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
+                >
+                  Go to Dashboard
+                  <ChevronRight className="ml-1 w-4 h-4" />
+                </Link>
+              )}
+              {org.role === 'member' && (
+                <Link
+                  href={`/organization?organizationId=${org.id}`}
+                  className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors"
+                >
+                  Go to Dashboard
+                  <ChevronRight className="ml-1 w-4 h-4" />
+                </Link>
+              )}
             </div>
           ))}
         </div>

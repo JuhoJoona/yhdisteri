@@ -1,29 +1,20 @@
 'use client';
-
-import { UserButton } from '@/components/auth/AuthComponents';
-import { AuthProvider } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { User } from '@supabase/supabase-js';
 
-export function ClientNavActions({
-  authenticated,
-}: {
-  authenticated: boolean;
-}) {
+export function ClientNavActions({ user }: { user: User }) {
   const t = useTranslations();
 
   return (
     <div className="flex items-center">
-      {authenticated ? (
-        <AuthProvider>
-          <div className="flex items-center space-x-4">
-            <Button asChild variant="ghost">
-              <Link href="/dashboard">{t('nav.dashboard')}</Link>
-            </Button>
-            <UserButton />
-          </div>
-        </AuthProvider>
+      {user ? (
+        <div className="flex items-center space-x-4">
+          <Button asChild variant="ghost">
+            <Link href="/dashboard">{t('nav.dashboard')}</Link>
+          </Button>
+        </div>
       ) : (
         <div className="flex items-center space-x-4">
           <Button asChild variant="ghost">

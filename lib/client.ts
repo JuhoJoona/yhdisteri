@@ -1,35 +1,25 @@
 import createFetchClient, { type Middleware } from 'openapi-fetch';
 import type { paths } from '@/lib/types';
-import { supabase } from '@/lib/supabase';
-import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createBrowserClient } from '@supabase/ssr';
 
 export const typedApiClient = createFetchClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002',
 });
 
+export function createClient() {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
 const middleware: Middleware = {
   async onRequest({ request }) {
     try {
-      // Get the current session using server component client
-      let token;
-
-      try {
-        // Try to get the session from the server component client
-        const supabaseServer = createServerComponentClient({ cookies });
-        const { data: sessionData } = await supabaseServer.auth.getSession();
-        console.log('Server Session Data:', sessionData);
-        token = sessionData.session?.access_token;
-      } catch (error) {
-        console.log(
-          'Failed to get server session, falling back to client session:',
-          error
-        );
-        // Fall back to the client-side session if server-side fails
-        const { data: sessionData } = await supabase.auth.getSession();
-        console.log('Client Session Data:', sessionData);
-        token = sessionData.session?.access_token;
-      }
+      const supabaseClient = createClient();
+      const { data: sessionData } = await supabaseClient.auth.getSession();
+      console.log('Session Data:', sessionData);
+      const token = sessionData.session?.access_token;
 
       if (!token) {
         throw new Error('No authentication token available');

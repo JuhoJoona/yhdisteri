@@ -74,7 +74,7 @@ const MembersTable = ({
       <Tabs defaultValue={statusFilter || 'all'} className="w-full">
         <TabsList className="mb-4 w-full sm:w-auto">
           <Link
-            href={`/admin/dashboard/organization?status=all`}
+            href={`/admin/dashboard/organization?status=all&organizationId=${organizationId}`}
             legacyBehavior
           >
             <TabsTrigger value="all" className="flex-1 sm:flex-none">
@@ -85,7 +85,7 @@ const MembersTable = ({
             </TabsTrigger>
           </Link>
           <Link
-            href={`/admin/dashboard/organization?status=active`}
+            href={`/admin/dashboard/organization?status=active&organizationId=${organizationId}`}
             legacyBehavior
           >
             <TabsTrigger value="active" className="flex-1 sm:flex-none">
@@ -96,7 +96,7 @@ const MembersTable = ({
             </TabsTrigger>
           </Link>
           <Link
-            href={`/admin/dashboard/organization?status=inactive`}
+            href={`/admin/dashboard/organization?status=inactive&organizationId=${organizationId}`}
             legacyBehavior
           >
             <TabsTrigger value="inactive" className="flex-1 sm:flex-none">
@@ -107,7 +107,7 @@ const MembersTable = ({
             </TabsTrigger>
           </Link>
           <Link
-            href={`/admin/dashboard/organization?status=pending`}
+            href={`/admin/dashboard/organization?status=pending&organizationId=${organizationId}`}
             legacyBehavior
           >
             <TabsTrigger value="pending" className="flex-1 sm:flex-none">
@@ -204,7 +204,7 @@ const MembersGrid = ({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4">
         {members.map((member) => (
           <Link
-            href={`/admin/dashboard/organization/members/${member.id}`}
+            href={`/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`}
             key={member.id}
           >
             <MemberCard member={member} organizationId={organizationId} />

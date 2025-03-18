@@ -6,11 +6,9 @@ import { UserOrganization } from '@/lib/services/usersService';
 
 export default async function MyOrganizationItem({
   org,
-  key,
   locale,
 }: {
   org: UserOrganization;
-  key: string | undefined;
   locale: string;
 }) {
   const t = await getTranslations({ locale, namespace: 'lander' });
@@ -18,7 +16,7 @@ export default async function MyOrganizationItem({
   if (!org) return null;
   return (
     <div
-      key={key}
+      key={org.id}
       className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all bg-white hover:border-blue-200"
     >
       <div className="flex justify-between items-start">

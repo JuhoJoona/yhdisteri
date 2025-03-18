@@ -67,3 +67,30 @@ export const approveMember = async (
     throw error;
   }
 };
+
+export const getUserMembershipInfo = async (
+  organizationId: string,
+  memberId: string
+) => {
+  const response = await typedApiClient.GET(
+    '/users/organization/{organizationId}/members/{memberId}',
+    {
+      params: {
+        path: { organizationId, memberId },
+      },
+    }
+  );
+  return response.data;
+};
+
+export const getOwnMembershipInfo = async (organizationId: string) => {
+  const response = await typedApiClient.GET(
+    '/users/organization/{organizationId}/me',
+    {
+      params: {
+        path: { organizationId },
+      },
+    }
+  );
+  return response.data;
+};

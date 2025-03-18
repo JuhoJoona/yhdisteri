@@ -5,7 +5,8 @@ import Link from 'next/link';
 import MyOrganizationItem from './MyOrganizationItem';
 import AdminOrganizationItem from './AdminOrganizationItem';
 import { EmptyOrganizationItem } from './EmptyOrganizationItem';
-
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 export default async function Dashboard({
   params: { locale },
 }: {
@@ -23,17 +24,21 @@ export default async function Dashboard({
           <p className="text-gray-600 mb-8">
             {t('noOrganizationsDescription')}
           </p>
-          <Link
-            href={`/${locale}/admin/dashboard/organization/create`}
-            className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {t('createOrganization')}
-          </Link>
 
-          <Link href="/join" className="p-4">
-            <h3 className="text-gray-400">{t('joinOrganization')}</h3>
-          </Link>
+          <Button>
+            <Link
+              href={`/${locale}/admin/dashboard/organization/create`}
+              className=""
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              {t('createOrganization')}
+            </Link>
+          </Button>
+          <Button variant="outline">
+            <Link href="/join" className="p-4">
+              <h3 className="">{t('joinOrganization')}</h3>
+            </Link>
+          </Button>
         </div>
       </div>
     );
@@ -59,13 +64,18 @@ export default async function Dashboard({
               {t('manageAndAccessYourOrganizations')}
             </p>
           </div>
-          <Link
-            href="/dashboard/organization/create"
-            className="flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            {t('createOrganization')}
-          </Link>
+          <div className="flex flex-row gap-2">
+            <Button>
+              <Link href={`/${locale}/admin/dashboard/organization/create`}>
+                {t('createOrganization')}
+              </Link>
+            </Button>
+            <Button variant="outline">
+              <Link href="/join" className="p-4">
+                <h3 className="">{t('joinOrganization')}</h3>
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {organizations.length === 0 ? (
@@ -87,31 +97,35 @@ export default async function Dashboard({
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {organizationsWhereAdmin.map((org) => (
+            <h2 className="text-xl font-semibold mb-2">
+              {t('memberInOrganization')}
+            </h2>
+            {organizationsWhereMember.length == 0 ? (
+              <EmptyOrganizationItem locale={locale} admin={false} />
+            ) : (
               <>
-                {organizationsWhereAdmin.length >= 1 ? (
+                {organizationsWhereMember.map((org) => (
+                  <MyOrganizationItem key={org.id} org={org} locale={locale} />
+                ))}
+              </>
+            )}
+            <Separator className="my-4" />
+            <h2 className="text-xl font-semibold mb-2">
+              {t('adminInOrganization')}
+            </h2>
+            {organizationsWhereAdmin.length == 0 ? (
+              <EmptyOrganizationItem locale={locale} admin={true} />
+            ) : (
+              <>
+                {organizationsWhereAdmin.map((org) => (
                   <AdminOrganizationItem
                     key={org.id}
                     organization={org}
                     locale={locale}
                   />
-                ) : (
-                  <EmptyOrganizationItem locale={locale} />
-                )}
+                ))}
               </>
-            ))}
-            <h2 className="text-xl font-semibold mb-2">
-              {t('yourOrganizations')}
-            </h2>
-            {organizationsWhereMember.map((org) => (
-              <>
-                {organizationsWhereMember.length >= 1 ? (
-                  <MyOrganizationItem key={org.id} org={org} locale={locale} />
-                ) : (
-                  <EmptyOrganizationItem locale={locale} />
-                )}
-              </>
-            ))}
+            )}
           </div>
         )}
 
@@ -119,9 +133,10 @@ export default async function Dashboard({
           <div className="flex items-start">
             <HelpCircle className="w-6 h-6 text-blue-500 mr-4 mt-1" />
             <div>
-              <h2 className="text-xl font-semibold mb-2">Need Help?</h2>
+              <h2 className="text-xl font-semibold mb-2">
+                {t('needHelpTitle')}
+              </h2>
               <p className="text-gray-600">
-                {t('needHelp')}
                 <Link href="/help" className="text-blue-600 hover:underline">
                   {t('helpCenter')}
                 </Link>{' '}

@@ -395,7 +395,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['Organization'];
+            'application/json': components['schemas']['OrganizationResponse'];
           };
         };
         /** @description Organization not found */
@@ -913,6 +913,10 @@ export interface components {
       createdAt?: string;
       /** Format: date-time */
       updatedAt?: string;
+    };
+    OrganizationResponse: {
+      organization?: components['schemas']['Organization'];
+      organizationAddress?: components['schemas']['OrganizationAddress'];
     };
     OrganizationAddress: {
       id?: string;

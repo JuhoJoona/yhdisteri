@@ -222,7 +222,10 @@
     "noOrganizations": "No organizations found",
     "createOrganization": "Create Organization",
     "noOrganizationsDescription": "Get started by creating your first organization",
-    "joinOrganization": "Join Organization"
+    "joinOrganization": "Join Organization",
+    "goToDashboard": "Go to Dashboard",
+    "activeSubscription": "Active Subscription",
+    "yourOrganizations": "Your Organizations"
   },
   "inputCode": {
     "title": "Join Organization",
@@ -236,7 +239,10 @@
     "dontHaveCode": "Don't have a join code?",
     "createOrganizationDescription": "Create an organization and get a join code to share with your members.",
     "backToLander": "Back to Lander",
-    "joinCodeHelp": "Join Code Help"
+    "joinCodeHelp": "Join Code Help",
+    "noOrganizations": "No organizations found",
+    "noOrganizationsDescription": "Get started by creating your first organization",
+    "manageAndAccessYourOrganizations": "Manage and access your organizations"
   },
   "Join": {
     "title": "Join Organization",

@@ -4,7 +4,13 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { User } from '@supabase/supabase-js';
 
-export function ClientNavActions({ user }: { user: User }) {
+export function ClientNavActions({
+  user,
+  locale,
+}: {
+  user: User;
+  locale: string;
+}) {
   const t = useTranslations();
 
   return (
@@ -12,7 +18,7 @@ export function ClientNavActions({ user }: { user: User }) {
       {user ? (
         <div className="flex items-center space-x-4">
           <Button asChild variant="ghost">
-            <Link href="/dashboard">{t('nav.dashboard')}</Link>
+            <Link href={`/${locale}/lander`}>{t('nav.dashboard')}</Link>
           </Button>
         </div>
       ) : (

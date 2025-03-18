@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: Date) {
+  if (!date) return 'N/A';
   return date.toLocaleDateString('fi-FI', {
     month: 'long',
     day: 'numeric',

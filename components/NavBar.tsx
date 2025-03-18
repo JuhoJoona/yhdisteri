@@ -22,15 +22,21 @@ export async function NavBar({ locale }: { locale: string }) {
               </Link>
             </div>
             <nav className="ml-6 flex items-center space-x-4">
-              <Link href="/plans" className="text-gray-500 hover:text-gray-900">
+              <Link
+                href={`/${locale}/plans`}
+                className="text-gray-500 hover:text-gray-900"
+              >
                 {t('nav.plans')}
               </Link>
-              <Link href="/about" className="text-gray-500 hover:text-gray-900">
+              <Link
+                href={`/${locale}/about`}
+                className="text-gray-500 hover:text-gray-900"
+              >
                 {t('nav.about')}
               </Link>
               {user && (
                 <Link
-                  href="/dashboard"
+                  href={`/${locale}/lander`}
                   className="text-gray-500 hover:text-gray-900"
                 >
                   {t('nav.dashboard')}
@@ -39,7 +45,7 @@ export async function NavBar({ locale }: { locale: string }) {
             </nav>
           </div>
 
-          <ClientNavActions user={user as User} />
+          <ClientNavActions user={user as User} locale={locale} />
         </div>
       </div>
     </header>

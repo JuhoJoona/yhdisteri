@@ -1,6 +1,8 @@
-// Page for members to see the organization details and manage subscription
 import { getOrganization } from '@/lib/services/organizationService';
-import { getOrganizationMembers } from '@/lib/services/usersService';
+import {
+  getOrganizationMembers,
+  UserOrganization,
+} from '@/lib/services/usersService';
 import {
   Building,
   Users,
@@ -29,46 +31,35 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-
-// Define extended organization type with the properties we need
-interface ExtendedOrganization {
-  id?: string;
-  name?: string;
-  paymentsActive?: boolean;
-  code?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  // Additional properties that might come from the API
-  role?: string;
-  status?: string;
-  joinDate?: string;
-}
+import { getTranslations } from 'next-intl/server';
 
 export default async function OrganizationPage({
-  params: { organizationId },
+  params: { organizationId, locale },
 }: {
   params: { organizationId: string; locale: string };
 }) {
   const organizationData = await getOrganization(organizationId);
   const members = await getOrganizationMembers(organizationId);
 
-  // Cast to our extended type
-  const organization = organizationData as ExtendedOrganization;
+  const t = await getTranslations({ locale, namespace: 'member' });
+
+  const organization = organizationData as UserOrganization;
 
   if (!organization) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="flex flex-col items-center justify-center text-center py-12">
           <Building className="h-16 w-16 text-muted-foreground mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Organization Not Found</h1>
+          <h1 className="text-2xl font-bold mb-2">
+            {t('organizationNotFound')}
+          </h1>
           <p className="text-muted-foreground mb-6">
-            The organization you are looking for does not exist or you do not
-            have access to it.
+            {t('organizationNotFoundDescription')}
           </p>
           <Button asChild>
             <Link href="/member/dashboard">
               <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
+              {t('backToDashboard')}
             </Link>
           </Button>
         </div>
@@ -85,30 +76,13 @@ export default async function OrganizationPage({
     });
   };
 
-  // Mock data for subscription details
-  const subscriptionDetails = {
-    plan: 'Premium',
-    status: 'Active',
-    nextBillingDate: new Date(Date.now() + 86400000 * 30), // 30 days from now
-    amount: '$29.99',
-    paymentMethod: 'Visa ending in 4242',
-  };
-
-  // Mock data for organization address
-  const organizationAddress = {
-    street: '123 Main Street',
-    city: 'Helsinki',
-    zipCode: '00100',
-    country: 'Finland',
-  };
-
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="mb-6">
         <Button variant="outline" size="sm" asChild className="mb-6">
           <Link href="/member/dashboard">
             <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
+            {t('backToDashboard')}
           </Link>
         </Button>
 
@@ -123,9 +97,13 @@ export default async function OrganizationPage({
               </h1>
               <div className="flex items-center mt-1 text-muted-foreground">
                 <Code className="h-4 w-4 mr-1" />
-                <span className="mr-4">Code: {organization.code || 'N/A'}</span>
+                <span className="mr-4">
+                  {t('code')}: {organization.code || 'N/A'}
+                </span>
                 <Calendar className="h-4 w-4 mr-1" />
-                <span>Created: {formatDate(organization.createdAt)}</span>
+                <span>
+                  {t('created')} {formatDate(organization.createdAt)}
+                </span>
               </div>
             </div>
           </div>
@@ -135,16 +113,16 @@ export default async function OrganizationPage({
                 variant="outline"
                 className="bg-green-50 text-green-700 border-green-200"
               >
-                Active Subscription
+                {t('activeSubscription')}
               </Badge>
             )}
             <Button variant="outline" size="sm">
               <Share2 className="h-4 w-4 mr-2" />
-              Share
+              {t('share')}
             </Button>
             <Button size="sm">
               <Shield className="h-4 w-4 mr-2" />
-              Manage Subscription
+              {t('manageSubscription')}
             </Button>
           </div>
         </div>
@@ -152,9 +130,9 @@ export default async function OrganizationPage({
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="members">Members</TabsTrigger>
-          <TabsTrigger value="subscription">Subscription</TabsTrigger>
+          <TabsTrigger value="overview">{t('overview')}</TabsTrigger>
+          <TabsTrigger value="members">{t('members')}</TabsTrigger>
+          <TabsTrigger value="subscription">{t('subscription')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
@@ -162,22 +140,22 @@ export default async function OrganizationPage({
             <div className="md:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Organization Details</CardTitle>
+                  <CardTitle>{t('organizationDetails')}</CardTitle>
                   <CardDescription>
-                    Basic information about the organization
+                    {t('basicInformationAboutTheOrganization')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Organization Name
+                        {t('organizationName')}
                       </h3>
                       <p className="font-medium">{organization.name}</p>
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Invitation Code
+                        {t('invitationCode')}
                       </h3>
                       <p className="font-medium">
                         {organization.code || 'N/A'}
@@ -185,7 +163,7 @@ export default async function OrganizationPage({
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Created On
+                        {t('createdOn')}
                       </h3>
                       <p className="font-medium">
                         {formatDate(organization.createdAt)}
@@ -193,7 +171,7 @@ export default async function OrganizationPage({
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Last Updated
+                        {t('lastUpdated')}
                       </h3>
                       <p className="font-medium">
                         {formatDate(organization.updatedAt)}
@@ -205,7 +183,7 @@ export default async function OrganizationPage({
 
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                      Address
+                      {t('address')}
                     </h3>
                     <div className="flex items-start">
                       <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 mr-2" />
@@ -228,16 +206,16 @@ export default async function OrganizationPage({
 
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                      Contact Information
+                      {t('contactInformation')}
                     </h3>
                     <div className="space-y-2">
                       <div className="flex items-center">
                         <Mail className="h-4 w-4 text-muted-foreground mr-2" />
-                        <span>organization@example.com</span>
+                        <span>{organization.email}</span>
                       </div>
                       <div className="flex items-center">
                         <Phone className="h-4 w-4 text-muted-foreground mr-2" />
-                        <span>+358 50 123 4567</span>
+                        <span>{organization.phone}</span>
                       </div>
                     </div>
                   </div>
@@ -248,13 +226,15 @@ export default async function OrganizationPage({
             <div>
               <Card>
                 <CardHeader>
-                  <CardTitle>Membership Summary</CardTitle>
-                  <CardDescription>Your membership details</CardDescription>
+                  <CardTitle>{t('membershipSummary')}</CardTitle>
+                  <CardDescription>
+                    {t('yourMembershipDetails')}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                      Your Role
+                      {t('yourRole')}
                     </h3>
                     <p className="font-medium">
                       {organization.role || 'Member'}
@@ -262,7 +242,7 @@ export default async function OrganizationPage({
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                      Join Date
+                      {t('joinDate')}
                     </h3>
                     <p className="font-medium">
                       {formatDate(organization.joinDate)}
@@ -270,7 +250,7 @@ export default async function OrganizationPage({
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                      Status
+                      {t('status')}
                     </h3>
                     <Badge
                       variant="outline"
@@ -283,22 +263,24 @@ export default async function OrganizationPage({
                 <CardFooter className="border-t pt-4 flex flex-col items-stretch gap-2">
                   <Button variant="outline" size="sm" className="w-full">
                     <Download className="h-4 w-4 mr-2" />
-                    Download Membership Certificate
+                    {t('downloadMembershipCertificate')}
                   </Button>
                 </CardFooter>
               </Card>
 
               <Card className="mt-6">
                 <CardHeader>
-                  <CardTitle>Quick Stats</CardTitle>
-                  <CardDescription>Organization statistics</CardDescription>
+                  <CardTitle>{t('quickStats')}</CardTitle>
+                  <CardDescription>
+                    {t('organizationStatistics')}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Users className="h-4 w-4 text-muted-foreground mr-2" />
                       <span className="text-muted-foreground">
-                        Total Members
+                        {t('totalMembers')}
                       </span>
                     </div>
                     <span className="font-medium">{members?.length || 0}</span>
@@ -307,7 +289,7 @@ export default async function OrganizationPage({
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
                       <span className="text-muted-foreground">
-                        Active Since
+                        {t('activeSince')}
                       </span>
                     </div>
                     <span className="font-medium">
@@ -318,7 +300,7 @@ export default async function OrganizationPage({
                     <div className="flex items-center">
                       <CreditCard className="h-4 w-4 text-muted-foreground mr-2" />
                       <span className="text-muted-foreground">
-                        Subscription
+                        {t('subscription')}
                       </span>
                     </div>
                     <Badge
@@ -329,7 +311,9 @@ export default async function OrganizationPage({
                           : 'bg-yellow-50 text-yellow-700 border-yellow-200'
                       }
                     >
-                      {organization.paymentsActive ? 'Active' : 'Inactive'}
+                      {organization.paymentsActive
+                        ? t('active')
+                        : t('inactive')}
                     </Badge>
                   </div>
                 </CardContent>
@@ -341,18 +325,20 @@ export default async function OrganizationPage({
         <TabsContent value="members">
           <Card>
             <CardHeader>
-              <CardTitle>Organization Members</CardTitle>
+              <CardTitle>{t('organizationMembers')}</CardTitle>
               <CardDescription>
-                People who are part of this organization
+                {t('peopleWhoArePartOfThisOrganization')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {!members || members.length === 0 ? (
                 <div className="text-center py-8">
                   <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No Members Found</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    {t('noMembersFound')}
+                  </h3>
                   <p className="text-muted-foreground max-w-md mx-auto">
-                    There are no members in this organization yet.
+                    {t('thereAreNoMembersInThisOrganizationYet')}
                   </p>
                 </div>
               ) : (
@@ -361,16 +347,16 @@ export default async function OrganizationPage({
                     <thead>
                       <tr className="border-b">
                         <th className="text-left py-3 px-4 font-medium">
-                          Member
+                          {t('member')}
                         </th>
                         <th className="text-left py-3 px-4 font-medium">
-                          Role
+                          {t('role')}
                         </th>
                         <th className="text-left py-3 px-4 font-medium">
-                          Join Date
+                          {t('joinDate')}
                         </th>
                         <th className="text-left py-3 px-4 font-medium">
-                          Status
+                          {t('status')}
                         </th>
                       </tr>
                     </thead>
@@ -448,22 +434,22 @@ export default async function OrganizationPage({
             <div className="md:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Subscription Details</CardTitle>
+                  <CardTitle>{t('subscriptionDetails')}</CardTitle>
                   <CardDescription>
-                    Information about your current subscription
+                    {t('informationAboutYourCurrentSubscription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Current Plan
+                        {t('currentPlan')}
                       </h3>
                       <p className="font-medium">{subscriptionDetails.plan}</p>
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Status
+                        {t('status')}
                       </h3>
                       <Badge
                         variant="outline"
@@ -474,7 +460,7 @@ export default async function OrganizationPage({
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Next Billing Date
+                        {t('nextBillingDate')}
                       </h3>
                       <p className="font-medium">
                         {formatDate(
@@ -484,7 +470,7 @@ export default async function OrganizationPage({
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                        Amount
+                        {t('amount')}
                       </h3>
                       <p className="font-medium">
                         {subscriptionDetails.amount} / month
@@ -496,7 +482,7 @@ export default async function OrganizationPage({
 
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                      Payment Method
+                      {t('paymentMethod')}
                     </h3>
                     <div className="flex items-center">
                       <CreditCard className="h-4 w-4 text-muted-foreground mr-2" />
@@ -507,13 +493,13 @@ export default async function OrganizationPage({
                   <Separator />
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button>Update Payment Method</Button>
-                    <Button variant="outline">Change Plan</Button>
+                    <Button>{t('updatePaymentMethod')}</Button>
+                    <Button variant="outline">{t('changePlan')}</Button>
                     <Button
                       variant="outline"
                       className="text-destructive hover:text-destructive"
                     >
-                      Cancel Subscription
+                      {t('cancelSubscription')}
                     </Button>
                   </div>
                 </CardContent>
@@ -523,32 +509,32 @@ export default async function OrganizationPage({
             <div>
               <Card>
                 <CardHeader>
-                  <CardTitle>Billing History</CardTitle>
+                  <CardTitle>{t('billingHistory')}</CardTitle>
                   <CardDescription>
-                    Recent invoices and payments
+                    {t('recentInvoicesAndPayments')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="border rounded-md">
                     <div className="flex items-center justify-between p-3 border-b">
                       <div>
-                        <p className="font-medium">Invoice #1234</p>
+                        <p className="font-medium">{t('invoice')}</p>
                         <p className="text-sm text-muted-foreground">
-                          March 1, 2023
+                          {t('march12023')}
                         </p>
                       </div>
                       <Badge
                         variant="outline"
                         className="bg-green-50 text-green-700 border-green-200"
                       >
-                        Paid
+                        {t('paid')}
                       </Badge>
                     </div>
                     <div className="p-3 flex justify-between items-center">
                       <span>{subscriptionDetails.amount}</span>
                       <Button variant="ghost" size="sm">
                         <Download className="h-4 w-4 mr-2" />
-                        Download
+                        {t('download')}
                       </Button>
                     </div>
                   </div>
@@ -556,23 +542,25 @@ export default async function OrganizationPage({
                   <div className="border rounded-md">
                     <div className="flex items-center justify-between p-3 border-b">
                       <div>
-                        <p className="font-medium">Invoice #1233</p>
+                        <p className="font-medium">
+                          {t('invoice')} {invoiceId}
+                        </p>
                         <p className="text-sm text-muted-foreground">
-                          February 1, 2023
+                          {t('february12023')}
                         </p>
                       </div>
                       <Badge
                         variant="outline"
                         className="bg-green-50 text-green-700 border-green-200"
                       >
-                        Paid
+                        {t('paid')}
                       </Badge>
                     </div>
                     <div className="p-3 flex justify-between items-center">
                       <span>{subscriptionDetails.amount}</span>
                       <Button variant="ghost" size="sm">
                         <Download className="h-4 w-4 mr-2" />
-                        Download
+                        {t('download')}
                       </Button>
                     </div>
                   </div>
@@ -580,30 +568,32 @@ export default async function OrganizationPage({
                   <div className="border rounded-md">
                     <div className="flex items-center justify-between p-3 border-b">
                       <div>
-                        <p className="font-medium">Invoice #1232</p>
+                        <p className="font-medium">
+                          {t('invoice')} {invoiceId}
+                        </p>
                         <p className="text-sm text-muted-foreground">
-                          January 1, 2023
+                          {t('january12023')}
                         </p>
                       </div>
                       <Badge
                         variant="outline"
                         className="bg-green-50 text-green-700 border-green-200"
                       >
-                        Paid
+                        {t('paid')}
                       </Badge>
                     </div>
                     <div className="p-3 flex justify-between items-center">
                       <span>{subscriptionDetails.amount}</span>
                       <Button variant="ghost" size="sm">
                         <Download className="h-4 w-4 mr-2" />
-                        Download
+                        {t('download')}
                       </Button>
                     </div>
                   </div>
                 </CardContent>
                 <CardFooter className="border-t pt-4">
                   <Button variant="outline" size="sm" className="w-full">
-                    View All Invoices
+                    {t('viewAllInvoices')}
                   </Button>
                 </CardFooter>
               </Card>

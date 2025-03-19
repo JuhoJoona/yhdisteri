@@ -5,6 +5,8 @@ export type UserOrganizations =
   paths['/users/organizations']['get']['responses']['200']['content']['application/json'];
 
 export type UserOrganization = UserOrganizations[number];
+export type OwnData =
+  paths['/users/me']['get']['responses']['200']['content']['application/json'];
 
 export const getUser = async (id: string) => {
   try {
@@ -23,6 +25,15 @@ export const getUser = async (id: string) => {
   }
 };
 
+export const getOwnData = async () => {
+  try {
+    const response = await typedApiClient.GET('/users/me');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 export const getUserOrganizations = async () => {
   try {
     const response = await typedApiClient.GET('/users/organizations');
@@ -92,5 +103,42 @@ export const getOwnMembershipInfo = async (organizationId: string) => {
       },
     }
   );
+  return response.data;
+};
+
+export const getUserPreferences = async () => {
+  const response = await typedApiClient.GET('/users/preferences/me');
+  return response.data;
+};
+
+export const getUserBillingDetails = async () => {
+  const response = await typedApiClient.GET('/users/billing/me');
+  return response.data;
+};
+
+export const updateUserBillingDetails = async (details: {
+  billingStreet: string;
+  billingCity: string;
+  billingZip: string;
+  billingFullname: string;
+  billingEmail: string;
+  billingCompany: string | null;
+  billingCompanyId: string | null;
+}) => {
+  const response = await typedApiClient.POST('/users/billing/me', {
+    body: details,
+  });
+  return response.data;
+};
+
+export const updateUserPreferences = async (preferences: {
+  email: boolean;
+  sms: boolean;
+  push: boolean;
+  marketing: boolean;
+}) => {
+  const response = await typedApiClient.POST('/users/preferences/me', {
+    body: preferences,
+  });
   return response.data;
 };

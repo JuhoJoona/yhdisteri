@@ -31,6 +31,7 @@
     "openapi-fetch": "^0.13.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "stripe": "13.4.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7"
   },

@@ -17,7 +17,6 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Validate that the incoming `locale` parameter is valid
   if (!routing.locales.includes(locale as any)) notFound();
 
   return (

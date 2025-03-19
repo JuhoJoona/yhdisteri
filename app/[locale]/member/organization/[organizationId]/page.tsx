@@ -2,17 +2,12 @@ import {
   getOrganization,
   Organization,
 } from '@/lib/services/organizationService';
-import {
-  getOrganizationMembers,
-  UserOrganization,
-} from '@/lib/services/usersService';
+import { getOrganizationMembers } from '@/lib/services/usersService';
 import {
   Building,
   Users,
   Calendar,
   CreditCard,
-  Mail,
-  Phone,
   MapPin,
   Shield,
   ChevronLeft,
@@ -36,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { getTranslations } from 'next-intl/server';
 import { getOwnMembershipInfo } from '@/lib/services/usersService';
+
 export default async function OrganizationPage({
   params: { organizationId, locale },
 }: {

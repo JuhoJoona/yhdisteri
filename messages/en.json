@@ -204,7 +204,10 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "plans": "Plans",
-    "about": "About"
+    "about": "About",
+    "signOut": "Sign Out",
+    "memberPages": "Member Pages",
+    "adminPages": "Admin Pages"
   },
   "plans": {
     "title": "Plans",

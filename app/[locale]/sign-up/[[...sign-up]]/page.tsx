@@ -124,19 +124,6 @@ export default async function SignUpPage({
               </p>
             </div>
 
-            <div>
-              <Label htmlFor="phone" className="text-sm font-medium">
-                {t('common.phone')}
-              </Label>
-              <Input
-                id="phone"
-                name="phone"
-                required
-                className="mt-1 block w-full"
-                placeholder={t('common.phonePlaceholder')}
-              />
-            </div>
-
             <div className="pt-2">
               <Button type="submit" className="w-full py-2 font-semibold">
                 {t('common.signUp')}

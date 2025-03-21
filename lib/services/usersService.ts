@@ -1,12 +1,4 @@
 import { typedApiClient } from '../server';
-import { paths } from '../types';
-
-export type UserOrganizations =
-  paths['/users/organizations']['get']['responses']['200']['content']['application/json'];
-
-export type UserOrganization = UserOrganizations[number];
-export type OwnData =
-  paths['/users/me']['get']['responses']['200']['content']['application/json'];
 
 export const getUser = async (id: string) => {
   try {

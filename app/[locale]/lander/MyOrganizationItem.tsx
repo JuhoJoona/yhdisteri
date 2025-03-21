@@ -2,7 +2,7 @@ import { Building, Calendar, ChevronRight, Code, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
-import { UserOrganization } from '@/lib/services/usersService';
+import { UserOrganization } from '@/lib/types/member';
 
 export default async function MyOrganizationItem({
   org,

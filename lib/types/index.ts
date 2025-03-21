@@ -213,7 +213,6 @@ export interface paths {
               firstName?: string;
               lastName?: string;
               email?: string;
-              phone?: string;
             };
           };
         };
@@ -1302,7 +1301,6 @@ export interface components {
       firstName?: string;
       lastName?: string;
       email?: string;
-      phone?: string;
       profileImageUrl?: string;
       /** Format: date-time */
       lastActive?: string;
@@ -1341,7 +1339,6 @@ export interface components {
       firstName?: string;
       lastName?: string;
       email?: string;
-      phone?: string;
       /** Format: date-time */
       joinDate?: string;
       /** @enum {string} */
@@ -1402,7 +1399,6 @@ export interface components {
       firstName?: string;
       lastName?: string;
       email?: string;
-      phone?: string;
       profileImageUrl?: string;
       lastActive?: string;
       membershipId?: string;

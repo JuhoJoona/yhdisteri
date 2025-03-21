@@ -1,11 +1,5 @@
 import { typedApiClient } from '../server';
-import { paths } from '../types';
-
-export type CreateOrganizationRequest =
-  paths['/organizations/create']['post']['requestBody']['content']['application/json'];
-
-export type Organization =
-  paths['/organizations/{id}']['get']['responses']['200']['content']['application/json'];
+import { CreateOrganizationRequest } from '../types/organization';
 
 const createOrganization = async (
   organization: CreateOrganizationRequest,

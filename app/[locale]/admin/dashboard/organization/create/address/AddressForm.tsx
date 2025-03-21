@@ -60,10 +60,6 @@ export default function AddressForm() {
             <Input id="city" name="city" required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="state">State</Label>
-            <Input id="state" name="state" required />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="zipCode">Zip Code</Label>
             <Input id="zipCode" name="zipCode" required />
           </div>

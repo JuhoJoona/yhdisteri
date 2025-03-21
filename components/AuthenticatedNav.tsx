@@ -16,9 +16,7 @@ const AuthenticatedNav = async ({ locale }: { locale: string }) => {
         <Link href={`/${locale}/member/dashboard`}>{t('nav.memberPages')}</Link>
       </Button>
       <Button asChild>
-        <Link href={`/${locale}/admin/dashboard/organization`}>
-          {t('nav.adminPages')}
-        </Link>
+        <Link href={`/${locale}/admin/dashboard`}>{t('nav.adminPages')}</Link>
       </Button>
     </nav>
   );

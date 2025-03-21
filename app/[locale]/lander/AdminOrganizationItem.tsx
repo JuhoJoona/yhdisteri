@@ -1,4 +1,4 @@
-import { UserOrganization } from '@/lib/services/usersService';
+import { UserOrganization } from '@/lib/types/member';
 import { formatDate } from '@/lib/utils';
 import { Building, Calendar, ChevronRight, Code } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';

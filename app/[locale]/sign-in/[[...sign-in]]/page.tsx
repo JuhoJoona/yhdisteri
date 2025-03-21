@@ -41,7 +41,6 @@ export default async function SignInPage({
             'use server';
             await login(formData, locale);
           }}
-          method="POST"
           className="space-y-6"
         >
           <div>

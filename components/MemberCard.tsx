@@ -3,7 +3,6 @@ import {
   Edit,
   Trash,
   Mail,
-  Phone,
   CalendarDays,
   CheckIcon,
 } from 'lucide-react';
@@ -24,15 +23,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Member } from '@/types/member';
+import { OrganizationMember } from '@/lib/types/member';
 import Link from 'next/link';
-
+import { getTranslations } from 'next-intl/server';
 interface MemberCardProps {
-  member: Member;
+  member: OrganizationMember;
   organizationId: string;
+  locale: string;
 }
 
-export function MemberCard({ member, organizationId }: MemberCardProps) {
+export async function MemberCard({
+  member,
+  organizationId,
+  locale,
+}: MemberCardProps) {
+  const t = await getTranslations({ locale, namespace: 'Member' });
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
@@ -42,7 +47,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const getStatusColor = (status: Member['status']) => {
+  const getStatusColor = (status: OrganizationMember['status']) => {
     switch (status) {
       case 'active':
         return 'bg-green-500/10 text-green-700 dark:text-green-500';
@@ -60,23 +65,24 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
       <CardHeader className="p-4 pb-0">
         <div className="flex justify-between items-start">
           <Badge className={getStatusColor(member.status)}>
-            {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+            {member.status?.charAt(0).toUpperCase() || ''}
+            {member.status?.slice(1) || ''}
           </Badge>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">{t('openMenu')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
                   href={`/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`}
                 >
-                  View Profile
+                  {t('viewProfile')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -84,17 +90,14 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
                   href={`/admin/dashboard/organization/edit-member/${member.id}`}
                 >
                   <Edit className="mr-2 h-4 w-4" />
-                  Edit
+                  {t('edit')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {member.status === 'pending' && (
                 <>
                   <DropdownMenuItem asChild>
-                    <form
-                      action={`/api/members/${member.id}/approve`}
-                      method="post"
-                    >
+                    <form action={`/api/members/${member.id}/approve`}>
                       <input
                         type="hidden"
                         name="organizationId"
@@ -105,7 +108,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
                         className="flex items-center w-full"
                       >
                         <CheckIcon className="mr-2 h-4 w-4" />
-                        Approve Member
+                        {t('approveMember')}
                       </button>
                     </form>
                   </DropdownMenuItem>
@@ -115,7 +118,6 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
               <DropdownMenuItem asChild>
                 <form
                   action={`/api/members/${member.id}/delete`}
-                  method="post"
                   className="w-full"
                 >
                   <input
@@ -128,7 +130,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
                     className="flex items-center text-destructive w-full"
                   >
                     <Trash className="mr-2 h-4 w-4" />
-                    Delete
+                    {t('delete')}
                   </button>
                 </form>
               </DropdownMenuItem>
@@ -140,12 +142,12 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
         <div className="flex flex-col items-center text-center mb-4">
           <Avatar className="h-20 w-20 mb-4">
             <AvatarImage
-              src={member.profileImage}
+              src={member.profileImageUrl}
               alt={`${member.firstName} ${member.lastName}`}
             />
             <AvatarFallback className="text-lg">
-              {member.firstName.charAt(0)}
-              {member.lastName.charAt(0)}
+              {member.firstName?.charAt(0)}
+              {member.lastName?.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <h3 className="font-semibold text-lg leading-none">
@@ -162,14 +164,11 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
               {member.email}
             </span>
           </div>
-          <div className="flex items-center text-sm">
-            <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
-            <span className="text-muted-foreground">{member.phone}</span>
-          </div>
+
           <div className="flex items-center text-sm">
             <CalendarDays className="h-4 w-4 mr-2 text-muted-foreground" />
             <span className="text-muted-foreground">
-              Joined {formatDate(member.joinDate)}
+              {t('joined')} {formatDate(member.joinDate || '')}
             </span>
           </div>
         </div>
@@ -180,7 +179,7 @@ export function MemberCard({ member, organizationId }: MemberCardProps) {
           className="w-full"
         >
           <Button variant="outline" size="sm" className="w-full">
-            View Profile
+            {t('viewProfile')}
           </Button>
         </Link>
       </CardFooter>

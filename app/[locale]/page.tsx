@@ -12,13 +12,13 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { NavBar } from '@/components/NavBar';
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   return {
@@ -28,16 +28,15 @@ export async function generateMetadata({
 }
 
 export default async function Home({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Home' });
 
   return (
     <div className="flex min-h-screen flex-col">
-      <NavBar locale={locale} />
-
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 md:py-28">
@@ -299,8 +298,8 @@ export default async function Home({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
               {[
                 {
-                  name: 'Starter',
-                  price: '€29',
+                  name: t('pricing.starter'),
+                  price: '2.99€',
                   description:
                     'Perfect for small associations with up to 50 members.',
                   features: [
@@ -315,7 +314,7 @@ export default async function Home({
                 },
                 {
                   name: t('pricing.professional'),
-                  price: '€59',
+                  price: '15.99€',
                   description: t('pricing.professionalDescription'),
                   features: [
                     t('pricing.professionalFeature1'),
@@ -329,7 +328,7 @@ export default async function Home({
                 },
                 {
                   name: t('pricing.enterprise'),
-                  price: '€99',
+                  price: '25.99€',
                   description: t('pricing.enterpriseDescription'),
                   features: [
                     t('pricing.enterpriseFeature1'),

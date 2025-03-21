@@ -8,10 +8,11 @@ import { EmptyOrganizationItem } from './EmptyOrganizationItem';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 export default async function Dashboard({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const organizations = await getUserOrganizations();
   const t = await getTranslations({ locale, namespace: 'lander' });
 
@@ -24,21 +25,21 @@ export default async function Dashboard({
           <p className="text-gray-600 mb-8">
             {t('noOrganizationsDescription')}
           </p>
-
-          <Button>
-            <Link
-              href={`/${locale}/admin/dashboard/organization/create`}
-              className=""
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              {t('createOrganization')}
-            </Link>
-          </Button>
-          <Button variant="outline">
-            <Link href="/join" className="p-4">
-              <h3 className="">{t('joinOrganization')}</h3>
-            </Link>
-          </Button>
+          <div className="flex flex-row gap-2">
+            <Button>
+              <Link
+                href={`/${locale}/admin/dashboard/organization/create`}
+                className=""
+              >
+                {t('createOrganization')}
+              </Link>
+            </Button>
+            <Button>
+              <Link href="/join" className="p-4">
+                <h3 className="">{t('joinOrganization')}</h3>
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     );

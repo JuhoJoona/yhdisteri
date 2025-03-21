@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { OwnData } from '@/lib/services/usersService';
-import { Camera, LogOut, MapPin, Phone } from 'lucide-react';
+import { OwnData } from '@/lib/types/member';
+import { Camera, LogOut, MapPin } from 'lucide-react';
 
 const ProfileSideBar = async ({ user }: { user: OwnData }) => {
   console.log(user);
@@ -42,10 +42,6 @@ const ProfileSideBar = async ({ user }: { user: OwnData }) => {
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center">
-              <Phone className="h-4 w-4 text-muted-foreground mr-2" />
-              <span className="text-sm">{user.phone}</span>
-            </div>
             <div className="flex items-center">
               <MapPin className="h-4 w-4 text-muted-foreground mr-2" />
               <span className="text-sm">

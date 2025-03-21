@@ -46,8 +46,8 @@ export default function Refresh() {
       <div className="content">
         <h2>Add information to start accepting money</h2>
         <p>
-          Rocket Rides is the world's leading air travel platform: join our team
-          of pilots to help people travel faster.
+          Rocket Rides is the world&apos;s leading air travel platform: join our
+          team of pilots to help people travel faster.
         </p>
         {error && <p className="error">Something went wrong!</p>}
       </div>

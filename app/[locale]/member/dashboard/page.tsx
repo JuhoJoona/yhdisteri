@@ -1,4 +1,3 @@
-// Page for members to see their dashboard, organizations and manage their profile
 import { getUserOrganizations } from '@/lib/services/usersService';
 import {
   Building,
@@ -23,16 +22,16 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { getTranslations } from 'next-intl/server';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function MemberDashboard({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const organizations = await getUserOrganizations();
-  // Uncomment when translations are needed
-  // const t = await getTranslations({ locale, namespace: 'dashboard' });
+  const t = await getTranslations({ locale, namespace: 'dashboard' });
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -73,10 +72,10 @@ export default async function MemberDashboard({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Member Dashboard
+            {t('memberDashboard')}
           </h1>
           <p className="text-muted-foreground mt-1">
-            Manage your organizations and profile
+            {t('manageYourOrganizationsAndProfile')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -87,15 +86,17 @@ export default async function MemberDashboard({
             </Link>
           </Button>
           <Button size="sm" asChild>
-            <Link href="/join">Join Organization</Link>
+            <Link href="/join">{t('joinOrganization')}</Link>
           </Button>
         </div>
       </div>
 
       <Tabs defaultValue="organizations" className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="organizations">My Organizations</TabsTrigger>
-          <TabsTrigger value="activity">Recent Activity</TabsTrigger>
+          <TabsTrigger value="organizations">
+            {t('myOrganizations')}
+          </TabsTrigger>
+          <TabsTrigger value="activity">{t('recentActivity')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="organizations">
@@ -104,15 +105,14 @@ export default async function MemberDashboard({
               <div className="flex flex-col items-center justify-center text-center">
                 <Building className="h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
-                  No Organizations Yet
+                  {t('noOrganizationsYet')}
                 </h3>
                 <p className="text-muted-foreground max-w-md mb-6">
-                  You haven&apos;t joined any organizations yet. Join an
-                  existing organization or create a new one.
+                  {t('youHaveNotJoinedAnyOrganizationsYet')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button asChild>
-                    <Link href="/join">Join Organization</Link>
+                    <Link href="/join">{t('joinOrganization')}</Link>
                   </Button>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default async function MemberDashboard({
                           variant="outline"
                           className="bg-green-50 text-green-700 border-green-200"
                         >
-                          Active
+                          {t('active')}
                         </Badge>
                       )}
                     </div>
@@ -153,11 +153,15 @@ export default async function MemberDashboard({
                   <CardContent className="pb-3">
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="h-3.5 w-3.5 mr-1" />
-                      <span>Joined: {formatDate(org.joinDate)}</span>
+                      <span>
+                        {t('joined')}: {formatDate(org.joinDate)}
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground mt-1">
                       <Users className="h-3.5 w-3.5 mr-1" />
-                      <span>Role: {org.role || 'Member'}</span>
+                      <span>
+                        {t('role')}: {org.role || 'Member'}
+                      </span>
                     </div>
                   </CardContent>
                   <CardFooter className="pt-3 border-t">
@@ -168,7 +172,7 @@ export default async function MemberDashboard({
                     >
                       <Link href={`/member/organization/${org.id}`}>
                         <span className="flex items-center text-primary">
-                          View Details
+                          {t('viewDetails')}
                           <ChevronRight className="ml-auto h-4 w-4" />
                         </span>
                       </Link>
@@ -183,9 +187,9 @@ export default async function MemberDashboard({
         <TabsContent value="activity">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>{t('recentActivity')}</CardTitle>
               <CardDescription>
-                Your latest interactions across organizations
+                {t('yourLatestInteractionsAcrossOrganizations')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -222,7 +226,7 @@ export default async function MemberDashboard({
             </CardContent>
             <CardFooter className="border-t pt-4">
               <Button variant="outline" size="sm" className="w-full">
-                View All Activity
+                {t('viewAllActivity')}
               </Button>
             </CardFooter>
           </Card>
@@ -230,42 +234,46 @@ export default async function MemberDashboard({
       </Tabs>
 
       <div className="mt-12">
-        <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('quickLinks')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <User className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-medium">Profile</h3>
+              <h3 className="font-medium">{t('profile')}</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-4">
-                Update your personal information
+                {t('updateYourPersonalInformation')}
               </p>
               <Button variant="outline" size="sm" asChild className="mt-auto">
-                <Link href="/member/profile?tab=personal">View Profile</Link>
+                <Link href="/member/profile?tab=personal">
+                  {t('viewProfile')}
+                </Link>
               </Button>
             </CardContent>
           </Card>
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <CreditCard className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-medium">Payments</h3>
+              <h3 className="font-medium">{t('payments')}</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-4">
-                Manage your payment methods
+                {t('manageYourPaymentMethods')}
               </p>
               <Button variant="outline" size="sm" asChild className="mt-auto">
-                <Link href="/member/profile?tab=billing">View Payments</Link>
+                <Link href="/member/profile?tab=billing">
+                  {t('viewPayments')}
+                </Link>
               </Button>
             </CardContent>
           </Card>
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <Bell className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-medium">Notifications</h3>
+              <h3 className="font-medium">{t('notifications')}</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-4">
-                Configure notification settings
+                {t('configureNotificationSettings')}
               </p>
               <Button variant="outline" size="sm" asChild className="mt-auto">
                 <Link href="/member/profile?tab=communication">
-                  View Notifications
+                  {t('viewNotifications')}
                 </Link>
               </Button>
             </CardContent>
@@ -273,12 +281,14 @@ export default async function MemberDashboard({
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <Settings className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-medium">Settings</h3>
+              <h3 className="font-medium">{t('settings')}</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-4">
-                Adjust your account settings
+                {t('adjustYourAccountSettings')}
               </p>
               <Button variant="outline" size="sm" asChild className="mt-auto">
-                <Link href="/member/profile?tab=security">View Settings</Link>
+                <Link href="/member/profile?tab=security">
+                  {t('viewSettings')}
+                </Link>
               </Button>
             </CardContent>
           </Card>

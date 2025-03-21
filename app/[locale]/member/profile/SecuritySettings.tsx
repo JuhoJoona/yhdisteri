@@ -16,8 +16,10 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/client';
 import { toast } from '@/components/ui/use-toast';
+import { User } from '@supabase/supabase-js';
 
-export default function SecuritySettings({ user }: { user: any }) {
+export default function SecuritySettings({ user }: { user: User }) {
+  console.log('user', user);
   const supabaseClient = createClient();
   const router = useRouter();
 
@@ -37,12 +39,20 @@ export default function SecuritySettings({ user }: { user: any }) {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('New passwords do not match');
+      toast({
+        title: 'Error',
+        description: 'New passwords do not match',
+        variant: 'destructive',
+      });
       return;
     }
 
     if (passwordData.newPassword.length < 8) {
-      toast.error('Password must be at least 8 characters');
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 8 characters',
+        variant: 'destructive',
+      });
       return;
     }
 
@@ -56,15 +66,24 @@ export default function SecuritySettings({ user }: { user: any }) {
 
       if (error) throw error;
 
-      toast.success('Password updated successfully');
+      toast({
+        title: 'Success',
+        description: 'Password updated successfully',
+      });
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error('Error updating password:', error);
-      toast.error(error.message || 'Failed to update password');
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to update password';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading((prev) => ({ ...prev, password: false }));
     }
@@ -80,17 +99,27 @@ export default function SecuritySettings({ user }: { user: any }) {
       // 2. Get the QR code or secret to display to the user
       // 3. Handle verification of the setup
 
-      toast.info(
-        'Two-factor authentication setup is not fully implemented yet'
-      );
+      toast({
+        title: 'Info',
+        description:
+          'Two-factor authentication setup is not fully implemented yet',
+      });
 
       // When implemented, might look like:
       // const { data, error } = await supabaseClient.auth.mfa.enroll();
       // if (error) throw error;
       // Handle the MFA setup flow...
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error('Error setting up 2FA:', error);
-      toast.error(error.message || 'Failed to setup two-factor authentication');
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to setup two-factor authentication';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading((prev) => ({ ...prev, twoFactor: false }));
     }
@@ -118,11 +147,20 @@ export default function SecuritySettings({ user }: { user: any }) {
       // Note: For actual account deletion, you would need a server-side function
       // with admin privileges to call supabase.auth.admin.deleteUser(user.id)
 
-      toast.success('Account deleted, you have been signed out');
+      toast({
+        title: 'Success',
+        description: 'Account deleted, you have been signed out',
+      });
       router.push('/'); // Redirect to homepage
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error('Error deleting account:', error);
-      toast.error(error.message || 'Failed to delete account');
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to delete account';
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading((prev) => ({ ...prev, deleteAccount: false }));
     }

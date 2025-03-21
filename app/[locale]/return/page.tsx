@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation';
 
 export default function Return() {
   const { connectedAccountId } = useParams();
-
+  console.log('connectedAccountId', connectedAccountId);
   return (
     <div className="container">
       <div className="banner">
@@ -11,7 +11,7 @@ export default function Return() {
       </div>
       <div className="content">
         <h2>Details submitted</h2>
-        <p>That's everything we need for now</p>
+        <p>That&apos;s everything we need for now</p>
       </div>
       <div className="info-callout">
         <p>

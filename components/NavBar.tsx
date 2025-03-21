@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/server';
 import AuthenticatedNav from './AuthenticatedNav';
 import UnauthenticatedNav from './UnauthenticatedNav';
 
 export async function NavBar({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale });
   const supabase = await createClient();
   const {
     data: { user },

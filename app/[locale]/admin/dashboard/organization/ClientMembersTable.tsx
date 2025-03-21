@@ -1,4 +1,4 @@
-import { Member } from '@/types/member';
+import { OrganizationMember } from '@/lib/types/member';
 import { Button } from '@/components/ui/button';
 import { Users, Download } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,18 +6,22 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
 import { MemberCard } from '@/components/MemberCard';
+import { getTranslations } from 'next-intl/server';
 
-const MembersTable = ({
+const MembersTable = async ({
   members,
   searchQuery = '',
   statusFilter = 'all',
   organizationId,
+  locale,
 }: {
-  members: Member[];
+  members: OrganizationMember[];
   searchQuery?: string;
   statusFilter?: string;
   organizationId: string;
+  locale: string;
 }) => {
+  const t = await getTranslations({ locale, namespace: 'Member' });
   // Apply filtering server-side
   const filteredMembers = filterMembers(members, searchQuery, statusFilter);
 
@@ -38,17 +42,17 @@ const MembersTable = ({
         <div>
           <h2 className="text-2xl font-semibold tracking-tight flex items-center">
             <Users className="mr-2 h-5 w-5 text-primary" />
-            Members
+            {t('members')}
             <Badge variant="outline" className="ml-2">
               {members.length}
             </Badge>
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage your organization members
+            {t('manageYourOrganizationMembers')}
           </p>
         </div>
 
-        <form action="/api/export-members" method="post">
+        <form action="/api/export-members">
           <input type="hidden" name="organizationId" value={organizationId} />
           <Button type="submit" size="sm" className="self-start sm:self-auto">
             <Download className="mr-2 h-4 w-4" />
@@ -123,6 +127,7 @@ const MembersTable = ({
           <MembersGrid
             members={filteredMembers}
             organizationId={organizationId}
+            locale={locale}
           />
         </TabsContent>
 
@@ -130,6 +135,7 @@ const MembersTable = ({
           <MembersGrid
             members={filteredMembers}
             organizationId={organizationId}
+            locale={locale}
           />
         </TabsContent>
 
@@ -137,6 +143,7 @@ const MembersTable = ({
           <MembersGrid
             members={filteredMembers}
             organizationId={organizationId}
+            locale={locale}
           />
         </TabsContent>
 
@@ -144,6 +151,7 @@ const MembersTable = ({
           <MembersGrid
             members={filteredMembers}
             organizationId={organizationId}
+            locale={locale}
           />
         </TabsContent>
       </Tabs>
@@ -153,10 +161,10 @@ const MembersTable = ({
 
 // Helper function to filter members server-side
 function filterMembers(
-  members: Member[],
+  members: OrganizationMember[],
   query: string,
   status: string
-): Member[] {
+): OrganizationMember[] {
   let result = [...members];
 
   // Apply search query filtering
@@ -164,9 +172,9 @@ function filterMembers(
     const lowerCaseQuery = query.toLowerCase();
     result = result.filter(
       (member) =>
-        member.firstName.toLowerCase().includes(lowerCaseQuery) ||
-        member.lastName.toLowerCase().includes(lowerCaseQuery) ||
-        member.email.toLowerCase().includes(lowerCaseQuery)
+        member.firstName?.toLowerCase().includes(lowerCaseQuery) ||
+        member.lastName?.toLowerCase().includes(lowerCaseQuery) ||
+        member.email?.toLowerCase().includes(lowerCaseQuery)
     );
   }
 
@@ -182,9 +190,11 @@ function filterMembers(
 const MembersGrid = ({
   members,
   organizationId,
+  locale,
 }: {
-  members: Member[];
+  members: OrganizationMember[];
   organizationId: string;
+  locale: string;
 }) => {
   if (members.length === 0) {
     return (
@@ -207,7 +217,11 @@ const MembersGrid = ({
             href={`/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`}
             key={member.id}
           >
-            <MemberCard member={member} organizationId={organizationId} />
+            <MemberCard
+              member={member}
+              organizationId={organizationId}
+              locale={locale}
+            />
           </Link>
         ))}
       </div>

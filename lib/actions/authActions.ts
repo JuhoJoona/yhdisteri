@@ -34,7 +34,6 @@ export async function signup(formData: FormData, locale: string) {
     password: formData.get('password') as string,
     first_name: formData.get('first_name') as string,
     last_name: formData.get('last_name') as string,
-    phone: formData.get('phone') as string,
   };
 
   const { data: signUpData, error } = await supabase.auth.signUp({
@@ -65,7 +64,6 @@ export async function signup(formData: FormData, locale: string) {
         firstName: user.user_metadata.first_name,
         lastName: user.user_metadata.last_name,
         email: user.email,
-        phone: user.phone,
       },
     },
   });

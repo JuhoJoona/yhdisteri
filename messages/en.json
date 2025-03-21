@@ -166,9 +166,7 @@
     "lastNamePlaceholder": "Enter your last name",
     "emailPlaceholder": "Enter your email",
     "passwordPlaceholder": "Enter your password",
-    "passwordRequirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
-    "phone": "Phone",
-    "phonePlaceholder": "Enter your phone number"
+    "passwordRequirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
   },
   "Metadata": {
     "title": "Yhdisteri",
@@ -267,6 +265,11 @@
     "areYouSure": "Are you sure you want to join this organization?"
   },
   "Member": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
     "backToDashboard": "Back to Dashboard",
     "code": "Code",
     "created": "Created",
@@ -297,7 +300,6 @@
     "createdOn": "Created on",
     "lastUpdated": "Last Updated",
     "address": "Address",
-    "phone": "Phone",
     "email": "Email",
     "website": "Website",
     "description": "Description",
@@ -349,6 +351,24 @@
     "manageYourMembers": "Manage your members",
     "manageYourEvents": "Manage your events",
     "invoice": "Invoice",
-    "paid": "Paid"
+    "paid": "Paid",
+    "personalInformation": "Personal Information",
+    "communication": "Communication"
+  },
+  "Organization": {
+    "dashboard": "Dashboard",
+    "organizationDetails": "Organization Details",
+    "manageYourOrganizationMembers": "Manage your organization members",
+    "openMenu": "Open menu",
+    "created": "Created",
+    "lastUpdated": "Last Updated",
+    "paymentStatus": "Payment Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "actions": "Actions",
+    "viewProfile": "View Profile",
+    "edit": "Edit",
+    "approveMember": "Approve Member",
+    "delete": "Delete"
   }
 }

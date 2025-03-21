@@ -5,12 +5,13 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 export default async function JoinCodePage({
-  params: { locale },
+  params,
   searchParams,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
   searchParams?: { error?: string };
 }) {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'inputCode' });
   const error = searchParams?.error;
 

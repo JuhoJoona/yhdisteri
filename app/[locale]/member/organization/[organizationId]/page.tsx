@@ -1,7 +1,4 @@
-import {
-  getOrganization,
-  Organization,
-} from '@/lib/services/organizationService';
+import { getOrganization } from '@/lib/services/organizationService';
 import { getOrganizationMembers } from '@/lib/services/usersService';
 import {
   Building,
@@ -31,6 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { getTranslations } from 'next-intl/server';
 import { getOwnMembershipInfo } from '@/lib/services/usersService';
+import { Organization } from '@/lib/types/organization';
 
 export default async function OrganizationPage({
   params: { organizationId, locale },

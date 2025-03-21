@@ -15,10 +15,8 @@ export default async function PlanPage() {
     console.log('submitOrganization', organization, planId);
     const response = await createOrganization(organization, planId);
     console.log('response', response);
-    if (response) {
-      redirect(
-        `/admin/dashboard/organization?organizationId=${response?.organization?.id}`
-      );
+    if (response && response.organization?.id) {
+      redirect(`/lander`);
     } else {
       return { error: 'Organization creation failed' };
     }

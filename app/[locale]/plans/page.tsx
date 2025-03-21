@@ -1,4 +1,3 @@
-import { NavBar } from '@/components/NavBar';
 import { getTranslations } from 'next-intl/server';
 import { getPlans } from '@/lib/services/plansService';
 import {
@@ -11,10 +10,11 @@ import {
 import { Check } from 'lucide-react';
 
 export default async function PlansPage({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({ locale });
   const plans = await getPlans();
 
@@ -24,8 +24,6 @@ export default async function PlansPage({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <NavBar locale={locale} />
-
       <main className="flex-1 container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4">{t('plans.title')}</h1>
@@ -60,7 +58,7 @@ export default async function PlansPage({
                 </CardHeader>
                 <CardContent className="flex-1">
                   <ul className="space-y-2">
-                    {plan.features.map((feature, index) => (
+                    {plan.features?.map((feature, index) => (
                       <li key={index} className="flex items-center">
                         <Check className="h-4 w-4 text-primary mr-2" />
                         <span>{feature}</span>

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import { OwnData } from '@/lib/services/usersService';
+import { OwnData } from '@/lib/types/member';
 import { Save } from 'lucide-react';
 
 const PersonalInformation = ({ userData }: { userData: OwnData }) => {
@@ -35,10 +35,6 @@ const PersonalInformation = ({ userData }: { userData: OwnData }) => {
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" defaultValue={userData.email} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" defaultValue={userData.phone} />
-          </div>
         </div>
 
         <Separator />
@@ -48,19 +44,19 @@ const PersonalInformation = ({ userData }: { userData: OwnData }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="street">Street</Label>
-              <Input id="street" defaultValue={userData.address.street} />
+              <Input id="street" defaultValue={userData.address} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="city">City</Label>
-              <Input id="city" defaultValue={userData.address.city} />
+              <Input id="city" defaultValue={userData.city} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="zipCode">Zip Code</Label>
-              <Input id="zipCode" defaultValue={userData.address.zipCode} />
+              <Input id="zipCode" defaultValue={userData.zip} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="country">Country</Label>
-              <Input id="country" defaultValue={userData.address.country} />
+              <Input id="country" defaultValue={userData.country} />
             </div>
           </div>
         </div>

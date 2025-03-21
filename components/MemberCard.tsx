@@ -1,3 +1,4 @@
+'use client';
 import {
   MoreHorizontal,
   Edit,
@@ -60,6 +61,32 @@ export async function MemberCard({
     }
   };
 
+  const onApprove = async () => {
+    try {
+      const resp = await apiClient.POST(
+        '/organizations/{organizationId}/members/{memberId}/approve',
+        {
+          params: {
+            path: {
+              organizationId,
+              memberId: member.id,
+            },
+          },
+        }
+      );
+
+      if (resp.response?.ok) {
+        console.log('Member approved successfully');
+        // Refresh the page to show updated status
+        router.refresh();
+      } else {
+        console.error('Failed to approve member:', resp);
+      }
+    } catch (error) {
+      console.error('Error approving member:', error);
+    }
+  };
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardHeader className="p-4 pb-0">
@@ -86,8 +113,12 @@ export async function MemberCard({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link
-                  href={`/admin/dashboard/organization/edit-member/${member.id}`}
+                <button
+                  onClick={() =>
+                    router.push(
+                      `/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`
+                    )
+                  }
                 >
                   <Edit className="mr-2 h-4 w-4" />
                   {t('edit')}

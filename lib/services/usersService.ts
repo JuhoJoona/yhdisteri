@@ -1,8 +1,8 @@
 import { typedApiClient } from '../server';
 
-export const getUser = async (id: string) => {
+export const getUserByExternalId = async (id: string) => {
   try {
-    const response = await typedApiClient.GET('/users/{id}', {
+    const response = await typedApiClient.GET('/users/external/{id}', {
       params: {
         path: { id },
       },

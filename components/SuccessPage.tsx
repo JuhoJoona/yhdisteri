@@ -51,8 +51,8 @@ export default function SuccessPage() {
                 Payment Successful
               </h1>
               <p className="text-gray-600 max-w-sm">
-                Thank you for your purchase. We've received your payment and are
-                processing your order.
+                Thank you for your purchase. We&apos;ve received your payment
+                and are processing your order.
               </p>
             </div>
 

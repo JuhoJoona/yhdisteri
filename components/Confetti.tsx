@@ -1,14 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 
 export function Confetti() {
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    setIsClient(true);
-
     // Trigger confetti when component mounts
     const duration = 3 * 1000;
     const end = Date.now() + duration;

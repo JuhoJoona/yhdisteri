@@ -7,6 +7,7 @@ import AdminOrganizationItem from './AdminOrganizationItem';
 import { EmptyOrganizationItem } from './EmptyOrganizationItem';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+
 export default async function Dashboard({
   params,
 }: {

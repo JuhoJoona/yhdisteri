@@ -36,7 +36,12 @@ export async function getTokenWithClerk(): Promise<string | null> {
 }
 
 export const isErrorResponse = (
-  response: any
+  response: unknown
 ): response is ApiResponse<unknown> => {
-  return 'ok' in response && !response.ok;
+  return (
+    typeof response === 'object' &&
+    response !== null &&
+    'ok' in response &&
+    !(response as ApiResponse<unknown>).ok
+  );
 };

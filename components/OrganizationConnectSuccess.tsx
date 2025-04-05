@@ -6,13 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { addOrganizationStripeId } from '@/lib/services/organizationService';
 import { typedApiClient } from '@/lib/client';
 
 export default function OrganizationConnectSuccess() {
-  const { locale, stripeId } = useParams();
+  const { stripeId } = useParams();
   const t = useTranslations('OrganizationConnectSuccess');
   const [orgName, setOrgName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +40,7 @@ export default function OrganizationConnectSuccess() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [organizationId, stripeId]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">

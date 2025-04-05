@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { formatDate } from '@/lib/utils';
-import { useApiClient } from '@/lib/apiClient';
+import { typedApiClient } from '@/lib/client';
 
 type Member = {
   id: string;
@@ -46,8 +46,6 @@ export function MemberDetails({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [displayData, setDisplayData] = useState<Member>(member);
 
-  const client = useApiClient();
-
   useEffect(() => {
     if (member && Object.keys(member).length > 0) {
       originalMemberRef.current = member;
@@ -71,7 +69,7 @@ export function MemberDetails({
 
   const updateMember = async (member: Member) => {
     console.log('Updating member with data:', member);
-    const resp = await client.PUT(
+    const resp = await typedApiClient.PUT(
       `/users/${member.id}/organization/${organizationId}`,
       {
         body: member,
@@ -97,22 +95,6 @@ export function MemberDetails({
       setIsSubmitting(false);
     }
   };
-
-  const toggleEditMode = () => {
-    if (isEditMode) {
-      setFormData(originalMemberRef.current);
-      setDisplayData(originalMemberRef.current);
-
-      router.replace(
-        `/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`
-      );
-    } else {
-      router.replace(
-        `/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`
-      );
-    }
-  };
-
   return (
     <Card className="max-w-3xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">

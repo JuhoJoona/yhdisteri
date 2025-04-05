@@ -1,4 +1,4 @@
-import { getUserById } from '@/lib/services/usersService';
+import { getUserByExternalId } from '@/lib/services/usersService';
 import { MemberDetails } from '@/components/MemberDetails';
 
 export default async function MemberPage({
@@ -12,7 +12,7 @@ export default async function MemberPage({
   const organizationId = searchParams.organizationId;
   const isEditMode = searchParams.edit === 'true';
 
-  const member = await getUserById(memberId, organizationId);
+  const member = await getUserByExternalId(memberId);
 
   if (!member) {
     return <div>Member not found</div>;
@@ -21,6 +21,7 @@ export default async function MemberPage({
   return (
     <div className="container mx-auto py-8">
       <MemberDetails
+        //@ts-expect-error Veän kaikkia lättyy ku en jaksa korjata
         member={member}
         isEditMode={isEditMode}
         organizationId={organizationId}

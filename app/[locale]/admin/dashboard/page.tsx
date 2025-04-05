@@ -1,5 +1,5 @@
 import { getUserOrganizations } from '@/lib/services/usersService';
-import { Building, Settings, Users, ChevronRight } from 'lucide-react';
+import { Building, Settings, ChevronRight } from 'lucide-react';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 

@@ -40,13 +40,12 @@ const getOrganization = async (organizationId: string) => {
 const getOrganizationByCode = async (code: string) => {
   try {
     console.log('getOrganizationByCode', code);
-    const response = await typedApiClient.GET('/organizations/code/{code}', {
-      params: {
-        path: { code },
-      },
-    });
-    console.log('response', response);
-    return response.data;
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/organizations/code/${code}`
+    );
+    const data = await response.json();
+    console.log('response', data);
+    return data;
   } catch (error) {
     console.error('error', error);
     return null;
@@ -71,9 +70,34 @@ const joinOrganizationByCode = async (code: string) => {
     return null;
   }
 };
+
+const addOrganizationStripeId = async (
+  organizationId: string,
+  stripeId: string
+) => {
+  try {
+    console.log('addOrganizationStripeId', organizationId, stripeId);
+    const response = await typedApiClient.POST(
+      '/organizations/billing/stripe',
+      {
+        body: {
+          organizationId,
+          stripeId,
+        },
+      }
+    );
+    console.log('response', response);
+    return response.data;
+  } catch (error) {
+    console.error('error', error);
+    return null;
+  }
+};
+
 export {
   createOrganization,
   getOrganization,
   getOrganizationByCode,
   joinOrganizationByCode,
+  addOrganizationStripeId,
 };

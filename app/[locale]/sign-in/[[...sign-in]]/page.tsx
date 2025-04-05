@@ -13,7 +13,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
-
   return {
     title: t('signIn.title'),
     description: t('signIn.description'),
@@ -22,11 +21,14 @@ export async function generateMetadata({
 
 export default async function SignInPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ redirect: string; code: string; error: string }>;
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
+  const { redirect: redirectDestination, code, error } = await searchParams;
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -39,7 +41,8 @@ export default async function SignInPage({
         <form
           action={async (formData) => {
             'use server';
-            await login(formData, locale);
+
+            await login(formData, locale, redirectDestination, code);
           }}
           className="space-y-6"
         >
@@ -63,6 +66,9 @@ export default async function SignInPage({
               required
               className="mt-1 block w-full"
             />
+            {error && (
+              <p className="text-red-500 text-sm">{t(`errors.${error}`)}</p>
+            )}
           </div>
 
           <div className="flex space-x-4">
@@ -70,7 +76,7 @@ export default async function SignInPage({
               type="submit"
               formAction={async (formData) => {
                 'use server';
-                await login(formData, locale);
+                await login(formData, locale, redirectDestination, code);
               }}
               className="w-full"
             >
@@ -78,7 +84,9 @@ export default async function SignInPage({
             </Button>
           </div>
           <div className="flex space-x-4 justify-between flex-row">
-            <Link href="/sign-up">
+            <Link
+              href={`/${locale}/sign-up?redirect=${redirectDestination}&code=${code}`}
+            >
               <h3 className="text-sm text-gray-500 hover:text-gray-700 hover:underline">
                 {t('common.dontHaveAccount')}
               </h3>

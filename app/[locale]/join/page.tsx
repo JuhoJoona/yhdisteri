@@ -21,12 +21,9 @@ export default async function JoinCodePage({
     const joinCode = formData.get('joinCode') as string;
 
     if (!joinCode || !joinCode.trim()) {
-      // You could return an error here, but for simplicity we'll just redirect
-      // to the same page (in a real app, you might want to add error handling)
       return redirect('/lander?error=empty-code');
     }
 
-    // Redirect to the join page with the code
     return redirect(`/join/${joinCode.trim()}`);
   }
 

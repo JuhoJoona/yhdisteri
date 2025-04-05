@@ -1,4 +1,3 @@
-'use client';
 import {
   MoreHorizontal,
   Edit,
@@ -27,6 +26,7 @@ import {
 import { OrganizationMember } from '@/lib/types/member';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+
 interface MemberCardProps {
   member: OrganizationMember;
   organizationId: string;
@@ -60,7 +60,7 @@ export async function MemberCard({
         return 'bg-gray-500/10 text-gray-700 dark:text-gray-500';
     }
   };
-
+  /* 
   const onApprove = async () => {
     try {
       const resp = await apiClient.POST(
@@ -85,7 +85,7 @@ export async function MemberCard({
     } catch (error) {
       console.error('Error approving member:', error);
     }
-  };
+  }; */
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
@@ -113,12 +113,8 @@ export async function MemberCard({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <button
-                  onClick={() =>
-                    router.push(
-                      `/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`
-                    )
-                  }
+                <Link
+                  href={`/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`}
                 >
                   <Edit className="mr-2 h-4 w-4" />
                   {t('edit')}

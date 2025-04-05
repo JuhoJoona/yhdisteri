@@ -29,11 +29,14 @@ export async function generateMetadata({
 
 export default async function SignUpPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ redirect: string; code: string }>;
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
+  const { redirect: redirectDestination, code } = await searchParams;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -44,7 +47,7 @@ export default async function SignUpPage({
         <p className="mt-2 text-center text-sm text-gray-600">
           {t('common.alreadyHaveAccount')}{' '}
           <Link
-            href={`/${locale}/sign-in`}
+            href={`/${locale}/sign-in?redirect=${redirectDestination}&code=${code}`}
             className="font-medium text-primary hover:text-primary/90 hover:underline"
           >
             {t('common.signIn')}
@@ -61,7 +64,7 @@ export default async function SignUpPage({
           <form
             action={async (formData) => {
               'use server';
-              await signup(formData, locale);
+              await signup(formData, locale, redirectDestination, code);
             }}
             className="space-y-6"
           >
@@ -89,6 +92,48 @@ export default async function SignUpPage({
                   required
                   className="mt-1 block w-full"
                   placeholder={t('common.lastNamePlaceholder')}
+                />
+              </div>
+            </div>
+
+            {/* Address Fields */}
+            <div>
+              <Label htmlFor="street" className="text-sm font-medium">
+                {t('common.street')}
+              </Label>
+              <Input
+                id="street"
+                name="street"
+                required
+                className="mt-1 block w-full"
+                placeholder={t('common.streetPlaceholder')}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div>
+                <Label htmlFor="city" className="text-sm font-medium">
+                  {t('common.city')}
+                </Label>
+                <Input
+                  id="city"
+                  name="city"
+                  required
+                  className="mt-1 block w-full"
+                  placeholder={t('common.cityPlaceholder')}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="zip_code" className="text-sm font-medium">
+                  {t('common.zipCode')}
+                </Label>
+                <Input
+                  id="zip_code"
+                  name="zip_code"
+                  required
+                  className="mt-1 block w-full"
+                  placeholder={t('common.zipCodePlaceholder')}
                 />
               </div>
             </div>

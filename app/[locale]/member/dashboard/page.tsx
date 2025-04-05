@@ -31,7 +31,7 @@ export default async function MemberDashboard({
 }) {
   const { locale } = await params;
   const organizations = await getUserOrganizations();
-  const t = await getTranslations({ locale, namespace: 'dashboard' });
+  const t = await getTranslations({ locale, namespace: 'MemberDashboard' });
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -41,31 +41,6 @@ export default async function MemberDashboard({
       day: 'numeric',
     });
   };
-
-  // Mock data for recent activity
-  const recentActivity = [
-    {
-      id: 1,
-      type: 'join',
-      organization: 'Sports Club',
-      date: new Date(Date.now() - 86400000 * 2), // 2 days ago
-      icon: <Users className="h-4 w-4 text-blue-500" />,
-    },
-    {
-      id: 2,
-      type: 'payment',
-      organization: 'Neighborhood Association',
-      date: new Date(Date.now() - 86400000 * 5), // 5 days ago
-      icon: <CreditCard className="h-4 w-4 text-green-500" />,
-    },
-    {
-      id: 3,
-      type: 'notification',
-      organization: 'Book Club',
-      date: new Date(Date.now() - 86400000 * 7), // 7 days ago
-      icon: <Bell className="h-4 w-4 text-amber-500" />,
-    },
-  ];
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -82,7 +57,7 @@ export default async function MemberDashboard({
           <Button variant="outline" size="sm" asChild>
             <Link href="/member/profile">
               <User className="h-4 w-4 mr-2" />
-              Profile
+              {t('profile')}
             </Link>
           </Button>
           <Button size="sm" asChild>
@@ -93,10 +68,7 @@ export default async function MemberDashboard({
 
       <Tabs defaultValue="organizations" className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="organizations">
-            {t('myOrganizations')}
-          </TabsTrigger>
-          <TabsTrigger value="activity">{t('recentActivity')}</TabsTrigger>
+          <TabsTrigger value="organizations">{t('myOrganization')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="organizations">
@@ -132,11 +104,11 @@ export default async function MemberDashboard({
                         </div>
                         <div>
                           <CardTitle className="text-lg">
-                            {org.name || 'Unnamed Organization'}
+                            {org.name || t('unnamedOrganization')}
                           </CardTitle>
                           <CardDescription className="flex items-center mt-1">
                             <Code className="h-3.5 w-3.5 mr-1" />
-                            {org.code || 'No code'}
+                            {org.code || t('noCode')}
                           </CardDescription>
                         </div>
                       </div>
@@ -160,7 +132,7 @@ export default async function MemberDashboard({
                     <div className="flex items-center text-sm text-muted-foreground mt-1">
                       <Users className="h-3.5 w-3.5 mr-1" />
                       <span>
-                        {t('role')}: {org.role || 'Member'}
+                        {t('role')}: {org.role || t('member')}
                       </span>
                     </div>
                   </CardContent>
@@ -182,54 +154,6 @@ export default async function MemberDashboard({
               ))}
             </div>
           )}
-        </TabsContent>
-
-        <TabsContent value="activity">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('recentActivity')}</CardTitle>
-              <CardDescription>
-                {t('yourLatestInteractionsAcrossOrganizations')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-start">
-                    <div className="mr-4 mt-0.5">
-                      <div className="bg-muted rounded-full p-2">
-                        {activity.icon}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                        <p className="font-medium">
-                          {activity.type === 'join' && 'Joined organization'}
-                          {activity.type === 'payment' && 'Payment processed'}
-                          {activity.type === 'notification' &&
-                            'New notification'}
-                        </p>
-                        <span className="text-sm text-muted-foreground">
-                          {activity.date.toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {activity.organization}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-            <CardFooter className="border-t pt-4">
-              <Button variant="outline" size="sm" className="w-full">
-                {t('viewAllActivity')}
-              </Button>
-            </CardFooter>
-          </Card>
         </TabsContent>
       </Tabs>
 

@@ -5,6 +5,7 @@ import {
 import { getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/lib/server';
 
 const JoinPage = async ({
   params,
@@ -15,6 +16,8 @@ const JoinPage = async ({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Join' });
   const organization = await getOrganizationByCode(code);
+  const supabaseClient = await createClient();
+  const { data: sessionData } = await supabaseClient.auth.getSession();
 
   async function joinOrganization() {
     'use server';
@@ -82,7 +85,11 @@ const JoinPage = async ({
             <form
               action={async () => {
                 'use server';
-                await joinOrganization();
+                if (sessionData.session) {
+                  await joinOrganization();
+                } else {
+                  redirect(`/sign-up?redirect=join_with_code&code=${code}`);
+                }
               }}
             >
               <Button
@@ -91,7 +98,7 @@ const JoinPage = async ({
                 size="lg"
                 className="w-full mt-2"
               >
-                {t('confirmJoin')}
+                {sessionData.session ? t('confirmJoin') : t('loginToJoin')}
               </Button>
             </form>
           </div>

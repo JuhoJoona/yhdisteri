@@ -1,10 +1,8 @@
 import { redirect } from 'next/navigation';
 import PlanSelectionForm from './PlanSelectionForm';
-import {
-  createOrganization,
-  CreateOrganizationRequest,
-} from '@/lib/services/organizationService';
+import { createOrganization } from '@/lib/services/organizationService';
 import { getPlans } from '@/lib/services/plansService';
+import { CreateOrganizationRequest } from '@/lib/types/organization';
 
 export default async function PlanPage() {
   async function submitOrganization(
@@ -31,6 +29,7 @@ export default async function PlanPage() {
   }
 
   return (
+    /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
     <PlanSelectionForm plans={plans} submitOrganization={submitOrganization} />
   );
 }

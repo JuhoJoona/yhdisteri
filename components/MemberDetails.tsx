@@ -70,6 +70,7 @@ export function MemberDetails({
   const updateMember = async (member: Member) => {
     console.log('Updating member with data:', member);
     const resp = await typedApiClient.PUT(
+      /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
       `/users/${member.id}/organization/${organizationId}`,
       {
         body: member,

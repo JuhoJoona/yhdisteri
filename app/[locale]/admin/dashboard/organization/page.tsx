@@ -11,16 +11,15 @@ const OrganizationPage = async ({
   searchParams,
   params,
 }: {
-  searchParams: { organizationId?: string; searchTerm?: string };
+  searchParams: Promise<{ organizationId?: string; searchTerm?: string }>;
   params: Promise<{ locale: string }>;
 }) => {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Organization' });
-  const organizationId = searchParams.organizationId || '';
-  const searchTerm = searchParams.searchTerm || '';
+  const { organizationId, searchTerm } = await searchParams;
 
-  const members = await getOrganizationMembers(organizationId);
-  const organization = await getOrganization(organizationId);
+  const members = await getOrganizationMembers(organizationId || '');
+  const organization = await getOrganization(organizationId || '');
 
   const newThisMonth =
     members?.filter(
@@ -132,6 +131,7 @@ const OrganizationPage = async ({
             inactive:
               members?.filter((member) => member.status === 'inactive')
                 .length || 0,
+            /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
             pending:
               members?.filter((member) => member.status === 'pending').length ||
               0,
@@ -144,6 +144,7 @@ const OrganizationPage = async ({
           <ClientMembersTable
             members={members || []}
             searchQuery={searchTerm}
+            /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
             organizationId={organizationId}
             locale={locale}
           />

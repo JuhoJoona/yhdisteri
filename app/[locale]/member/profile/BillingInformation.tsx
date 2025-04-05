@@ -10,13 +10,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { Badge } from '@/components/ui/badge';
 import { getUserBillingDetails } from '@/lib/services/usersService';
 
 const BillingInformation = async () => {
-  const t = await getTranslations({ namespace: 'billingInformation' });
+  const t = await getTranslations({
+    locale: 'en',
+    namespace: 'billingInformation',
+  });
   const userBillingInformation = await getUserBillingDetails();
 
   if (!userBillingInformation) {
@@ -30,56 +32,6 @@ const BillingInformation = async () => {
         <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {userBillingInformation.paymentMethods && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t('paymentMethods')}</h3>
-            {userBillingInformation.paymentMethods.map((method) => (
-              <div
-                key={method.id}
-                className="flex items-center justify-between border rounded-lg p-4"
-              >
-                <div className="flex items-center">
-                  <div className="bg-muted rounded-md p-2 mr-4">
-                    <CreditCard className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium">
-                      {method.brand} •••• {method.last4}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Expires {method.expiryMonth}/{method.expiryYear}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {method.isDefault && (
-                    <Badge
-                      variant="outline"
-                      className="bg-blue-50 text-blue-700 border-blue-200"
-                    >
-                      Default
-                    </Badge>
-                  )}
-                  <Button variant="ghost" size="sm">
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive"
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </div>
-            ))}
-            <Button variant="outline" className="mt-2">
-              <CreditCard className="h-4 w-4 mr-2" />
-              Add Payment Method
-            </Button>
-          </div>
-        )}
-
         <Separator />
 
         <div className="space-y-4">

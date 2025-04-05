@@ -9,11 +9,11 @@ export default async function JoinCodePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams?: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'inputCode' });
-  const error = searchParams?.error;
+  const { error } = await searchParams;
 
   async function joinOrganization(formData: FormData) {
     'use server';

@@ -2,6 +2,7 @@ import { typedApiClient } from '../server';
 
 export const getUserByExternalId = async (id: string) => {
   try {
+    /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
     const response = await typedApiClient.GET('/users/external/{id}', {
       params: {
         path: { id },

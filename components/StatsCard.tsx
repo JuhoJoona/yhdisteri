@@ -8,7 +8,6 @@ import {
   TrendingDown,
   Minus,
 } from 'lucide-react';
-import { MemberStats } from '@/types/member';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 
@@ -20,6 +19,14 @@ type StatCardProps = {
   trend?: 'up' | 'down' | 'neutral';
   trendValue?: string;
   className?: string;
+};
+
+type MemberStats = {
+  total: number;
+  active: number;
+  inactive: number;
+  newThisMonth: number;
+  retention: number;
 };
 
 const StatCard = ({

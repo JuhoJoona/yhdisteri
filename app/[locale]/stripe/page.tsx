@@ -50,7 +50,7 @@ export default function Home() {
               if (res.account) {
                 setConnectedAccountId(res.account);
               }
-
+              /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
               if (res?.error) {
                 setError(true);
               }

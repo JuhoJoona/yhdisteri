@@ -31,10 +31,11 @@ import { getOwnMembershipInfo } from '@/lib/services/usersService';
 import { Organization } from '@/lib/types/organization';
 
 export default async function OrganizationPage({
-  params: { organizationId, locale },
+  params,
 }: {
-  params: { organizationId: string; locale: string };
+  params: Promise<{ organizationId: string; locale: string }>;
 }) {
+  const { organizationId, locale } = await params;
   const organizationData = await getOrganization(organizationId);
   const members = await getOrganizationMembers(organizationId);
   const membershipInfo = await getOwnMembershipInfo(organizationId);

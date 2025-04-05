@@ -15,8 +15,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Loader2, Check } from 'lucide-react';
-import { Plan } from '@/lib/services/plansService';
-import { CreateOrganizationRequest } from '@/lib/services/organizationService';
+import { Plan } from '@/lib/types/plans';
+import { CreateOrganizationRequest } from '@/lib/types/organization';
 
 export default function PlanSelectionForm({
   plans,

@@ -15,7 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/client';
-import { toast } from '@/components/ui/use-toast';
 import { User } from '@supabase/supabase-js';
 
 export default function SecuritySettings({ user }: { user: User }) {
@@ -39,20 +38,12 @@ export default function SecuritySettings({ user }: { user: User }) {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast({
-        title: 'Error',
-        description: 'New passwords do not match',
-        variant: 'destructive',
-      });
+      console.log('New passwords do not match');
       return;
     }
 
     if (passwordData.newPassword.length < 8) {
-      toast({
-        title: 'Error',
-        description: 'Password must be at least 8 characters',
-        variant: 'destructive',
-      });
+      console.log('Password must be at least 8 characters');
       return;
     }
 
@@ -66,10 +57,7 @@ export default function SecuritySettings({ user }: { user: User }) {
 
       if (error) throw error;
 
-      toast({
-        title: 'Success',
-        description: 'Password updated successfully',
-      });
+      console.log('Password updated successfully');
       setPasswordData({
         currentPassword: '',
         newPassword: '',
@@ -79,11 +67,7 @@ export default function SecuritySettings({ user }: { user: User }) {
       console.error('Error updating password:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to update password';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      console.log(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, password: false }));
     }
@@ -99,11 +83,9 @@ export default function SecuritySettings({ user }: { user: User }) {
       // 2. Get the QR code or secret to display to the user
       // 3. Handle verification of the setup
 
-      toast({
-        title: 'Info',
-        description:
-          'Two-factor authentication setup is not fully implemented yet',
-      });
+      console.log(
+        'Two-factor authentication setup is not fully implemented yet'
+      );
 
       // When implemented, might look like:
       // const { data, error } = await supabaseClient.auth.mfa.enroll();
@@ -115,11 +97,7 @@ export default function SecuritySettings({ user }: { user: User }) {
         error instanceof Error
           ? error.message
           : 'Failed to setup two-factor authentication';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      console.log(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, twoFactor: false }));
     }
@@ -147,20 +125,13 @@ export default function SecuritySettings({ user }: { user: User }) {
       // Note: For actual account deletion, you would need a server-side function
       // with admin privileges to call supabase.auth.admin.deleteUser(user.id)
 
-      toast({
-        title: 'Success',
-        description: 'Account deleted, you have been signed out',
-      });
+      console.log('Account deleted, you have been signed out');
       router.push('/'); // Redirect to homepage
     } catch (error: Error | unknown) {
       console.error('Error deleting account:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to delete account';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      console.log(errorMessage);
     } finally {
       setIsLoading((prev) => ({ ...prev, deleteAccount: false }));
     }

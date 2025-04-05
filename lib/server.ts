@@ -8,32 +8,32 @@ import { cookies } from 'next/headers';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
+  const supabaseUrl = 'https://jpknmfiuuwknywnfokxa.supabase.co';
+  const supabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwa25tZml1dXdrbnl3bmZva3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzExMTQsImV4cCI6MjA1NzIwNzExNH0.RCFAUeqEHkP3KPHEtz_xjQGsf9qDdZe0I8c628HUnGQ';
+
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
       },
-    }
-  );
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
+        } catch {
+          // The `setAll` method was called from a Server Component.
+          // This can be ignored if you have middleware refreshing
+          // user sessions.
+        }
+      },
+    },
+  });
 }
 
 export const typedApiClient = createFetchClient<paths>({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3002',
+  baseUrl: 'https://yhdisteri-api.onrender.com',
 });
 
 const middleware: Middleware = {
@@ -41,8 +41,8 @@ const middleware: Middleware = {
     try {
       // Routes that don't require authentication
       const publicRoutes = [
-        `${process.env.NEXT_PUBLIC_API_URL}/plans`,
-        `${process.env.NEXT_PUBLIC_API_URL}/health`,
+        `https://yhdisteri-api.onrender.com/plans`,
+        `$https://yhdisteri-api.onrender.com/health`,
       ];
 
       // Skip authentication for public routes

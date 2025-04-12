@@ -18,7 +18,7 @@ export default async function PlanPage() {
         `/dashboard/organization?organizationId=${response?.organization?.id}`
       );
     } else {
-      return { error: 'Organization creation failed' };
+      return;
     }
   }
 
@@ -29,7 +29,6 @@ export default async function PlanPage() {
   }
 
   return (
-    /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
     <PlanSelectionForm plans={plans} submitOrganization={submitOrganization} />
   );
 }

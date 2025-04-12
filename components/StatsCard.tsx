@@ -25,6 +25,7 @@ type MemberStats = {
   total: number;
   active: number;
   inactive: number;
+  pending: number;
   newThisMonth: number;
   retention: number;
 };

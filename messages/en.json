@@ -166,7 +166,13 @@
     "lastNamePlaceholder": "Enter your last name",
     "emailPlaceholder": "Enter your email",
     "passwordPlaceholder": "Enter your password",
-    "passwordRequirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+    "passwordRequirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+    "street": "Street",
+    "city": "City",
+    "zipCode": "Zip",
+    "streetPlaceholder": "Enter your street",
+    "cityPlaceholder": "Enter your city",
+    "zipCodePlaceholder": "Enter your zip code"
   },
   "Metadata": {
     "title": "Yhdisteri",
@@ -265,6 +271,13 @@
     "areYouSure": "Are you sure you want to join this organization?"
   },
   "Member": {
+    "manageYourOrganizationMembers": "Manage your organization members",
+    "exportMembers": "Export members",
+    "search": "Search",
+    "all": "All",
+    "active": "Active",
+    "pending": "Pending",
+    "viewProfile": "View Profile",
     "nav": {
       "dashboard": "Dashboard",
       "profile": "Profile",
@@ -369,7 +382,25 @@
     "viewProfile": "View Profile",
     "edit": "Edit",
     "approveMember": "Approve Member",
-    "delete": "Delete"
+    "delete": "Delete",
+    "manageYourOrganizationAndMembers": "Manage your organization and members",
+    "stripeAccountNotConnected": "Stripe Account Not Connected",
+    "stripeAccountNotConnectedDescription": "Connect your Stripe account to enable billing and payments.",
+    "connectStripeAccount": "Connect Stripe Account",
+    "organizationMembershipTypes": "Organization Membership Types",
+    "addNewMembershipType": "Add New Membership Type",
+    "fillFormToAddMembershipType": "Fill in the form to add a new membership type.",
+    "formFieldName": "Name",
+    "formFieldNamePlaceholder": "Enter the name of the membership type",
+    "formFieldDescription": "Description",
+    "formFieldDescriptionPlaceholder": "Enter the description of the membership type",
+    "formFieldPrice": "Price",
+    "formFieldPricePlaceholder": "Enter the price of the membership type",
+    "formFieldInterval": "Interval",
+    "formFieldIntervalPlaceholder": "Enter the interval of the membership type",
+    "addMembershipTypeButton": "Add Membership Type",
+    "year": "Yearly",
+    "month": "Monthly"
   },
   "MemberDashboard": {
     "memberDashboard": "Member Dashboard",
@@ -448,5 +479,13 @@
     "organizationSettings": "Organization Settings",
     "needHelp": "Need help?",
     "supportEmail": "support@yhdisteri.com"
+  },
+  "StripeConnect": {
+    "connectStripeAccount": "Connect Stripe Account",
+    "connectStripeAccountDescription": "We partner with Stripe to securely manage your payments and keep your details safe. Add your information to begin.",
+    "completeYourAccountSetup": "Complete Your Account Setup",
+    "completeYourAccountSetupDescription": "To accept payments, you need to complete your account setup with Stripe.",
+    "generateLink": "Generate Link",
+    "yourConnectedAccountId": "Your connected account ID:"
   }
 }

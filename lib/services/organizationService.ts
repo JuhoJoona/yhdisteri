@@ -41,7 +41,7 @@ const getOrganizationByCode = async (code: string) => {
   try {
     console.log('getOrganizationByCode', code);
     const response = await fetch(
-      `https://yhdisteri-api.onrender.com/organizations/code/${code}`
+      `http://localhost:3002/organizations/code/${code}`
     );
     const data = await response.json();
     console.log('response', data);
@@ -94,10 +94,46 @@ const addOrganizationStripeId = async (
   }
 };
 
+const getOrganizationByStripeId = async (stripeId: string) => {
+  try {
+    console.log('getOrganizationByStripeId', stripeId);
+    const response = await typedApiClient.GET('/organizations/billing/stripe', {
+      params: {
+        query: {
+          stripeId,
+        },
+      },
+    });
+    console.log('response', response);
+    return response.data;
+  } catch (error) {
+    console.error('error', error);
+    return null;
+  }
+};
+
+const getOrganizationMembershipTypes = async (organizationId: string) => {
+  try {
+    console.log('getOrganizationMembershipTypes', organizationId);
+    const response = await typedApiClient.GET(
+      '/organizations/{id}/membership-types',
+      {
+        params: { path: { id: organizationId } },
+      }
+    );
+    console.log('response', response);
+    return response.data;
+  } catch (error) {
+    console.error('error', error);
+    return null;
+  }
+};
 export {
   createOrganization,
   getOrganization,
   getOrganizationByCode,
   joinOrganizationByCode,
   addOrganizationStripeId,
+  getOrganizationByStripeId,
+  getOrganizationMembershipTypes,
 };

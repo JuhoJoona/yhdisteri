@@ -10,9 +10,12 @@ const createAccountLink = async (connectedAccountId: string) => {
   return response.data;
 };
 
-const createAccount = async () => {
+const createAccount = async (organizationId: string) => {
+  console.log('createAccount', organizationId);
   const response = await typedApiClient.POST('/billing/account', {
-    body: {},
+    body: {
+      organizationId: organizationId,
+    },
   });
 
   return response.data;

@@ -17,7 +17,7 @@ const JoinPage = async ({
   const t = await getTranslations({ locale, namespace: 'Join' });
   const organization = await getOrganizationByCode(code);
   const supabaseClient = await createClient();
-  const { data: sessionData } = await supabaseClient.auth.getSession();
+  const { data: sessionData } = await supabaseClient.auth.getUser();
 
   async function joinOrganization() {
     'use server';
@@ -85,7 +85,7 @@ const JoinPage = async ({
             <form
               action={async () => {
                 'use server';
-                if (sessionData.session) {
+                if (sessionData.user) {
                   await joinOrganization();
                 } else {
                   redirect(`/sign-up?redirect=join_with_code&code=${code}`);
@@ -98,7 +98,7 @@ const JoinPage = async ({
                 size="lg"
                 className="w-full mt-2"
               >
-                {sessionData.session ? t('confirmJoin') : t('loginToJoin')}
+                {sessionData.user ? t('confirmJoin') : t('loginToJoin')}
               </Button>
             </form>
           </div>

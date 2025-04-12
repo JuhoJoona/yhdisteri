@@ -14,37 +14,22 @@ import {
 import { Label } from '@/components/ui/label';
 import { formatDate } from '@/lib/utils';
 import { typedApiClient } from '@/lib/client';
-
-type Member = {
-  id: string;
-  externalId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  profileImageUrl: string | null;
-  lastActive: string | null;
-  notes: string | null;
-  createdAt: string;
-  updatedAt: string;
-  status?: 'active' | 'inactive' | 'pending' | 'deleted' | 'suspended';
-  role?: 'admin' | 'member' | 'guest';
-};
+import { MemberByExternalId } from '@/lib/types/member';
 
 export function MemberDetails({
   member,
   isEditMode,
   organizationId,
 }: {
-  member: Member;
+  member: MemberByExternalId;
   isEditMode: boolean;
   organizationId: string;
 }) {
   const router = useRouter();
   const originalMemberRef = useRef(member);
-  const [formData, setFormData] = useState<Member>(member);
+  const [formData, setFormData] = useState<MemberByExternalId>(member);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [displayData, setDisplayData] = useState<Member>(member);
+  const [displayData, setDisplayData] = useState<MemberByExternalId>(member);
 
   useEffect(() => {
     if (member && Object.keys(member).length > 0) {
@@ -67,12 +52,20 @@ export function MemberDetails({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const updateMember = async (member: Member) => {
+  const updateMember = async (member: MemberByExternalId) => {
     console.log('Updating member with data:', member);
+    if (!member.id) {
+      throw new Error('Member ID is required');
+    }
     const resp = await typedApiClient.PUT(
-      /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
-      `/users/${member.id}/organization/${organizationId}`,
+      '/users/organization/{organizationId}/members/{memberId}',
       {
+        params: {
+          path: {
+            organizationId: organizationId,
+            memberId: member.id,
+          },
+        },
         body: member,
       }
     );
@@ -152,21 +145,6 @@ export function MemberDetails({
                 <p className="text-lg">{displayData.email}</p>
               )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              {isEditMode ? (
-                <Input
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              ) : (
-                <p className="text-lg">{displayData.phone || 'Not provided'}</p>
-              )}
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="notes">Notes</Label>
               {isEditMode ? (

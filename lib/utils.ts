@@ -15,6 +15,15 @@ export function formatDate(date: Date) {
   });
 }
 
+export const formatDateString = (dateString?: string) => {
+  if (!dateString) return 'N/A';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
 export interface ApiResponse<T> {
   ok: boolean;
   data?: T;

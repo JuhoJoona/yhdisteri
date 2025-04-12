@@ -18,7 +18,7 @@ const MembersTable = async ({
   members: OrganizationMember[];
   searchQuery?: string;
   statusFilter?: string;
-  organizationId: string;
+  organizationId: string | undefined;
   locale: string;
 }) => {
   const t = await getTranslations({ locale, namespace: 'Member' });
@@ -56,7 +56,7 @@ const MembersTable = async ({
           <input type="hidden" name="organizationId" value={organizationId} />
           <Button type="submit" size="sm" className="self-start sm:self-auto">
             <Download className="mr-2 h-4 w-4" />
-            Export Members
+            {t('exportMembers')}
           </Button>
         </form>
       </div>
@@ -71,7 +71,7 @@ const MembersTable = async ({
             defaultValue={searchQuery}
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
           />
-          <Button type="submit">Search</Button>
+          <Button type="submit">{t('search')}</Button>
         </div>
       </form>
 
@@ -82,7 +82,7 @@ const MembersTable = async ({
             legacyBehavior
           >
             <TabsTrigger value="all" className="flex-1 sm:flex-none">
-              All
+              {t('all')}
               <Badge variant="secondary" className="ml-2">
                 {members.length}
               </Badge>
@@ -93,7 +93,7 @@ const MembersTable = async ({
             legacyBehavior
           >
             <TabsTrigger value="active" className="flex-1 sm:flex-none">
-              Active
+              {t('active')}
               <Badge variant="secondary" className="ml-2">
                 {activeMembersCount}
               </Badge>
@@ -104,7 +104,7 @@ const MembersTable = async ({
             legacyBehavior
           >
             <TabsTrigger value="inactive" className="flex-1 sm:flex-none">
-              Inactive
+              {t('inactive')}
               <Badge variant="secondary" className="ml-2">
                 {inactiveMembersCount}
               </Badge>
@@ -115,7 +115,7 @@ const MembersTable = async ({
             legacyBehavior
           >
             <TabsTrigger value="pending" className="flex-1 sm:flex-none">
-              Pending
+              {t('pending')}
               <Badge variant="secondary" className="ml-2">
                 {pendingMembersCount}
               </Badge>
@@ -126,7 +126,7 @@ const MembersTable = async ({
         <TabsContent value="all" className="mt-0">
           <MembersGrid
             members={filteredMembers}
-            organizationId={organizationId}
+            organizationId={organizationId || ''}
             locale={locale}
           />
         </TabsContent>
@@ -134,7 +134,7 @@ const MembersTable = async ({
         <TabsContent value="active" className="mt-0">
           <MembersGrid
             members={filteredMembers}
-            organizationId={organizationId}
+            organizationId={organizationId || ''}
             locale={locale}
           />
         </TabsContent>
@@ -142,7 +142,7 @@ const MembersTable = async ({
         <TabsContent value="inactive" className="mt-0">
           <MembersGrid
             members={filteredMembers}
-            organizationId={organizationId}
+            organizationId={organizationId || ''}
             locale={locale}
           />
         </TabsContent>
@@ -150,7 +150,7 @@ const MembersTable = async ({
         <TabsContent value="pending" className="mt-0">
           <MembersGrid
             members={filteredMembers}
-            organizationId={organizationId}
+            organizationId={organizationId || ''}
             locale={locale}
           />
         </TabsContent>
@@ -187,23 +187,23 @@ function filterMembers(
 }
 
 // Simplified MembersGrid component for server rendering
-const MembersGrid = ({
+const MembersGrid = async ({
   members,
   organizationId,
   locale,
 }: {
   members: OrganizationMember[];
-  organizationId: string;
+  organizationId: string | undefined;
   locale: string;
 }) => {
+  const t = await getTranslations({ locale, namespace: 'Member' });
   if (members.length === 0) {
     return (
       <div className="col-span-full text-center py-12 border border-dashed rounded-lg bg-muted/20">
         <Users className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-        <h3 className="text-lg font-medium">No members found</h3>
+        <h3 className="text-lg font-medium">{t('noMembersFound')}</h3>
         <p className="text-muted-foreground max-w-md mx-auto mt-1">
-          Try adjusting your search or filter criteria to find what you&apos;re
-          looking for
+          {t('tryAdjustingSearchOrFilterCriteriaToFindWhatYouAreLookingFor')}
         </p>
       </div>
     );
@@ -219,7 +219,7 @@ const MembersGrid = ({
           >
             <MemberCard
               member={member}
-              organizationId={organizationId}
+              organizationId={organizationId || ''}
               locale={locale}
             />
           </Link>

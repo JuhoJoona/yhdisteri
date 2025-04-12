@@ -15,9 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/client';
-import { User } from '@supabase/supabase-js';
+import { OwnData } from '@/lib/types/member';
 
-export default function SecuritySettings({ user }: { user: User }) {
+export default function SecuritySettings({ user }: { user: OwnData }) {
   console.log('user', user);
   const supabaseClient = createClient();
   const router = useRouter();

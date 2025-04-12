@@ -58,7 +58,7 @@ export async function signup(
     password: formData.get('password') as string,
     first_name: formData.get('first_name') as string,
     last_name: formData.get('last_name') as string,
-    address: formData.get('address') as string,
+    street: formData.get('street') as string,
     city: formData.get('city') as string,
     zip_code: formData.get('zip_code') as string,
   };
@@ -99,7 +99,7 @@ export async function signup(
         firstName: user.user_metadata.first_name,
         lastName: user.user_metadata.last_name,
         email: user.email,
-        address: signInData.address,
+        street: signInData.street,
         city: signInData.city,
         zip_code: signInData.zip_code,
       },

@@ -2,10 +2,26 @@ import { getOrganizationMembers } from '@/lib/services/usersService';
 import ClientMembersTable from './ClientMembersTable';
 import { StatsCard } from '@/components/StatsCard';
 import CopyInviteLinkToClipboard from './CopyCodeToClipboard';
-import { getOrganization } from '@/lib/services/organizationService';
-import { CalendarIcon, ClockIcon, CodeIcon } from 'lucide-react';
+import {
+  getOrganization,
+  getOrganizationMembershipTypes,
+} from '@/lib/services/organizationService';
+import { AlertCircle, CalendarIcon, ClockIcon, CodeIcon } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { PlusCircle } from 'lucide-react';
+import MembershipTypesTable from '@/components/MembershipTypesTable';
 
 const OrganizationPage = async ({
   searchParams,
@@ -16,10 +32,15 @@ const OrganizationPage = async ({
 }) => {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Organization' });
+
   const { organizationId, searchTerm } = await searchParams;
 
   const members = await getOrganizationMembers(organizationId || '');
   const organization = await getOrganization(organizationId || '');
+  const membershipTypes = await getOrganizationMembershipTypes(
+    organizationId || ''
+  );
+  console.log('membershipTypes', membershipTypes);
 
   const newThisMonth =
     members?.filter(
@@ -46,6 +67,29 @@ const OrganizationPage = async ({
         <CopyInviteLinkToClipboard
           code={organization?.organization?.code || ''}
         />
+      </div>
+
+      <div className="mb-8">
+        {!organization?.organization?.stripeAccountConnected && (
+          <div className="bg-card rounded-md p-6 border border-red-500 flex items-center flex-row gap-2 justify-between">
+            <div className="flex items-center flex-row gap-2">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              <h2 className="text-sm font-medium text-muted-foreground">
+                {t('stripeAccountNotConnected')}
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {t('stripeAccountNotConnectedDescription')}
+            </p>
+            <Button variant="outline" size="sm">
+              <Link
+                href={`/admin/dashboard/organization/stripe?organizationId=${organizationId}`}
+              >
+                {t('connectStripeAccount')}
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
 
       {organization && (
@@ -121,6 +165,11 @@ const OrganizationPage = async ({
         </div>
       )}
 
+      <MembershipTypesTable
+        membershipTypes={membershipTypes || []}
+        organizationId={organizationId || ''}
+      />
+
       <div className="space-y-8">
         <StatsCard
           stats={{
@@ -131,7 +180,6 @@ const OrganizationPage = async ({
             inactive:
               members?.filter((member) => member.status === 'inactive')
                 .length || 0,
-            /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
             pending:
               members?.filter((member) => member.status === 'pending').length ||
               0,
@@ -144,7 +192,6 @@ const OrganizationPage = async ({
           <ClientMembersTable
             members={members || []}
             searchQuery={searchTerm}
-            /* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */
             organizationId={organizationId}
             locale={locale}
           />

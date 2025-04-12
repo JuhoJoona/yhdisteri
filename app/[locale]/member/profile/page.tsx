@@ -25,6 +25,10 @@ export default async function ProfilePage({
   const { tab } = await searchParams;
   const activeTab = tab || 'personal';
 
+  if (!userData) {
+    return <div>{t('memberNotFound')}</div>;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <Button variant="outline" size="sm" asChild className="mb-6">
@@ -36,7 +40,6 @@ export default async function ProfilePage({
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Profile Sidebar */}
-        {/* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */}
         <ProfileSideBar user={userData} />
 
         {/* Main Content */}
@@ -63,7 +66,6 @@ export default async function ProfilePage({
 
             {/* Personal Information Tab */}
             <TabsContent value="personal">
-              {/* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */}
               <PersonalInformation userData={userData} />
             </TabsContent>
 
@@ -74,7 +76,6 @@ export default async function ProfilePage({
 
             {/* Security Tab */}
             <TabsContent value="security">
-              {/* @ts-expect-error Veän kaikkia lättyy ku en jaksa korjata */}
               <SecuritySettings user={userData} />
             </TabsContent>
 

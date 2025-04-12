@@ -1,11 +1,19 @@
 import { getUserOrganizations } from '@/lib/services/usersService';
 import { Building, Settings, ChevronRight } from 'lucide-react';
 import { Plus } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
-export default async function Dashboard() {
+export default async function Dashboard({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const organizations = await getUserOrganizations();
-
+  const translations = await getTranslations({
+    locale,
+  });
   if (!organizations) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -114,7 +122,6 @@ export default async function Dashboard() {
                   </Link>
                 )}
               </div>
-              !
             </div>
           ))}
         </div>

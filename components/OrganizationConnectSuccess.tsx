@@ -6,41 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { typedApiClient } from '@/lib/client';
 
-export default function OrganizationConnectSuccess() {
-  const { stripeId } = useParams();
+export default function OrganizationConnectSuccess({
+  isLoading,
+  orgName,
+  organizationId,
+}: {
+  isLoading: boolean;
+  orgName: string | undefined;
+  organizationId: string;
+}) {
   const t = useTranslations('OrganizationConnectSuccess');
-  const [orgName, setOrgName] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  const organizationId = localStorage.getItem('organizationId');
-
-  useEffect(() => {
-    // TODO: SEND ORGANIZATION STRIPE ID TO API
-    (async () => {
-      if (organizationId) {
-        const response = await typedApiClient.POST(
-          '/organizations/billing/stripe',
-          {
-            body: {
-              organizationId,
-              stripeId: stripeId as string,
-            },
-          }
-        );
-        console.log('response', response);
-      }
-    })();
-    const timer = setTimeout(() => {
-      setOrgName('Your Organization');
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [organizationId, stripeId]);
+  console.log('orgName', orgName);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
@@ -142,12 +122,18 @@ export default function OrganizationConnectSuccess() {
             </div>
 
             <div className="flex flex-col space-y-3">
-              <Link href="/dashboard" className="w-full">
+              <Link
+                href={`/admin/dashboard/organization?organizationId=${organizationId}`}
+                className="w-full"
+              >
                 <Button className="w-full bg-black hover:bg-gray-800 text-white">
                   {t('goToDashboard')}
                 </Button>
               </Link>
-              <Link href="/settings/organization" className="w-full">
+              <Link
+                href={`/admin/dashboard/organization?organizationId=${organizationId}`}
+                className="w-full"
+              >
                 <Button
                   variant="outline"
                   className="w-full border-black text-black hover:bg-gray-100"

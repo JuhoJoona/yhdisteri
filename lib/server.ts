@@ -33,7 +33,7 @@ export async function createClient() {
 }
 
 export const typedApiClient = createFetchClient<paths>({
-  baseUrl: 'https://yhdisteri-api.onrender.com',
+  baseUrl: 'http://localhost:3002',
 });
 
 const middleware: Middleware = {
@@ -41,8 +41,8 @@ const middleware: Middleware = {
     try {
       // Routes that don't require authentication
       const publicRoutes = [
-        `https://yhdisteri-api.onrender.com/plans`,
-        `$https://yhdisteri-api.onrender.com/health`,
+        `http://localhost:3002/plans`,
+        `http://localhost:3002/health`,
       ];
 
       // Skip authentication for public routes

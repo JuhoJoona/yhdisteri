@@ -3,7 +3,7 @@ import type { paths } from '@/lib/types';
 import { createBrowserClient } from '@supabase/ssr';
 
 export const typedApiClient = createFetchClient<paths>({
-  baseUrl: 'http://localhost:3002',
+  baseUrl: 'https://yhdisteri-api.onrender.com',
 });
 
 const supabaseUrl = 'https://jpknmfiuuwknywnfokxa.supabase.co';

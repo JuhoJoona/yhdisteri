@@ -41,7 +41,7 @@ const getOrganizationByCode = async (code: string) => {
   try {
     console.log('getOrganizationByCode', code);
     const response = await fetch(
-      `http://localhost:3002/organizations/code/${code}`
+      `https://yhdisteri-api.onrender.com/organizations/code/${code}`
     );
     const data = await response.json();
     console.log('response', data);

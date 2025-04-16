@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
   Card,
@@ -15,14 +13,7 @@ import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function SuccessPage() {
-  const searchParams = useSearchParams();
   const t = useTranslations('Member');
-  const [sessionId, setSessionId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const sessionId = searchParams.get('session_id');
-    setSessionId(sessionId);
-  }, [searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-[400px]">

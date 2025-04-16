@@ -6,7 +6,7 @@ import {
 } from '@/lib/services/billingService';
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const BrandLogo = () => (
   <div className="w-16 h-16 bg-indigo-200 rounded-full mb-4 flex items-center justify-center text-indigo-700 font-bold">

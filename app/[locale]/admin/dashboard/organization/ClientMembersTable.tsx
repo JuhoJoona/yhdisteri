@@ -15,7 +15,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Link from 'next/link';
 import { MemberCard } from '@/components/MemberCard';
 import { useTranslations } from 'next-intl';
 import {

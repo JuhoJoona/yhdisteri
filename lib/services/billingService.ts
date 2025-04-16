@@ -57,19 +57,3 @@ export const createAccountLink = async (accountId: string) => {
     throw error;
   }
 };
-
-export const getCheckoutSession = async (sessionId: string) => {
-  try {
-    const response = await typedApiClient.GET('/billing/checkout/{sessionId}', {
-      params: {
-        path: {
-          sessionId,
-        },
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching checkout session:', error);
-    throw error;
-  }
-};

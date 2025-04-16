@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import {
   Card,
   CardContent,
@@ -19,7 +18,6 @@ import { getUser } from '@/lib/client';
 
 export default function MembershipPaymentPage() {
   const params = useParams();
-  const t = useTranslations('Member');
   const [membershipType, setMembershipType] =
     useState<OrganizationMembershipType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +40,7 @@ export default function MembershipPaymentPage() {
     };
 
     fetchUserData();
-  }, []);
+  }, [memberId]);
 
   useEffect(() => {
     const fetchMembershipType = async () => {

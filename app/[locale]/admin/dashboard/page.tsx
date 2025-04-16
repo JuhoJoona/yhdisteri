@@ -1,12 +1,9 @@
 import { getUserOrganizations } from '@/lib/services/usersService';
 import {
   Building,
-  Settings,
   Users,
   ChevronRight,
   Calendar,
-  Bell,
-  User,
   Plus,
   Code,
 } from 'lucide-react';

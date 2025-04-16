@@ -1,6 +1,5 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Share2, Shield } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Code } from 'lucide-react';
 import { Building } from 'lucide-react';
 import { Organization } from '@/lib/types/organization';

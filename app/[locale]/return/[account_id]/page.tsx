@@ -23,7 +23,7 @@ export default async function Return({
       <OrganizationConnectSuccess
         isLoading={false}
         orgName={orgName}
-        organizationId={organizationData?.organization?.id}
+        organizationId={organizationData?.organization?.id || ''}
       />
     </>
   );

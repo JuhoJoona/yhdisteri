@@ -1,10 +1,9 @@
-import { Calendar, Download, Users } from 'lucide-react';
+import { Calendar, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -14,7 +13,6 @@ import { Organization } from '@/lib/types/organization';
 import { formatDateString } from '@/lib/utils';
 import { CreditCard, MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { Button } from '@/components/ui/button';
 import { OwnMembershipInfo, OrganizationMember } from '@/lib/types/member';
 
 const OrganizationDetails = async ({

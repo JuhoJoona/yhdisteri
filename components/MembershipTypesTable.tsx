@@ -65,7 +65,8 @@ const MembershipTypesTable = ({
       ...newTypeData,
       organizationId,
       stripeProductId: '',
-      price: parseFloat(newTypeData.price),
+      price: newTypeData.price,
+      interval: newTypeData.interval as 'month' | 'year',
     };
     await createMembershipType(organizationId, membershipType);
     setIsAddDialogOpen(false); // Close dialog on submit for now

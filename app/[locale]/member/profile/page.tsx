@@ -13,15 +13,15 @@ export default async function ProfilePage({
   params,
   searchParams,
 }: {
-  params: { locale: string };
-  searchParams: { tab?: string };
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Member' });
 
   const userData = await getOwnData();
 
-  const { tab } = searchParams;
+  const { tab } = await searchParams;
   const activeTab = tab || 'personal';
 
   if (!userData) {
@@ -74,7 +74,7 @@ export default async function ProfilePage({
 
             {/* Security Tab */}
             <TabsContent value="security">
-              <SecuritySettings user={userData} />
+              <SecuritySettings />
             </TabsContent>
           </Tabs>
         </div>

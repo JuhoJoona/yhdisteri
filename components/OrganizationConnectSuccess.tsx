@@ -1,14 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { CheckCircle, Building2, Users, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { typedApiClient } from '@/lib/client';
 
 export default function OrganizationConnectSuccess({
   isLoading,

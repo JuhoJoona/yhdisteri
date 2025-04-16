@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Lock, Shield, Trash2 } from 'lucide-react';
+import { Lock, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
   Card,
@@ -15,9 +15,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/client';
-import { OwnData } from '@/lib/types/member';
 import { useTranslations } from 'next-intl';
-export default function SecuritySettings({ user }: { user: OwnData }) {
+export default function SecuritySettings() {
   const supabaseClient = createClient();
   const t = useTranslations('SecuritySettings');
   const router = useRouter();

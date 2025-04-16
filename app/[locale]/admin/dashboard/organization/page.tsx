@@ -1,6 +1,5 @@
 import { getOrganizationMembers } from '@/lib/services/usersService';
 import ClientMembersTable from './ClientMembersTable';
-import { StatsCard } from '@/components/StatsCard';
 import CopyInviteLinkToClipboard from './CopyCodeToClipboard';
 import {
   getOrganization,

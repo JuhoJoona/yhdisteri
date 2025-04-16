@@ -1,5 +1,4 @@
 import { typedApiClient } from '../server';
-import { OrganizationMembershipType } from '../types/plans';
 
 const getPlans = async () => {
   const response = await typedApiClient.GET('/plans');

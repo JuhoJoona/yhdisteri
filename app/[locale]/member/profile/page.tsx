@@ -8,21 +8,20 @@ import PersonalInformation from './PersonalInformation';
 import CommunicationPreferences from './CommunicationPreferences';
 import SecuritySettings from './SecuritySettings';
 import { getTranslations } from 'next-intl/server';
-import BillingInformation from './BillingInformation';
 
 export default async function ProfilePage({
   params,
   searchParams,
 }: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<{ tab?: string }>;
+  params: { locale: string };
+  searchParams: { tab?: string };
 }) {
-  const { locale } = await params;
+  const { locale } = params;
   const t = await getTranslations({ locale, namespace: 'Member' });
 
   const userData = await getOwnData();
 
-  const { tab } = await searchParams;
+  const { tab } = searchParams;
   const activeTab = tab || 'personal';
 
   if (!userData) {
@@ -57,10 +56,9 @@ export default async function ProfilePage({
                 </Link>
               </TabsTrigger>
               <TabsTrigger value="security" asChild>
-                <Link href="/member/profile?tab=security">{t('security')}</Link>
-              </TabsTrigger>
-              <TabsTrigger value="billing" asChild>
-                <Link href="/member/profile?tab=billing">{t('billing')}</Link>
+                <Link href="/member/profile?tab=security">
+                  {t('securitySettings')}
+                </Link>
               </TabsTrigger>
             </TabsList>
 
@@ -71,17 +69,12 @@ export default async function ProfilePage({
 
             {/* Communication Tab */}
             <TabsContent value="communication">
-              <CommunicationPreferences />
+              <CommunicationPreferences locale={locale} />
             </TabsContent>
 
             {/* Security Tab */}
             <TabsContent value="security">
               <SecuritySettings user={userData} />
-            </TabsContent>
-
-            {/* Billing Tab */}
-            <TabsContent value="billing">
-              <BillingInformation />
             </TabsContent>
           </Tabs>
         </div>

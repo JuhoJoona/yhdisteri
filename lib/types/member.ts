@@ -19,3 +19,6 @@ export type MemberByExternalIdResponse =
   paths['/users/external/{id}']['get']['responses']['200']['content']['application/json'];
 
 export type MemberByExternalId = MemberByExternalIdResponse;
+
+export type UpdateUserRequestBody =
+  paths['/users/{id}']['put']['requestBody']['content']['application/json'];

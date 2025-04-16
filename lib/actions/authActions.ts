@@ -42,7 +42,7 @@ export async function login(
 
   revalidatePath('/', 'layout');
 
-  redirect(`/${locale}/lander`);
+  redirect(`/${locale}/member/dashboard`);
 }
 
 export async function signup(
@@ -116,6 +116,6 @@ export async function signup(
       redirect(`/${locale}/${redirectDestination}`);
     }
   } else {
-    redirect(`/${locale}/lander`);
+    redirect(`/${locale}/member/dashboard`);
   }
 }

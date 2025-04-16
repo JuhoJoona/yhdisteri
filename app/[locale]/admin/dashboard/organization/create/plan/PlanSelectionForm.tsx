@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Check } from 'lucide-react';
 import { Plan } from '@/lib/types/plans';
 import { CreateOrganizationRequest } from '@/lib/types/organization';
+import { useTranslations } from 'next-intl';
 
 export default function PlanSelectionForm({
   plans,
@@ -30,6 +31,7 @@ export default function PlanSelectionForm({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const t = useTranslations('OrganizationCreate.plan');
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,10 +48,8 @@ export default function PlanSelectionForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Choose a Plan</CardTitle>
-        <CardDescription>
-          Select the best plan for your organization
-        </CardDescription>
+        <CardTitle>{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent>
@@ -81,7 +81,9 @@ export default function PlanSelectionForm({
                       ${plan.price}/{plan.interval}
                     </p>
                     {plan.isPopular && (
-                      <span className="text-xs text-primary">Popular</span>
+                      <span className="text-xs text-primary">
+                        {t('popular')}
+                      </span>
                     )}
                   </div>
                 </Label>
@@ -98,10 +100,10 @@ export default function PlanSelectionForm({
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
+                {t('processing')}
               </>
             ) : (
-              'Complete Setup'
+              t('completeSetup')
             )}
           </Button>
         </CardFooter>

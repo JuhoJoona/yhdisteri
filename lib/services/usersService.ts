@@ -1,4 +1,5 @@
 import { typedApiClient } from '../server';
+import { UpdateUserRequestBody } from '../types/member';
 
 export const getUserByExternalId = async (id: string) => {
   try {
@@ -98,39 +99,20 @@ export const getOwnMembershipInfo = async (organizationId: string) => {
   return response.data;
 };
 
+export const updateUserById = async (
+  id: string,
+  data: UpdateUserRequestBody
+) => {
+  const response = await typedApiClient.PUT('/users/{id}', {
+    params: {
+      path: { id },
+    },
+    body: data,
+  });
+  return response.data;
+};
+
 export const getUserPreferences = async () => {
   const response = await typedApiClient.GET('/users/preferences/me');
-  return response.data;
-};
-
-export const getUserBillingDetails = async () => {
-  const response = await typedApiClient.GET('/users/billing/me');
-  return response.data;
-};
-
-export const updateUserBillingDetails = async (details: {
-  billingStreet: string;
-  billingCity: string;
-  billingZip: string;
-  billingFullname: string;
-  billingEmail: string;
-  billingCompany: string | null;
-  billingCompanyId: string | null;
-}) => {
-  const response = await typedApiClient.POST('/users/billing/me', {
-    body: details,
-  });
-  return response.data;
-};
-
-export const updateUserPreferences = async (preferences: {
-  email: boolean;
-  sms: boolean;
-  push: boolean;
-  marketing: boolean;
-}) => {
-  const response = await typedApiClient.POST('/users/preferences/me', {
-    body: preferences,
-  });
   return response.data;
 };

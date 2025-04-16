@@ -13,24 +13,26 @@ import { TabsContent } from '@/components/ui/tabs';
 import { Organization } from '@/lib/types/organization';
 import { formatDateString } from '@/lib/utils';
 import { CreditCard, MapPin } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
 import { OwnMembershipInfo, OrganizationMember } from '@/lib/types/member';
 
-const OrganizationDetails = ({
+const OrganizationDetails = async ({
   organization,
   membershipInfo,
   members,
+  locale,
 }: {
   organization: Organization | undefined;
   membershipInfo: OwnMembershipInfo | undefined;
   members: OrganizationMember[] | undefined;
+  locale: string;
 }) => {
   if (!organization || !membershipInfo || !members) {
     return null;
   }
 
-  const t = useTranslations('Member');
+  const t = await getTranslations({ locale, namespace: 'Member' });
   return (
     <TabsContent value="overview">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -133,18 +135,32 @@ const OrganizationDetails = ({
                 </h3>
                 <Badge
                   variant="outline"
-                  className="bg-green-50 text-green-700 border-green-200"
+                  className={
+                    membershipInfo?.status === 'active'
+                      ? 'bg-green-50 text-green-700 border-green-200'
+                      : 'bg-red-50 text-red-700 border-red-200'
+                  }
                 >
-                  {membershipInfo?.status || 'Active'}
+                  {membershipInfo?.status || t('notAvailable')}
+                </Badge>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-1">
+                  {t('paymentStatus')}
+                </h3>
+                <Badge
+                  variant="outline"
+                  className={
+                    membershipInfo?.membershipType?.paymentStatus === 'paid'
+                      ? 'bg-green-50 text-green-700 border-green-200'
+                      : 'bg-red-50 text-red-700 border-red-200'
+                  }
+                >
+                  {membershipInfo?.membershipType?.paymentStatus ||
+                    t('notAvailable')}
                 </Badge>
               </div>
             </CardContent>
-            <CardFooter className="border-t pt-4 flex flex-col items-stretch gap-2">
-              <Button variant="outline" size="sm" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                {t('downloadMembershipCertificate')}
-              </Button>
-            </CardFooter>
           </Card>
 
           <Card className="mt-6">
@@ -189,8 +205,8 @@ const OrganizationDetails = ({
                   }
                 >
                   {organization.organization?.paymentsActive
-                    ? t('active')
-                    : t('inactive')}
+                    ? t('canReceivePayments')
+                    : t('cannotReceivePayments')}
                 </Badge>
               </div>
             </CardContent>

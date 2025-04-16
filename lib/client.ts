@@ -14,6 +14,12 @@ export function createClient() {
   return createBrowserClient(supabaseUrl, supabaseAnonKey);
 }
 
+export async function getUser() {
+  const supabaseClient = createClient();
+  const { data: sessionData } = await supabaseClient.auth.getSession();
+  return sessionData.session?.user;
+}
+
 const middleware: Middleware = {
   async onRequest({ request }) {
     try {

@@ -1,7 +1,22 @@
 import { typedApiClient } from '../client';
 import { OrganizationMembershipType } from '../types/plans';
 
-const createMembershipType = async (
+export const getMembershipType = async (id: string) => {
+  const response = await typedApiClient.GET(
+    '/organizations/membership-types/{id}',
+    {
+      params: {
+        path: {
+          id,
+        },
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const createMembershipType = async (
   organizationId: string,
   membershipType: OrganizationMembershipType
 ) => {
@@ -12,7 +27,7 @@ const createMembershipType = async (
       body: {
         name: membershipType.name || '',
         description: membershipType.description || '',
-        price: membershipType.price || 0,
+        price: parseFloat(membershipType.price || '0'),
         interval: membershipType.interval || '',
         stripeProductId: membershipType.stripeProductId || '',
       },
@@ -21,5 +36,3 @@ const createMembershipType = async (
 
   return response.data;
 };
-
-export { createMembershipType };

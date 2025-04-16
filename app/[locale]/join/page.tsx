@@ -21,7 +21,7 @@ export default async function JoinCodePage({
     const joinCode = formData.get('joinCode') as string;
 
     if (!joinCode || !joinCode.trim()) {
-      return redirect('/lander?error=empty-code');
+      return redirect('/member/dashboard?error=empty-code');
     }
 
     return redirect(`/join/${joinCode.trim()}`);

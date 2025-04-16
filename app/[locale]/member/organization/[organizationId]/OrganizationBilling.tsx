@@ -10,21 +10,23 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
-import { useTranslations } from 'next-intl';
 import { OwnMembershipInfo } from '@/lib/types/member';
 import { OrganizationMembershipType } from '@/lib/types/plans';
 import { CreditCard, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
-const OrganizationBilling = ({
+const OrganizationBilling = async ({
   membershipInfo,
   membershipTypes,
+  locale,
 }: {
   membershipInfo: OwnMembershipInfo | undefined;
   membershipTypes: OrganizationMembershipType[] | undefined;
+  locale: string;
 }) => {
-  const t = useTranslations('Member');
+  const t = await getTranslations({ locale, namespace: 'Member' });
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -52,7 +54,8 @@ const OrganizationBilling = ({
     }
   };
 
-  const hasPaidMembership = membershipInfo?.membershipType !== null;
+  const hasPaidMembership =
+    membershipInfo?.membershipType?.paymentStatus === 'paid';
 
   return (
     <TabsContent value="subscription">
@@ -90,6 +93,18 @@ const OrganizationBilling = ({
                       : 'inactive'
                   )}
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">
+                    {t('paymentStatus')}
+                  </h3>
+                  {getStatusBadge(
+                    hasPaidMembership
+                      ? membershipInfo?.membershipType?.paymentStatus ||
+                          'inactive'
+                      : 'inactive'
+                  )}
+                </div>
+
                 <div>
                   <h3 className="text-sm font-medium text-muted-foreground mb-1">
                     {t('startDate')}

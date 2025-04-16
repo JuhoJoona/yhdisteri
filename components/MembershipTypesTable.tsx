@@ -28,13 +28,16 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { createMembershipType } from '@/lib/services/plansClientService';
+import { toast } from 'sonner';
 
 const MembershipTypesTable = ({
   membershipTypes,
   organizationId,
+  stripeAccountConnected,
 }: {
   membershipTypes: OrganizationMembershipTypes;
   organizationId: string;
+  stripeAccountConnected: boolean;
 }) => {
   const t = useTranslations('Organization');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -44,6 +47,8 @@ const MembershipTypesTable = ({
     price: '',
     interval: '',
   });
+
+  console.log('stripeAccountConnected', stripeAccountConnected);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -55,6 +60,7 @@ const MembershipTypesTable = ({
   const handleAddMembershipType = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Submitting new membership type:', newTypeData);
+
     const membershipType: OrganizationMembershipType = {
       ...newTypeData,
       organizationId,
@@ -97,9 +103,23 @@ const MembershipTypesTable = ({
           </Card>
         ))}
 
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <Dialog
+          open={isAddDialogOpen}
+          onOpenChange={(open) => {
+            setIsAddDialogOpen(open);
+          }}
+        >
           <DialogTrigger asChild>
-            <Card className="flex items-center justify-center border-dashed border-2 hover:border-primary/50 transition-colors cursor-pointer">
+            <Card
+              className="flex items-center justify-center border-dashed border-2 hover:border-primary/50 transition-colors cursor-pointer"
+              onClick={(e) => {
+                if (!stripeAccountConnected) {
+                  e.preventDefault();
+                  toast.error(t('stripeAccountNotConnected'));
+                  return;
+                }
+              }}
+            >
               <div className="flex flex-col items-center justify-center text-muted-foreground hover:text-primary p-4 text-center">
                 <PlusCircle className="h-8 w-8 mb-2" />
                 {t('addNewMembershipType')}

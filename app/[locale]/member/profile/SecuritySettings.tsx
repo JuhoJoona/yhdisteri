@@ -16,10 +16,10 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/client';
 import { OwnData } from '@/lib/types/member';
-
+import { useTranslations } from 'next-intl';
 export default function SecuritySettings({ user }: { user: OwnData }) {
-  console.log('user', user);
   const supabaseClient = createClient();
+  const t = useTranslations('SecuritySettings');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState({
@@ -73,36 +73,6 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
     }
   };
 
-  const handleTwoFactorAuth = async () => {
-    setIsLoading((prev) => ({ ...prev, twoFactor: true }));
-
-    try {
-      // Redirect to Supabase's 2FA setup
-      // This is a simplified approach - in a real implementation you would:
-      // 1. Request the 2FA setup from Supabase
-      // 2. Get the QR code or secret to display to the user
-      // 3. Handle verification of the setup
-
-      console.log(
-        'Two-factor authentication setup is not fully implemented yet'
-      );
-
-      // When implemented, might look like:
-      // const { data, error } = await supabaseClient.auth.mfa.enroll();
-      // if (error) throw error;
-      // Handle the MFA setup flow...
-    } catch (error: Error | unknown) {
-      console.error('Error setting up 2FA:', error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Failed to setup two-factor authentication';
-      console.log(errorMessage);
-    } finally {
-      setIsLoading((prev) => ({ ...prev, twoFactor: false }));
-    }
-  };
-
   const handleDeleteAccount = async () => {
     if (
       !window.confirm(
@@ -115,15 +85,8 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
     setIsLoading((prev) => ({ ...prev, deleteAccount: true }));
 
     try {
-      // In a real application, you would likely have an API endpoint to handle account deletion
-      // This would ensure that all user data is properly cleaned up
-
-      // For a simpler implementation, we can use the admin API if available:
       const { error } = await supabaseClient.auth.signOut();
       if (error) throw error;
-
-      // Note: For actual account deletion, you would need a server-side function
-      // with admin privileges to call supabase.auth.admin.deleteUser(user.id)
 
       console.log('Account deleted, you have been signed out');
       router.push('/'); // Redirect to homepage
@@ -140,19 +103,19 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Security Settings</CardTitle>
-        <CardDescription>Manage your account security</CardDescription>
+        <CardTitle>{t('securitySettings')}</CardTitle>
+        <CardDescription>{t('manageYourAccountSecurity')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
           <form onSubmit={handlePasswordChange} className="space-y-2">
-            <h3 className="text-lg font-medium">Change Password</h3>
+            <h3 className="text-lg font-medium">{t('changePassword')}</h3>
             <p className="text-sm text-muted-foreground">
-              Update your password to keep your account secure
+              {t('updateYourPasswordToKeepYourAccountSecure')}
             </p>
             <div className="grid gap-2 pt-2">
               <div className="space-y-2">
-                <Label htmlFor="current-password">Current Password</Label>
+                <Label htmlFor="current-password">{t('currentPassword')}</Label>
                 <Input
                   id="current-password"
                   type="password"
@@ -167,7 +130,7 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="new-password">New Password</Label>
+                <Label htmlFor="new-password">{t('newPassword')}</Label>
                 <Input
                   id="new-password"
                   type="password"
@@ -182,7 +145,9 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm New Password</Label>
+                <Label htmlFor="confirm-password">
+                  {t('confirmNewPassword')}
+                </Label>
                 <Input
                   id="confirm-password"
                   type="password"
@@ -203,11 +168,11 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
               type="submit"
             >
               {isLoading.password ? (
-                'Updating...'
+                t('updating')
               ) : (
                 <>
                   <Lock className="h-4 w-4 mr-2" />
-                  Update Password
+                  {t('updatePassword')}
                 </>
               )}
             </Button>
@@ -216,35 +181,11 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
           <Separator />
 
           <div className="space-y-2">
-            <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
-            <p className="text-sm text-muted-foreground">
-              Add an extra layer of security to your account
-            </p>
-            <Button
-              variant="outline"
-              className="mt-2"
-              onClick={handleTwoFactorAuth}
-              disabled={isLoading.twoFactor}
-            >
-              {isLoading.twoFactor ? (
-                'Setting up...'
-              ) : (
-                <>
-                  <Shield className="h-4 w-4 mr-2" />
-                  Enable Two-Factor Authentication
-                </>
-              )}
-            </Button>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-2">
             <h3 className="text-lg font-medium text-destructive">
-              Danger Zone
+              {t('dangerZone')}
             </h3>
             <p className="text-sm text-muted-foreground">
-              Permanently delete your account and all of your data
+              {t('permanentlyDeleteYourAccountAndAllOfYourData')}
             </p>
             <Button
               variant="destructive"
@@ -253,11 +194,11 @@ export default function SecuritySettings({ user }: { user: OwnData }) {
               disabled={isLoading.deleteAccount}
             >
               {isLoading.deleteAccount ? (
-                'Deleting...'
+                t('deleting')
               ) : (
                 <>
                   <Trash2 className="h-4 w-4 mr-2" />
-                  Delete Account
+                  {t('deleteAccount')}
                 </>
               )}
             </Button>

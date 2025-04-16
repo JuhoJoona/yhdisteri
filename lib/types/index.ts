@@ -47,7 +47,8 @@ export interface paths {
     };
     /** Get user by ID */
     get: operations['getUserById'];
-    put?: never;
+    /** Update user by ID */
+    put: operations['updateUserById'];
     post?: never;
     delete?: never;
     options?: never;
@@ -204,6 +205,23 @@ export interface paths {
     put?: never;
     /** Approve a member */
     post: operations['approveMember'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/organizations/{organizationId}/members/{memberId}/suspend': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Suspend a member */
+    post: operations['suspendMember'];
     delete?: never;
     options?: never;
     head?: never;
@@ -460,6 +478,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/billing/checkout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a checkout session */
+    post: operations['createCheckoutSession'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/organizations/membership-types/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get membership type by ID */
+    get: operations['getMembershipType'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -531,8 +583,9 @@ export interface components {
       id?: string;
       name?: string;
       description?: string;
-      price?: number;
-      interval?: string;
+      price?: string;
+      /** @enum {string} */
+      interval?: 'month' | 'year';
       organizationId?: string;
       stripeProductId?: string;
       /** Format: date-time */
@@ -599,6 +652,7 @@ export interface components {
         name?: string;
         description?: string;
         price?: number;
+        paymentStatus?: string;
         interval?: string;
         organizationId?: string;
         stripeProductId?: string;
@@ -716,6 +770,64 @@ export interface operations {
       };
       /** @description Unauthorized */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  updateUserById: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          firstName?: string;
+          lastName?: string;
+          email?: string;
+          profileImageUrl?: string;
+          address?: {
+            street?: string;
+            city?: string;
+            zipCode?: string;
+            country?: string;
+          };
+        };
+      };
+    };
+    responses: {
+      /** @description User updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['MemberWithAddress'];
+        };
+      };
+      /** @description Invalid request body */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description User not found */
+      404: {
         headers: {
           [name: string]: unknown;
         };
@@ -1114,6 +1226,48 @@ export interface operations {
     };
   };
   approveMember: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationId: string;
+        memberId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Member approved */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Member not found */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  suspendMember: {
     parameters: {
       query?: never;
       header?: never;
@@ -1761,6 +1915,101 @@ export interface operations {
       };
       /** @description Unauthorized */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  createCheckoutSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          organizationId?: string;
+          membershipTypeId?: string;
+          price?: number;
+          interval?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description Checkout session created */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            url?: string;
+          };
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getMembershipType: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Membership type */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['OrganizationMembershipType'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Membership type not found */
+      404: {
         headers: {
           [name: string]: unknown;
         };

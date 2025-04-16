@@ -7,10 +7,16 @@ import { Organization } from '@/lib/types/organization';
 import { formatDateString } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-const Header = ({ organization }: { organization: Organization }) => {
-  const t = useTranslations('Member');
+const Header = async ({
+  organization,
+  locale,
+}: {
+  organization: Organization;
+  locale: string;
+}) => {
+  const t = await getTranslations({ locale, namespace: 'Member' });
   return (
     <div className="mb-6">
       <Button variant="outline" size="sm" asChild className="mb-6">
@@ -41,24 +47,6 @@ const Header = ({ organization }: { organization: Organization }) => {
               </span>
             </div>
           </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {organization.organization?.paymentsActive && (
-            <Badge
-              variant="outline"
-              className="bg-green-50 text-green-700 border-green-200"
-            >
-              {t('activeSubscription')}
-            </Badge>
-          )}
-          <Button variant="outline" size="sm">
-            <Share2 className="h-4 w-4 mr-2" />
-            {t('share')}
-          </Button>
-          <Button size="sm">
-            <Shield className="h-4 w-4 mr-2" />
-            {t('manageSubscription')}
-          </Button>
         </div>
       </div>
     </div>

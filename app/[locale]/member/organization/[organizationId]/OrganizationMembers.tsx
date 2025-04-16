@@ -12,14 +12,16 @@ import { TabsContent } from '@/components/ui/tabs';
 import { OrganizationMember } from '@/lib/types/member';
 import { formatDateString } from '@/lib/utils';
 import { Users } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-const OrganizationMembers = ({
+const OrganizationMembers = async ({
   members,
+  locale,
 }: {
   members: OrganizationMember[] | undefined;
+  locale: string;
 }) => {
-  const t = useTranslations('Member');
+  const t = await getTranslations({ locale, namespace: 'Member' });
   return (
     <TabsContent value="members">
       <Card>

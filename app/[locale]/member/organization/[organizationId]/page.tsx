@@ -52,7 +52,7 @@ export default async function OrganizationPage({
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <Header organization={organization} />
+      <Header organization={organization} locale={locale} />
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="mb-6">
@@ -65,13 +65,15 @@ export default async function OrganizationPage({
           organization={organization}
           membershipInfo={membershipInfo}
           members={members}
+          locale={locale}
         />
 
-        <OrganizationMembers members={members} />
+        <OrganizationMembers members={members} locale={locale} />
 
         <OrganizationBilling
           membershipInfo={membershipInfo}
           membershipTypes={membershipTypes}
+          locale={locale}
         />
       </Tabs>
     </div>

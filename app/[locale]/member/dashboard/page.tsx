@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { getTranslations } from 'next-intl/server';
 
@@ -67,10 +67,6 @@ export default async function MemberDashboard({
       </div>
 
       <Tabs defaultValue="organizations" className="w-full">
-        <TabsList className="mb-6">
-          <TabsTrigger value="organizations">{t('myOrganization')}</TabsTrigger>
-        </TabsList>
-
         <TabsContent value="organizations">
           {!organizations || organizations.length === 0 ? (
             <Card className="border-dashed border-2 p-8">
@@ -112,12 +108,12 @@ export default async function MemberDashboard({
                           </CardDescription>
                         </div>
                       </div>
-                      {org.paymentsActive && (
+                      {org.status && (
                         <Badge
                           variant="outline"
                           className="bg-green-50 text-green-700 border-green-200"
                         >
-                          {t('active')}
+                          {t(`memberStatus.${org.status}`)}
                         </Badge>
                       )}
                     </div>

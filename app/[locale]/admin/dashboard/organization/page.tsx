@@ -11,16 +11,6 @@ import { formatDate } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { PlusCircle } from 'lucide-react';
 import MembershipTypesTable from '@/components/MembershipTypesTable';
 
 const OrganizationPage = async ({
@@ -41,16 +31,6 @@ const OrganizationPage = async ({
     organizationId || ''
   );
   console.log('membershipTypes', membershipTypes);
-
-  const newThisMonth =
-    members?.filter(
-      (member) =>
-        member.joinDate &&
-        new Date(member.joinDate) >
-          new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    ).length || 0;
-  const retention =
-    members?.filter((member) => member.status === 'active').length || 0;
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-7xl">
@@ -154,10 +134,9 @@ const OrganizationPage = async ({
                   }`}
                 ></div>
                 <span className="text-sm font-medium">
-                  {t('paymentStatus')}:{' '}
                   {organization.organization?.paymentsActive
-                    ? t('active')
-                    : t('inactive')}
+                    ? t('canReceivePayments')
+                    : t('cannotReceivePayments')}
                 </span>
               </div>
             </div>
@@ -168,26 +147,12 @@ const OrganizationPage = async ({
       <MembershipTypesTable
         membershipTypes={membershipTypes || []}
         organizationId={organizationId || ''}
+        stripeAccountConnected={
+          organization?.organization?.stripeAccountConnected || false
+        }
       />
 
       <div className="space-y-8">
-        <StatsCard
-          stats={{
-            total: members?.length || 0,
-            active:
-              members?.filter((member) => member.status === 'active').length ||
-              0,
-            inactive:
-              members?.filter((member) => member.status === 'inactive')
-                .length || 0,
-            pending:
-              members?.filter((member) => member.status === 'pending').length ||
-              0,
-            newThisMonth: newThisMonth,
-            retention: retention,
-          }}
-        />
-
         <div className="bg-card rounded-lg p-6 border border-border">
           <ClientMembersTable
             members={members || []}

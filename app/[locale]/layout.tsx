@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { NavBar } from '@/components/NavBar';
+import { Toaster } from '@/components/ui/sonner';
 
 export default async function LocaleLayout({
   children,
@@ -22,13 +23,10 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as 'en' | 'fi' | 'sv')) notFound();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <NavBar locale={locale} />
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <NavBar locale={locale} />
+      <Toaster />
+      {children}
+    </NextIntlClientProvider>
   );
 }

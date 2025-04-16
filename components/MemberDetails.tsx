@@ -13,40 +13,23 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { formatDate } from '@/lib/utils';
-import { useApiClient } from '@/lib/apiClient';
-
-type Member = {
-  id: string;
-  externalId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  profileImageUrl: string | null;
-  lastActive: string | null;
-  notes: string | null;
-  createdAt: string;
-  updatedAt: string;
-  status?: 'active' | 'inactive' | 'pending' | 'deleted' | 'suspended';
-  role?: 'admin' | 'member' | 'guest';
-};
+import { typedApiClient } from '@/lib/client';
+import { MemberByExternalId } from '@/lib/types/member';
 
 export function MemberDetails({
   member,
   isEditMode,
   organizationId,
 }: {
-  member: Member;
+  member: MemberByExternalId;
   isEditMode: boolean;
   organizationId: string;
 }) {
   const router = useRouter();
   const originalMemberRef = useRef(member);
-  const [formData, setFormData] = useState<Member>(member);
+  const [formData, setFormData] = useState<MemberByExternalId>(member);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [displayData, setDisplayData] = useState<Member>(member);
-
-  const client = useApiClient();
+  const [displayData, setDisplayData] = useState<MemberByExternalId>(member);
 
   useEffect(() => {
     if (member && Object.keys(member).length > 0) {
@@ -69,11 +52,20 @@ export function MemberDetails({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const updateMember = async (member: Member) => {
+  const updateMember = async (member: MemberByExternalId) => {
     console.log('Updating member with data:', member);
-    const resp = await client.PUT(
-      `/users/${member.id}/organization/${organizationId}`,
+    if (!member.id) {
+      throw new Error('Member ID is required');
+    }
+    const resp = await typedApiClient.PUT(
+      '/users/organization/{organizationId}/members/{memberId}',
       {
+        params: {
+          path: {
+            organizationId: organizationId,
+            memberId: member.id,
+          },
+        },
         body: member,
       }
     );
@@ -97,22 +89,6 @@ export function MemberDetails({
       setIsSubmitting(false);
     }
   };
-
-  const toggleEditMode = () => {
-    if (isEditMode) {
-      setFormData(originalMemberRef.current);
-      setDisplayData(originalMemberRef.current);
-
-      router.replace(
-        `/admin/dashboard/organization/members/${member.id}?organizationId=${organizationId}`
-      );
-    } else {
-      router.replace(
-        `/admin/dashboard/organization/members/${member.id}?edit=true&organizationId=${organizationId}`
-      );
-    }
-  };
-
   return (
     <Card className="max-w-3xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -169,21 +145,6 @@ export function MemberDetails({
                 <p className="text-lg">{displayData.email}</p>
               )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              {isEditMode ? (
-                <Input
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              ) : (
-                <p className="text-lg">{displayData.phone || 'Not provided'}</p>
-              )}
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="notes">Notes</Label>
               {isEditMode ? (

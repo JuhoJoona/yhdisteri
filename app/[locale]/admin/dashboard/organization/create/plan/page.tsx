@@ -1,10 +1,8 @@
 import { redirect } from 'next/navigation';
 import PlanSelectionForm from './PlanSelectionForm';
-import {
-  createOrganization,
-  CreateOrganizationRequest,
-} from '@/lib/services/organizationService';
+import { createOrganization } from '@/lib/services/organizationService';
 import { getPlans } from '@/lib/services/plansService';
+import { CreateOrganizationRequest } from '@/lib/types/organization';
 
 export default async function PlanPage() {
   async function submitOrganization(
@@ -12,20 +10,18 @@ export default async function PlanPage() {
     planId: string
   ) {
     'use server';
-
+    console.log('submitOrganization', organization, planId);
     const response = await createOrganization(organization, planId);
-
-    if (response) {
-      redirect(
-        `/dashboard/organization?organizationId=${response?.organization?.id}`
-      );
+    console.log('response', response);
+    if (response && response.organization?.id) {
+      redirect(`/admin/dashboard`);
     } else {
-      return { error: 'Organization creation failed' };
+      return;
     }
   }
 
   const plans = await getPlans();
-
+  console.log('plans', plans);
   if (!plans || plans.length === 0) {
     return <div>No plans found</div>;
   }

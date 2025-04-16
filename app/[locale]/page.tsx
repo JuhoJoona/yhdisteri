@@ -1,9 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { SignInButton } from '@clerk/nextjs';
-import { SignUpButton } from '@clerk/nextjs';
-import { SignedOut } from '@clerk/nextjs';
-import { UserButton } from '@clerk/nextjs';
-import { SignedIn } from '@clerk/nextjs';
+
 import {
   ChevronRight,
   Users,
@@ -12,123 +8,35 @@ import {
   BarChart,
   Shield,
   Mail,
-  Globe,
-  ChevronDown,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useLocale } from 'next-intl';
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const t = await getTranslations({ locale, namespace: 'Home' });
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   return {
-    title: t('meta.title'),
-    description: t('meta.description'),
+    title: t('home.title'),
+    description: t('home.description'),
   };
 }
 
-export default function Home() {
-  const t = useTranslations('Home');
-  const currentLocale = useLocale();
-  const locales = ['en', 'fi', 'sv'];
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Home' });
 
   return (
-    <div className="flex flex-col min-h-screen w-screen justify-center items-center">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 p-4">
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Users className="size-4" />
-            </div>
-            <span className="text-xl font-bold">Yhdisteri</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="#features"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.features')}
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.howItWorks')}
-            </Link>
-            <Link
-              href="#pricing"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.pricing')}
-            </Link>
-            <Link
-              href="#faq"
-              className="text-sm font-medium hover:text-primary"
-            >
-              {t('nav.faq')}
-            </Link>
-
-            {/* Locale Picker */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
-                  <Globe className="h-4 w-4" />
-                  <span className="uppercase">{currentLocale}</span>
-                  <ChevronDown className="h-3 w-3 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {locales.map((locale) => (
-                  <DropdownMenuItem key={locale} asChild>
-                    <Link
-                      href={`/${locale}`}
-                      className={`w-full ${
-                        locale === currentLocale ? 'font-bold' : ''
-                      }`}
-                    >
-                      {locale === 'en'
-                        ? 'English'
-                        : locale === 'fi'
-                        ? 'Suomi'
-                        : locale}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <Link href="/lander">
-                <Users className="size-4" />
-                {t('nav.dashboard')}
-              </Link>
-              <UserButton />
-            </SignedIn>
-          </nav>
-        </div>
-      </header>
-
+    <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 md:py-28">
@@ -390,8 +298,8 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
               {[
                 {
-                  name: 'Starter',
-                  price: '€29',
+                  name: t('pricing.starter'),
+                  price: '2.99€',
                   description:
                     'Perfect for small associations with up to 50 members.',
                   features: [
@@ -406,7 +314,7 @@ export default function Home() {
                 },
                 {
                   name: t('pricing.professional'),
-                  price: '€59',
+                  price: '15.99€',
                   description: t('pricing.professionalDescription'),
                   features: [
                     t('pricing.professionalFeature1'),
@@ -420,7 +328,7 @@ export default function Home() {
                 },
                 {
                   name: t('pricing.enterprise'),
-                  price: '€99',
+                  price: '25.99€',
                   description: t('pricing.enterpriseDescription'),
                   features: [
                     t('pricing.enterpriseFeature1'),
@@ -569,7 +477,7 @@ export default function Home() {
 
       <footer className="border-t py-12 md:py-16">
         <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col space-y-4">
               <div className="flex items-center gap-2">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -642,66 +550,12 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">
-                {t('footer.resources')}
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/blog"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.blog')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/documentation"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.documentation')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/guides"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.guides')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/support"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.support')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
+
             <div>
               <h3 className="text-lg font-medium mb-4">
                 {t('footer.company')}
               </h3>
               <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.about')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.contact')}
-                  </Link>
-                </li>
                 <li>
                   <Link
                     href="/privacy"

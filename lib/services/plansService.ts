@@ -1,12 +1,22 @@
-import { typedApiClient } from "../apiClientServer"
-import { paths } from "../types"
-
-export type Plan = paths["/plans"]["get"]["responses"]["200"]["content"]["application/json"]  
+import { typedApiClient } from '../server';
 
 const getPlans = async () => {
-  const response = await typedApiClient.GET("/plans")
-  
-  return response.data
-}
+  const response = await typedApiClient.GET('/plans');
 
-export { getPlans };
+  return response.data;
+};
+
+const getMembershipTypes = async (organizationId: string) => {
+  const response = await typedApiClient.GET(
+    `/organizations/{id}/membership-types`,
+    {
+      params: {
+        path: { id: organizationId },
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export { getPlans, getMembershipTypes };

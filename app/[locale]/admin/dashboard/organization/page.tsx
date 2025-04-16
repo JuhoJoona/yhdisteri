@@ -1,49 +1,81 @@
 import { getOrganizationMembers } from '@/lib/services/usersService';
 import ClientMembersTable from './ClientMembersTable';
-import { StatsCard } from '@/components/StatsCard';
 import CopyInviteLinkToClipboard from './CopyCodeToClipboard';
-import { getOrganization } from '@/lib/services/organizationService';
-import { CalendarIcon, ClockIcon, CodeIcon } from 'lucide-react';
+import {
+  getOrganization,
+  getOrganizationMembershipTypes,
+} from '@/lib/services/organizationService';
+import { AlertCircle, CalendarIcon, ClockIcon, CodeIcon } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import MembershipTypesTable from '@/components/MembershipTypesTable';
 
 const OrganizationPage = async ({
   searchParams,
+  params,
 }: {
-  searchParams: { organizationId?: string; searchTerm?: string };
+  searchParams: Promise<{ organizationId?: string; searchTerm?: string }>;
+  params: Promise<{ locale: string }>;
 }) => {
-  const organizationId = searchParams.organizationId || '';
-  const searchTerm = searchParams.searchTerm || '';
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Organization' });
 
-  const members = await getOrganizationMembers(organizationId);
-  const organization = await getOrganization(organizationId);
+  const { organizationId, searchTerm } = await searchParams;
 
-  const newThisMonth =
-    members?.filter(
-      (member) =>
-        member.joinDate &&
-        new Date(member.joinDate) >
-          new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    ).length || 0;
-  const retention =
-    members?.filter((member) => member.status === 'active').length || 0;
+  const members = await getOrganizationMembers(organizationId || '');
+  const organization = await getOrganization(organizationId || '');
+  const membershipTypes = await getOrganizationMembershipTypes(
+    organizationId || ''
+  );
+  console.log('membershipTypes', membershipTypes);
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-7xl">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            {organization?.name || 'Organization'} Dashboard
+            {organization?.organization?.name || 'Organization'}{' '}
+            {t('dashboard')}
           </h1>
           <p className="text-muted-foreground mt-1">
-            Manage your organization and members
+            {t('manageYourOrganizationAndMembers')}
           </p>
         </div>
-        <CopyInviteLinkToClipboard code={organization?.code || ''} />
+        <CopyInviteLinkToClipboard
+          code={organization?.organization?.code || ''}
+        />
+      </div>
+
+      <div className="mb-8">
+        {!organization?.organization?.stripeAccountConnected && (
+          <div className="bg-card rounded-md p-6 border border-red-500 flex items-center flex-row gap-2 justify-between">
+            <div className="flex items-center flex-row gap-2">
+              <AlertCircle className="h-5 w-5 text-red-500" />
+              <h2 className="text-sm font-medium text-muted-foreground">
+                {t('stripeAccountNotConnected')}
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {t('stripeAccountNotConnectedDescription')}
+            </p>
+            <Button variant="outline" size="sm">
+              <Link
+                href={`/admin/dashboard/organization/stripe?organizationId=${organizationId}`}
+              >
+                {t('connectStripeAccount')}
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
 
       {organization && (
         <div className="bg-card rounded-lg p-6 mb-8 border border-border">
-          <h2 className="text-xl font-semibold mb-4">Organization Details</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            {t('organizationDetails')}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="flex items-start space-x-3">
               <div className="bg-primary/10 p-2 rounded-md">
@@ -51,9 +83,11 @@ const OrganizationPage = async ({
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
-                  Organization Code
+                  {t('organizationCode')}
                 </p>
-                <p className="font-medium">{organization.code || 'N/A'}</p>
+                <p className="font-medium">
+                  {organization.organization?.code || 'N/A'}
+                </p>
               </div>
             </div>
 
@@ -63,11 +97,11 @@ const OrganizationPage = async ({
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
-                  Created
+                  {t('created')}
                 </p>
                 <p className="font-medium">
-                  {organization.createdAt
-                    ? formatDate(new Date(organization.createdAt))
+                  {organization.organization?.createdAt
+                    ? formatDate(new Date(organization.organization?.createdAt))
                     : 'N/A'}
                 </p>
               </div>
@@ -79,11 +113,11 @@ const OrganizationPage = async ({
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
-                  Last Updated
+                  {t('lastUpdated')}
                 </p>
                 <p className="font-medium">
-                  {organization.updatedAt
-                    ? formatDate(new Date(organization.updatedAt))
+                  {organization.organization?.updatedAt
+                    ? formatDate(new Date(organization.organization?.updatedAt))
                     : 'N/A'}
                 </p>
               </div>
@@ -93,12 +127,15 @@ const OrganizationPage = async ({
               <div className="flex items-center mt-2">
                 <div
                   className={`h-3 w-3 rounded-full mr-2 ${
-                    organization.paymentsActive ? 'bg-green-500' : 'bg-red-500'
+                    organization.organization?.paymentsActive
+                      ? 'bg-green-500'
+                      : 'bg-red-500'
                   }`}
                 ></div>
                 <span className="text-sm font-medium">
-                  Payment Status:{' '}
-                  {organization.paymentsActive ? 'Active' : 'Inactive'}
+                  {organization.organization?.paymentsActive
+                    ? t('canReceivePayments')
+                    : t('cannotReceivePayments')}
                 </span>
               </div>
             </div>
@@ -106,30 +143,21 @@ const OrganizationPage = async ({
         </div>
       )}
 
-      <div className="space-y-8">
-        <StatsCard
-          stats={{
-            total: members?.length || 0,
-            active:
-              members?.filter((member) => member.status === 'active').length ||
-              0,
-            inactive:
-              members?.filter((member) => member.status === 'inactive')
-                .length || 0,
-            pending:
-              members?.filter((member) => member.status === 'pending').length ||
-              0,
-            newThisMonth: newThisMonth,
-            retention: retention,
-          }}
-        />
+      <MembershipTypesTable
+        membershipTypes={membershipTypes || []}
+        organizationId={organizationId || ''}
+        stripeAccountConnected={
+          organization?.organization?.stripeAccountConnected || false
+        }
+      />
 
+      <div className="space-y-8">
         <div className="bg-card rounded-lg p-6 border border-border">
           <ClientMembersTable
             members={members || []}
             searchQuery={searchTerm}
-            statusFilter={'all'}
             organizationId={organizationId}
+            locale={locale}
           />
         </div>
       </div>

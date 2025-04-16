@@ -1,8 +1,8 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { typedApiClient } from '@/lib/apiClientServer';
-import { auth } from '@clerk/nextjs/server';
+import { typedApiClient } from '@/lib/server';
+import { createClient } from '@/lib/server';
 
 export async function createUserAction(formData: FormData) {
   const firstName = formData.get('firstName') as string;
@@ -13,8 +13,11 @@ export async function createUserAction(formData: FormData) {
   const organizationCode = formData.get('organizationCode') as string;
   const organizationName = formData.get('organizationName') as string;
 
-  const currentUser = await auth();
-  const externalId = currentUser.userId;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const externalId = user?.id;
 
   if (organizationTab === 'join' && organizationCode.length !== 6) {
     return { error: 'Invalid organization code' };
@@ -53,8 +56,10 @@ export async function createUserAction(formData: FormData) {
     revalidatePath('/'); // Revalidate the root path or any relevant paths
 
     return { success: true, data };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error during registration:', error);
-    return { error: error.message || 'An unexpected error occurred' };
+    return {
+      error: (error as Error).message || 'An unexpected error occurred',
+    };
   }
 }

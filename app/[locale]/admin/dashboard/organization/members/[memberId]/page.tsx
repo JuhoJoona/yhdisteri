@@ -1,21 +1,23 @@
-import { getUserById } from '@/lib/services/usersService';
+import { getUserByExternalId } from '@/lib/services/usersService';
 import { MemberDetails } from '@/components/MemberDetails';
+import { getTranslations } from 'next-intl/server';
 
 export default async function MemberPage({
   params,
   searchParams,
 }: {
-  params: { memberId: string };
-  searchParams: { edit?: string; organizationId: string };
+  params: Promise<{ memberId: string; locale: string }>;
+  searchParams: Promise<{ edit?: string; organizationId: string }>;
 }) {
-  const { memberId } = params;
-  const organizationId = searchParams.organizationId;
-  const isEditMode = searchParams.edit === 'true';
+  const { memberId, locale } = await params;
+  const { organizationId, edit } = await searchParams;
+  const t = await getTranslations({ locale, namespace: 'Member' });
+  const isEditMode = edit === 'true';
 
-  const member = await getUserById(memberId, organizationId);
+  const member = await getUserByExternalId(memberId);
 
   if (!member) {
-    return <div>Member not found</div>;
+    return <div>{t('memberNotFound')}</div>;
   }
 
   return (

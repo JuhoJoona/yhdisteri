@@ -1,4 +1,5 @@
-import { typedApiClient } from '../apiClientServer';
+import { typedApiClient } from '../server';
+import { UpdateUserRequestBody } from '../types/member';
 
 export const getUserByExternalId = async (id: string) => {
   try {
@@ -17,29 +18,19 @@ export const getUserByExternalId = async (id: string) => {
   }
 };
 
-export const getUserById = async (id: string, organizationId: string) => {
+export const getOwnData = async () => {
   try {
-    const response = await typedApiClient.GET(
-      '/users/{id}/organization/{organizationId}',
-      {
-        params: {
-          path: { id, organizationId },
-        },
-      }
-    );
-    if (!response.data) {
-      throw new Error(`User with id ${id} not found`);
-    }
+    const response = await typedApiClient.GET('/users/me');
     return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
-
 export const getUserOrganizations = async () => {
   try {
     const response = await typedApiClient.GET('/users/organizations');
+    console.log('User Organizations:', response);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -79,4 +70,49 @@ export const approveMember = async (
     console.error(error);
     throw error;
   }
+};
+
+export const getUserMembershipInfo = async (
+  organizationId: string,
+  memberId: string
+) => {
+  const response = await typedApiClient.GET(
+    '/users/organization/{organizationId}/members/{memberId}',
+    {
+      params: {
+        path: { organizationId, memberId },
+      },
+    }
+  );
+  return response.data;
+};
+
+export const getOwnMembershipInfo = async (organizationId: string) => {
+  const response = await typedApiClient.GET(
+    '/users/organization/{organizationId}/me',
+    {
+      params: {
+        path: { organizationId },
+      },
+    }
+  );
+  return response.data;
+};
+
+export const updateUserById = async (
+  id: string,
+  data: UpdateUserRequestBody
+) => {
+  const response = await typedApiClient.PUT('/users/{id}', {
+    params: {
+      path: { id },
+    },
+    body: data,
+  });
+  return response.data;
+};
+
+export const getUserPreferences = async () => {
+  const response = await typedApiClient.GET('/users/preferences/me');
+  return response.data;
 };

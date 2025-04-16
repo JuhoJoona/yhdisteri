@@ -1,10 +1,8 @@
 import { redirect } from 'next/navigation';
 import PlanSelectionForm from './PlanSelectionForm';
-import {
-  createOrganization,
-  CreateOrganizationRequest,
-} from '@/lib/services/organizationService';
+import { createOrganization } from '@/lib/services/organizationService';
 import { getPlans } from '@/lib/services/plansService';
+import { CreateOrganizationRequest } from '@/lib/types/organization';
 
 export default async function PlanPage() {
   async function submitOrganization(
@@ -20,7 +18,7 @@ export default async function PlanPage() {
         `/dashboard/organization?organizationId=${response?.organization?.id}`
       );
     } else {
-      return { error: 'Organization creation failed' };
+      return;
     }
   }
 

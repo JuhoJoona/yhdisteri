@@ -92,12 +92,12 @@ export default function SuccessPage() {
             <div className="text-center text-sm text-gray-500">
               <p>
                 Questions? Contact{' '}
-                <a
+                <Link
                   href="mailto:support@yhdisteri.com"
                   className="underline hover:text-black"
                 >
                   support@yhdisteri.com
-                </a>
+                </Link>
               </p>
             </div>
           </motion.div>

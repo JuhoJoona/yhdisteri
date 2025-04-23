@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export function DemoRequestForm() {
   const t = useTranslations('DemoRequestForm');
@@ -121,13 +122,16 @@ export function DemoRequestForm() {
 
       <p className="text-center text-xs text-slate-500">
         {t('bySubmitting')}
-        <a href="/privacy" className="text-blue-600 hover:underline">
+        <Link href="/privacy" className="text-blue-600 hover:underline">
           {t('privacyPolicy')}
-        </a>
+        </Link>
         {t('and')}
-        <a href="/terms-of-service" className="text-blue-600 hover:underline">
+        <Link
+          href="/terms-of-service"
+          className="text-blue-600 hover:underline"
+        >
           {t('termsOfService')}
-        </a>
+        </Link>
         .
       </p>
     </form>

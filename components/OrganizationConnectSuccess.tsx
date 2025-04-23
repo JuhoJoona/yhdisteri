@@ -143,12 +143,12 @@ export default function OrganizationConnectSuccess({
             <div className="text-center text-sm text-gray-500">
               <p>
                 {t('needHelp')}
-                <a
+                <Link
                   href="mailto:support@yhdisteri.com"
                   className="underline hover:text-black"
                 >
                   {t('supportEmail')}
-                </a>
+                </Link>
               </p>
             </div>
           </motion.div>

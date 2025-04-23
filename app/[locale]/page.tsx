@@ -1,14 +1,6 @@
 import { Button } from '@/components/ui/button';
 
-import {
-  ChevronRight,
-  Users,
-  CreditCard,
-  Calendar,
-  BarChart,
-  Shield,
-  Mail,
-} from 'lucide-react';
+import { ChevronRight, Users, CreditCard, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';

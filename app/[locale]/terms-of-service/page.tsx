@@ -1,13 +1,15 @@
+import Link from 'next/link';
+
 export default function KayttoehdotPage() {
   return (
     <main className="max-w-4xl mx-auto px-4 py-12 dark:text-white">
       <h1 className="text-3xl font-bold mb-6">KÄYTTÖEHDOT – YHDISTERI</h1>
       <p className="mb-4">Voimaantulopäivä: 1.4.2025</p>
       <p className="mb-6 dark:text-white">
-        Nämä käyttöehdot ("Ehdot") säätelevät Yhdisteri-nimisen
-        ohjelmistopalvelun ("Palvelu") käyttöä. Palvelun tarjoaa Pöhinä Group Oy
-        (Y-tunnus: 3419352-5) ("Palveluntarjoaja"). Palvelu on suunnattu
-        yhdistyksille ja seuroille...
+        Nämä käyttöehdot (&ldquo;Ehdot&rdquo;) säätelevät Yhdisteri-nimisen
+        ohjelmistopalvelun (&ldquo;Palvelu&rdquo;) käyttöä. Palvelun tarjoaa
+        Pöhinä Group Oy (Y-tunnus: 3419352-5) (&ldquo;Palveluntarjoaja&rdquo;).
+        Palvelu on suunnattu yhdistyksille ja seuroille...
       </p>
 
       <Section title="1 § PALVELUN BETA-VAIHE JA MAKSUTTOMUUS">
@@ -71,9 +73,12 @@ export default function KayttoehdotPage() {
       <p className="mt-6 dark:text-white">
         Mahdolliset kysymykset tai yhteydenotot näihin Ehtoihin liittyen tulee
         osoittaa kirjallisesti Palveluntarjoajalle osoitteeseen{' '}
-        <a href="mailto:joni@pohina.group" className="text-blue-600 underline">
+        <Link
+          href="mailto:joni@pohina.group"
+          className="text-blue-600 underline"
+        >
           joni@pohina.group
-        </a>
+        </Link>
         .
       </p>
     </main>

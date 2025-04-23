@@ -8,14 +8,15 @@ export const metadata: Metadata = {
 export default function PrivacyPolicy() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">TIETOSUOJASELOSTE – YHDISTERI</h1>
+      <h1 className="text-3xl font-bold mb-6">TIETOSUOJASELOSTE - YHDISTERI</h1>
       <p className="mb-6">Päivitetty: 16.4.2025</p>
 
       <p className="mb-8">
-        Tämä tietosuojaseloste koskee Pöhinä Group Oy:n ("Rekisterinpitäjä",
-        "me") tarjoamaa Yhdisteri-palvelua ("Palvelu"). Selosteessa kerrotaan,
-        miten käsittelemme henkilötietoja, joita kerätään palvelun käyttäjistä
-        ja heidän jäsenistään.
+        Tämä tietosuojaseloste koskee Pöhinä Group Oy:n
+        (&ldquo;Rekisterinpitäjä&rdquo;, &ldquo;me&rdquo;) tarjoamaa
+        Yhdisteri-palvelua (&ldquo;Palvelu&rdquo;). Selosteessa kerrotaan, miten
+        käsittelemme henkilötietoja, joita kerätään palvelun käyttäjistä ja
+        heidän jäsenistään.
       </p>
 
       <section className="mb-8">

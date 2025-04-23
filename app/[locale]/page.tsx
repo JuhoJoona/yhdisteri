@@ -36,7 +36,7 @@ export default async function Home({
   const t = await getTranslations({ locale, namespace: 'Home' });
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col justify-self-center">
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 md:py-28">

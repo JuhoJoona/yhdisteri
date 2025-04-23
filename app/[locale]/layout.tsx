@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { NavBar } from '@/components/NavBar';
 import { Toaster } from '@/components/ui/sonner';
+import Footer from '@/components/Footer';
 
 export default async function LocaleLayout({
   children,
@@ -27,6 +28,7 @@ export default async function LocaleLayout({
       <NavBar locale={locale} />
       <Toaster />
       {children}
+      <Footer locale={locale} />
     </NextIntlClientProvider>
   );
 }

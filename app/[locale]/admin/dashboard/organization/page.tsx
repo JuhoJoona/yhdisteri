@@ -29,8 +29,6 @@ const OrganizationPage = async ({
   const membershipTypes = await getOrganizationMembershipTypes(
     organizationId || ''
   );
-  console.log('membershipTypes', membershipTypes);
-
   return (
     <main className="container mx-auto px-4 py-6 max-w-7xl">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">

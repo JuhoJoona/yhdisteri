@@ -8,11 +8,10 @@ import { cookies } from 'next/headers';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  const supabaseUrl = 'https://jpknmfiuuwknywnfokxa.supabase.co';
-  const supabaseAnonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwa25tZml1dXdrbnl3bmZva3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzExMTQsImV4cCI6MjA1NzIwNzExNH0.RCFAUeqEHkP3KPHEtz_xjQGsf9qDdZe0I8c628HUnGQ';
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
+  return createServerClient(supabaseUrl!, supabaseAnonKey!, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -33,7 +32,7 @@ export async function createClient() {
 }
 
 export const typedApiClient = createFetchClient<paths>({
-  baseUrl: 'https://yhdisteri-api.onrender.com',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 
 const middleware: Middleware = {
@@ -41,8 +40,8 @@ const middleware: Middleware = {
     try {
       // Routes that don't require authentication
       const publicRoutes = [
-        `https://yhdisteri-api.onrender.com/plans`,
-        `https://yhdisteri-api.onrender.com/health`,
+        `${process.env.NEXT_PUBLIC_API_URL}/plans`,
+        `${process.env.NEXT_PUBLIC_API_URL}/health`,
       ];
 
       // Skip authentication for public routes

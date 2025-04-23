@@ -3,15 +3,14 @@ import type { paths } from '@/lib/types';
 import { createBrowserClient } from '@supabase/ssr';
 
 export const typedApiClient = createFetchClient<paths>({
-  baseUrl: 'https://yhdisteri-api.onrender.com',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 
-const supabaseUrl = 'https://jpknmfiuuwknywnfokxa.supabase.co';
-const supabaseAnonKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwa25tZml1dXdrbnl3bmZva3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzExMTQsImV4cCI6MjA1NzIwNzExNH0.RCFAUeqEHkP3KPHEtz_xjQGsf9qDdZe0I8c628HUnGQ';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export function createClient() {
-  return createBrowserClient(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient(supabaseUrl!, supabaseAnonKey!);
 }
 
 export async function getUser() {

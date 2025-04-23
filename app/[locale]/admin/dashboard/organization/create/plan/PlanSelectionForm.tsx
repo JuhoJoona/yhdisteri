@@ -40,7 +40,6 @@ export default function PlanSelectionForm({
     const organizationDetails = JSON.parse(
       localStorage.getItem('organization') || '{}'
     );
-    console.log('organizationDetails', organizationDetails);
     await submitOrganization(organizationDetails, selectedPlan);
     setIsLoading(false);
   }

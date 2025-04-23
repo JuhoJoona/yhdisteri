@@ -67,12 +67,12 @@ export default async function Home({
               <div className="flex justify-center lg:justify-end animate-fadeIn">
                 <div className="relative w-full max-w-[500px] aspect-video rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/happy.avif?height=500&width=800"
-                    alt="Yhdisteri Dashboard"
-                    width={800}
-                    height={500}
-                    className="object-cover"
+                    src="/yhdisteri.svg"
+                    alt="Yhdisteri"
+                    width={150}
+                    height={150}
                     priority
+                    className="h-20 w-auto"
                   />
                 </div>
               </div>

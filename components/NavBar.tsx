@@ -3,6 +3,7 @@ import { createClient } from '@/lib/server';
 import AuthenticatedNav from './AuthenticatedNav';
 import UnauthenticatedNav from './UnauthenticatedNav';
 import Image from 'next/image';
+import { ThemeToggle } from './theme-toggle';
 
 export async function NavBar({ locale }: { locale: string }) {
   const supabase = await createClient();
@@ -11,7 +12,7 @@ export async function NavBar({ locale }: { locale: string }) {
   } = await supabase.auth.getUser();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b dark:bg-[#2C2C2C]">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
@@ -24,7 +25,8 @@ export async function NavBar({ locale }: { locale: string }) {
           />
         </Link>
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
           {user ? (
             <AuthenticatedNav locale={locale} />
           ) : (

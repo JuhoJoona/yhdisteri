@@ -1,4 +1,9 @@
 {
+  "ThemeToggle": {
+    "light": "Vaalea",
+    "dark": "Tumma",
+    "system": "Järjestelmä"
+  },
   "AdminDashboard": {
     "yourOrganizations": "Organisaatiosi",
     "manageYourOrganizationsAndAdministrativeSettings": "Hallitse organisaatioitasi ja hallinnollisia asetuksia",

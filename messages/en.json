@@ -1,4 +1,9 @@
 {
+  "ThemeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "AdminDashboard": {
     "yourOrganizations": "Your Organizations",
     "manageYourOrganizationsAndAdministrativeSettings": "Manage your organizations and administrative settings",

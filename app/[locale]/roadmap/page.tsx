@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, Calendar, Check, Clock, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 interface RoadmapItem {
   id: string;
@@ -206,13 +207,13 @@ export default function RoadmapPage() {
         <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
           {t('feedbackDescription')}
         </p>
-        <a
+        <Link
           href="#"
           className="inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
         >
           {t('submitFeedback')}
           <ChevronRight className="ml-2 w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </div>
   );

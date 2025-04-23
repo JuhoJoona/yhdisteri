@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { DemoRequestForm } from './demoRequestForm';
 import { getTranslations } from 'next-intl/server';
 
@@ -28,12 +29,12 @@ export default async function DemoRequestPage({
           <div className="mt-8 text-center text-sm text-slate-500 dark:text-slate-300">
             <p>
               {t('haveQuestions')}
-              <a
+              <Link
                 href="mailto:joni@pohina.group"
                 className="text-blue-600 ml-2 hover:underline"
               >
                 {t('email')}
-              </a>
+              </Link>
             </p>
           </div>
         </div>

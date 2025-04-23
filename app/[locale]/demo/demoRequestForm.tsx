@@ -1,69 +1,57 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { CheckCircle2, Loader2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from 'react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from 'next-intl';
 
 export function DemoRequestForm() {
-    const t = useTranslations('DemoRequestForm');
+  const t = useTranslations('DemoRequestForm');
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    organization: "",
-    message: ""
-  })
+    name: '',
+    email: '',
+    organization: '',
+    message: '',
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
+    e.preventDefault();
+    setIsSubmitting(true);
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-  }
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+  };
 
   if (isSubmitted) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
-        <div className="mb-4 rounded-full bg-green-100 p-3">
-          <CheckCircle2 className="h-10 w-10 text-green-600" />
+        <div className="mb-4 rounded-full bg-green-100 dark:bg-green-900 p-3">
+          <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
         </div>
-        <h3 className="mb-2 text-xl font-semibold text-slate-900">
+        <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-slate-100">
           {t('thankYou')}
         </h3>
-        <p className="mb-6 text-center text-slate-600">
+        <p className="mb-6 text-center text-slate-600 dark:text-slate-300">
           {t('thankYouMessage')}
         </p>
-        <Button 
-          variant="outline" 
-          onClick={() => {
-            setIsSubmitted(false)
-            setFormData({
-              name: "",
-              email: "",
-              organization: "",
-              message: ""
-            })
-          }}
-        >
-          {t('requestAnotherDemo')}
-        </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -94,7 +82,7 @@ export function DemoRequestForm() {
             />
           </div>
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="organization">{t('organization')}</Label>
           <Input
@@ -106,7 +94,7 @@ export function DemoRequestForm() {
             required
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="message">{t('message')}</Label>
           <Textarea
@@ -119,7 +107,7 @@ export function DemoRequestForm() {
           />
         </div>
       </div>
-      
+
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (
           <>
@@ -127,16 +115,21 @@ export function DemoRequestForm() {
             {t('processing')}
           </>
         ) : (
-            t('requestDemo')
+          t('requestDemo')
         )}
       </Button>
-      
+
       <p className="text-center text-xs text-slate-500">
         {t('bySubmitting')}
-        <a href="#" className="text-blue-600 hover:underline">{t('privacyPolicy')}</a>
+        <a href="/privacy" className="text-blue-600 hover:underline">
+          {t('privacyPolicy')}
+        </a>
         {t('and')}
-        <a href="#" className="text-blue-600 hover:underline">{t('termsOfService')}</a>.
+        <a href="/terms-of-service" className="text-blue-600 hover:underline">
+          {t('termsOfService')}
+        </a>
+        .
       </p>
     </form>
-  )
+  );
 }

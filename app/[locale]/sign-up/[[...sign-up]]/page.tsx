@@ -39,12 +39,12 @@ export default async function SignUpPage({
   const { redirect: redirectDestination, code } = await searchParams;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-slate-100">
           {t('common.signUp')}
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-gray-600 dark:text-slate-300 ">
           {t('common.alreadyHaveAccount')}{' '}
           <Link
             href={`/${locale}/sign-in?redirect=${redirectDestination}&code=${code}`}

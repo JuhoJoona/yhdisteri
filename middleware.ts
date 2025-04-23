@@ -2,12 +2,12 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabaseMiddleware';
 
 export async function middleware(request: NextRequest) {
-  //Check locale and redirect to /en if not found
+  //Check locale and redirect to /fi if not found
   const { pathname, search } = request.nextUrl;
   const locale = pathname.split('/')[1];
   if (!locale || !['en', 'fi'].includes(locale)) {
     return NextResponse.redirect(
-      new URL(`/en${pathname}${search}`, request.url)
+      new URL(`/fi${pathname}${search}`, request.url)
     );
   }
   return await updateSession(request);

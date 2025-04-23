@@ -34,16 +34,27 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Home' });
+  const getPriceSuffix = (planName: string) => {
+    switch (planName) {
+      case 'Pronssi':
+        return '';
+      case 'Hopea':
+        return '/kk';
+      case 'Platina':
+        return '/kk';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col justify-self-center">
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="py-20 md:py-28">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4 animate-slideUp">
-                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">
+                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm w-36 text-center">
                   {t('hero.tip')}
                 </div>
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -67,12 +78,11 @@ export default async function Home({
               <div className="flex justify-center lg:justify-end animate-fadeIn">
                 <div className="relative w-full max-w-[500px] aspect-video rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/yhdisteri.svg"
-                    alt="Yhdisteri"
-                    width={150}
-                    height={150}
+                    src="/header.jpg"
+                    alt="Yhdisteri Dashboard"
+                    width={1500}
+                    height={1500}
                     priority
-                    className="h-20 w-auto"
                   />
                 </div>
               </div>
@@ -96,7 +106,7 @@ export default async function Home({
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 text-center justify-center">
               {[
                 {
                   icon: <Users className="h-10 w-10" />,
@@ -110,30 +120,30 @@ export default async function Home({
                   description: t('features.billingAndPaymentsDescription'),
                   includedInAll: false,
                 },
-                {
+                /*              {
                   icon: <Calendar className="h-10 w-10" />,
                   title: t('features.eventManagement'),
                   description: t('features.eventManagementDescription'),
                   includedInAll: false,
-                },
-                {
+                }, */
+                /*                 {
                   icon: <BarChart className="h-10 w-10" />,
                   title: t('features.reportingAndAnalytics'),
                   description: t('features.reportingAndAnalyticsDescription'),
                   includedInAll: true,
-                },
+                }, */
                 {
                   icon: <Shield className="h-10 w-10" />,
                   title: t('features.gdprCompliance'),
                   description: t('features.gdprComplianceDescription'),
                   includedInAll: true,
                 },
-                {
+                /*                 {
                   icon: <Mail className="h-10 w-10" />,
                   title: t('features.communicationTools'),
                   description: t('features.communicationToolsDescription'),
                   includedInAll: false,
-                },
+                }, */
               ].map((feature, index) => (
                 <div
                   key={index}
@@ -141,11 +151,11 @@ export default async function Home({
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {!feature.includedInAll ? (
-                    <div className="absolute top-3 right-3 bg-orange-100 text-primary text-xs px-2 py-1 rounded-full">
+                    <div className="absolute top-3 right-3 dark:bg-orange-900 bg-orange-100 text-primary text-xs px-2 py-1 rounded-full">
                       {t('features.proAndEnterprise')}
                     </div>
                   ) : (
-                    <div className="absolute top-3 right-3 bg-green-100 text-primary text-xs px-2 py-1 rounded-full">
+                    <div className="absolute top-3 right-3 bg-green-100 dark:bg-green-900 text-primary text-xs px-2 py-1 rounded-full">
                       {t('features.allPlans')}
                     </div>
                   )}
@@ -187,13 +197,13 @@ export default async function Home({
                 },
                 {
                   step: '02',
-                  title: t('howItWorks.importMembers'),
-                  description: t('howItWorks.importMembersDescription'),
+                  title: t('howItWorks.startManaging'),
+                  description: t('howItWorks.startManagingDescription'),
                 },
                 {
                   step: '03',
-                  title: t('howItWorks.startManaging'),
-                  description: t('howItWorks.startManagingDescription'),
+                  title: t('howItWorks.importMembers'),
+                  description: t('howItWorks.importMembersDescription'),
                 },
               ].map((step, index) => (
                 <div
@@ -299,13 +309,10 @@ export default async function Home({
               {[
                 {
                   name: t('pricing.starter'),
-                  price: '2.99€',
-                  description:
-                    'Perfect for small associations with up to 50 members.',
+                  price: t('pricing.starterPrice'),
+                  description: t('pricing.starterDescription'),
                   features: [
                     t('pricing.starterFeature1'),
-                    t('pricing.starterFeature2'),
-                    t('pricing.starterFeature3'),
                     t('pricing.starterFeature4'),
                     t('pricing.starterFeature5'),
                   ],
@@ -314,7 +321,7 @@ export default async function Home({
                 },
                 {
                   name: t('pricing.professional'),
-                  price: '15.99€',
+                  price: t('pricing.professionalPrice'),
                   description: t('pricing.professionalDescription'),
                   features: [
                     t('pricing.professionalFeature1'),
@@ -328,7 +335,7 @@ export default async function Home({
                 },
                 {
                   name: t('pricing.enterprise'),
-                  price: '25.99€',
+                  price: t('pricing.enterprisePrice'),
                   description: t('pricing.enterpriseDescription'),
                   features: [
                     t('pricing.enterpriseFeature1'),
@@ -359,7 +366,9 @@ export default async function Home({
                     <h3 className="text-xl font-bold">{plan.name}</h3>
                     <div className="mt-2 flex items-baseline">
                       <span className="text-3xl font-bold">{plan.price}</span>
-                      <span className="ml-1 text-muted-foreground">/month</span>
+                      <span className="ml-1 text-muted-foreground">
+                        {getPriceSuffix(plan.name)}
+                      </span>
                     </div>
                     <p className="mt-2 text-muted-foreground">
                       {plan.description}
@@ -417,20 +426,12 @@ export default async function Home({
                   answer: t('faq.answer1'),
                 },
                 {
-                  question: t('faq.question2'),
-                  answer: t('faq.answer2'),
-                },
-                {
                   question: t('faq.question3'),
                   answer: t('faq.answer3'),
                 },
                 {
                   question: t('faq.question4'),
                   answer: t('faq.answer4'),
-                },
-                {
-                  question: t('faq.question5'),
-                  answer: t('faq.answer5'),
                 },
               ].map((faq, index) => (
                 <div
@@ -449,11 +450,13 @@ export default async function Home({
         {/* CTA Section */}
         <section className="py-16">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center bg-primary text-primary-foreground p-8 md:p-12 rounded-lg">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center text-primary-foreground p-8 md:p-12 rounded-lg">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl dark:text-white">
                 {t('cta.title')}
               </h2>
-              <p className="max-w-[700px] md:text-xl">{t('cta.description')}</p>
+              <p className="max-w-[700px] md:text-xl dark:text-white">
+                {t('cta.description')}
+              </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
                 <Button size="lg" variant="secondary" asChild>
                   <Link href="/sign-up">
@@ -464,7 +467,7 @@ export default async function Home({
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                  className="dark:text-white border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
                   asChild
                 >
                   <Link href="/demo">{t('cta.requestDemo')}</Link>
@@ -474,115 +477,6 @@ export default async function Home({
           </div>
         </section>
       </main>
-
-      <footer className="border-t py-12 md:py-16">
-        <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Users className="size-4" />
-                </div>
-                <span className="text-xl font-bold">Yhdisteri</span>
-              </div>
-              <p className="text-muted-foreground">{t('footer.description')}</p>
-              <div className="flex space-x-4">
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect width="4" height="12" x="2" y="9"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                  <span className="sr-only">LinkedIn</span>
-                </Link>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">
-                {t('footer.product')}
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="#features"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.features')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.pricing')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/demo"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.demo')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/roadmap"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.roadmap')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-4">
-                {t('footer.company')}
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.privacy')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="text-muted-foreground hover:text-primary"
-                  >
-                    {t('footer.terms')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t text-center text-muted-foreground">
-            <p>
-              © {new Date().getFullYear()} Yhdisteri.{' '}
-              {t('footer.allRightsReserved')}
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

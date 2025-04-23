@@ -12,7 +12,7 @@ export async function NavBar({ locale }: { locale: string }) {
   } = await supabase.auth.getUser();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b dark:bg-[#2C2C2C]">
+    <header className="sticky top-0 z-50  backdrop-blur-sm border-b py-2">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
@@ -21,7 +21,7 @@ export async function NavBar({ locale }: { locale: string }) {
             width={150}
             height={150}
             priority
-            className="h-20 w-auto"
+            className="h-28 w-auto dark:invert"
           />
         </Link>
 

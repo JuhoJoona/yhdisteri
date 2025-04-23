@@ -1,15 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize the Supabase client
-const supabaseUrl = 'https://jpknmfiuuwknywnfokxa.supabase.co';
-const supabaseAnonKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwa25tZml1dXdrbnl3bmZva3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzExMTQsImV4cCI6MjA1NzIwNzExNH0.RCFAUeqEHkP3KPHEtz_xjQGsf9qDdZe0I8c628HUnGQ';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
 
 // Function to get the current session
 export const getSession = async () => {

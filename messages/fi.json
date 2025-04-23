@@ -4,6 +4,61 @@
     "dark": "Tumma",
     "system": "Järjestelmä"
   },
+
+  "Roadmap": {
+    "title": "Tuotekehityksen Aikajana",
+    "description": "Näkemys tulevaisuudestamme ja siitä, mitä rakennamme seuraavaksi. Pysy ajan tasalla kehityssuunnitelmistamme ja tulevista ominaisuuksista.",
+    "allCategories": "Kaikki",
+    "status": {
+      "completed": "Valmistunut",
+      "in-progress": "Kehitteillä",
+      "planned": "Suunnitteilla"
+    },
+    "categories": {
+      "Core Features": "Ydintoiminnot",
+      "UI/UX": "Käyttöliittymä / Käyttökokemus",
+      "Platform Expansion": "Alustan Laajennus",
+      "Developer Tools": "Kehittäjätyökalut",
+      "Enterprise": "Yritysratkaisut"
+    },
+    "items": {
+      "1": {
+        "title": "Käyttäjien Tunnistautuminen",
+        "description": "Toteutetaan turvallinen käyttäjätunnistautuminen sosiaalisen median kirjautumisvaihtoehdoilla."
+      },
+      "2": {
+        "title": "Hallintapaneelin Uudistus",
+        "description": "Täydellinen uudistus pääasialliselle hallintapaneelille paremmilla analyyseillä ja visualisoinneilla."
+      },
+      "3": {
+        "title": "Reaaliaikaiset Ilmoitukset",
+        "description": "Lisätään WebSocket-tuki välittömille ilmoituksille ja päivityksille."
+      },
+      "4": {
+        "title": "Mobiilisovelluksen Beta",
+        "description": "Julkaistaan mobiilisovelluksen beta-versio iOS:lle ja Androidille."
+      },
+      "5": {
+        "title": "API v2.0",
+        "description": "Julkaistaan täysin uudistettu API paremmalla suorituskyvyllä ja uusilla päätepisteillä."
+      },
+      "6": {
+        "title": "Edistynyt Analytiikka",
+        "description": "Toteutetaan koneoppimista hyödyntävät oivallukset ja ennakoiva analytiikka."
+      },
+      "7": {
+        "title": "Yritysominaisuudet",
+        "description": "Roolipohjainen käyttöoikeuksien hallinta, lokitiedot ja sääntöjenmukaisuusraportointi."
+      },
+      "8": {
+        "title": "Markkinapaikan Julkaisu",
+        "description": "Julkaistaan liitännäisten markkinapaikka kolmannen osapuolen integraatioita varten."
+      }
+    },
+    "feedbackTitle": "Onko Toiveominaisuuksia?",
+    "feedbackDescription": "Haluamme kehittyä jatkuvasti. Jos sinulla on ideoita ominaisuuksista, joita haluaisit nähdä aikajanallamme, kuulisimme niistä mielellämme.",
+    "submitFeedback": "Lähetä Palautetta"
+  },
   "AdminDashboard": {
     "yourOrganizations": "Organisaatiosi",
     "manageYourOrganizationsAndAdministrativeSettings": "Hallitse organisaatioitasi ja hallinnollisia asetuksia",
@@ -43,7 +98,9 @@
     "allPlans": "Kaikki suunnitelmat",
     "memberManagementDescription": "Pidä kirjaa kaikista jäsenistäsi, heidän yhteystiedoistaan ja jäsenyystilastaan yhdessä paikassa.",
     "billingAndPaymentsDescription": "Lähetä laskuja, seuraa maksuja ja hallinnoi yhdistyksesi taloutta helposti.",
-    "viewProfile": "Näytä profiili"
+    "viewProfile": "Näytä profiili",
+    "cannotReceivePayments": "Ei voi vastaanottaa maksuja",
+    "canReceivePayments": "Maksut toiminnassa"
   },
   "Home": {
     "meta": {
@@ -51,10 +108,10 @@
       "description": "Yhdisteri"
     },
     "hero": {
-      "tip": "Yksinkertaista yhdistyksen hallintaa",
-      "title": "Kaikki yhdessä ratkaisu yhdistyksesi hallintaan",
-      "description": "Yhdisteri auttaa yhdistyksiä hallitsemaan jäsenrekistereitä, hoitamaan laskutusta ja tehostamaan toimintaa yhdessä paikassa.",
-      "getStarted": "Aloita",
+      "tip": "Aloita ilmaiseksi!",
+      "title": "Avaimet käteen ratkaisu yhdistyksesi hallintaan",
+      "description": "Yhdisteri auttaa yhdistyksiä hallitsemaan jäsenrekistereitä, hoitamaan laskutusta.",
+      "getStarted": "Luo ilmainen tili!",
       "requestDemo": "Pyydä demo"
     },
     "features": {
@@ -63,14 +120,12 @@
       "description": "Yhdisteri tarjoaa kaikki työkalut yhdistyksesi tehokkaaseen hallintaan.",
       "memberManagement": "Jäsenhallinta",
       "billingAndPayments": "Laskutus ja maksut",
-      "eventManagement": "Tapahtumien hallinta",
-      "reportingAndAnalytics": "Raportointi ja analytiikka",
       "gdprCompliance": "GDPR-yhteensopivuus",
       "communicationTools": "Viestintävälineet",
       "proAndEnterprise": "Pro & Enterprise",
       "allPlans": "Kaikki suunnitelmat",
       "memberManagementDescription": "Pidä kirjaa kaikista jäsenistäsi, heidän yhteystiedoistaan ja jäsenyystilastaan yhdessä paikassa.",
-      "billingAndPaymentsDescription": "Lähetä laskuja, seuraa maksuja ja hallinnoi yhdistyksesi taloutta helposti.",
+      "billingAndPaymentsDescription": "Luo jäsenyystasoja ja seuraa maksuja helposti.",
       "eventManagementDescription": "Luo ja hallinnoi tapahtumia, käsittele ilmoittautumisia ja lähetä muistutuksia osallistujille.",
       "reportingAndAnalyticsDescription": "Saat tietoa yhdistyksesi suorituskyvystä yksityiskohtaisten raporttien ja analytiikan avulla.",
       "gdprComplianceDescription": "Varmista, että jäsenetietosi käsitellään GDPR-säädösten mukaisesti.",
@@ -79,13 +134,13 @@
     "howItWorks": {
       "howItWorks": "Näin se toimii",
       "title": "Yksinkertainen ja intuitiivinen prosessi",
-      "description": "Aloita Yhdisterin käyttö vain muutamassa yksinkertaisessa vaiheessa.",
+      "description": "Aloita Yhdisterin käyttö vain muutamalla klikkauksella.",
       "signUp": "Rekisteröidy",
-      "importMembers": "Tuo jäsenet",
+      "importMembers": "Kutsu jäsenet",
       "startManaging": "Aloita hallinta",
-      "signUpDescription": "Luo tilisi ja määritä yhdistyksesi profiili perusasetuksilla.",
-      "importMembersDescription": "Tuo olemassa olevat jäsenesi, lähetä kutsulinkkejä jäsenillesi tai lisää jäseniä manuaalisesti rekisteriin.",
-      "startManagingDescription": "Aloita kaikkien ominaisuuksien käyttö jäsenten, laskutuksen, tapahtumien ja viestinnän hallintaan."
+      "signUpDescription": "Luo henkilökohtainen tili ja uusi organisaatio.",
+      "importMembersDescription": "Lähetä kutsulinkki jäsenillesi.",
+      "startManagingDescription": "Luo eri jäsenyystasoja."
     },
     "testimonials": {
       "testimonials": "Asiakaspalautteet",
@@ -105,34 +160,36 @@
       "pricing": "Hinnoittelu",
       "title": "Valitse yhdistyksellesi sopiva suunnitelma",
       "description": "Tarjoamme erilaisia suunnitelmia eri kokoisille ja tarpeisille yhdistyksille.",
-      "starter": "Aloitus",
-      "professional": "Ammattilainen",
-      "enterprise": "Yritys",
-      "starterDescription": "Pienille yhdistyksille, joilla on perustarpeet.",
-      "professionalDescription": "Keskisuurille yhdistyksille, joilla on kohtuulliset tarpeet.",
+      "starter": "Pronssi",
+      "professional": "Hopea",
+      "enterprise": "Platina",
+      "starterDescription": "Pienille yhdistyksille BETA testauksen ajan.",
+      "professionalDescription": "Keskisuurille yhdistyksille.",
       "enterpriseDescription": "Suurille yhdistyksille, joilla on monimutkaiset tarpeet.",
       "starterFeatures": "Jäsenhallinta",
-      "professionalFeatures": "Kaikki Aloitus-suunnitelmassa",
-      "enterpriseFeatures": "Kaikki Ammattilainen-suunnitelmassa",
+      "professionalFeatures": "Kaikki mitä Hopea-suunnitelmassa",
+      "enterpriseFeatures": "Kaikki mitä Platina-suunnitelmassa",
       "starterCta": "Aloita",
       "professionalCta": "Aloita",
       "enterpriseCta": "Ota yhteyttä myyntiin",
       "starterFeature1": "Jäsenhallinta",
-      "starterFeature2": "Peruslaskutus",
-      "starterFeature3": "Sähköposti-ilmoitukset",
       "starterFeature4": "GDPR-yhteensopivuus",
       "starterFeature5": "1 ylläpitäjä",
-      "professionalFeature1": "Kaikki Aloitus-suunnitelmassa",
-      "professionalFeature2": "Edistynyt laskutus ja maksut",
-      "professionalFeature3": "Tapahtumien hallinta",
+      "professionalFeature1": "Kaikki mitä Pronssi-suunnitelmassa",
+      "professionalFeature2": "Edistynyt laskutus",
+      "professionalFeature3": "Useat jäsenyystasot",
       "professionalFeature4": "Perusraportointi",
       "professionalFeature5": "3 ylläpitäjää",
-      "enterpriseFeature1": "Kaikki Ammattilainen-suunnitelmassa",
+      "enterpriseFeature1": "Kaikki mitä Hopea-suunnitelmassa",
       "enterpriseFeature2": "Edistynyt raportointi ja analytiikka",
       "enterpriseFeature3": "Mukautetut integraatiot",
       "enterpriseFeature4": "Priorisoitu tuki",
       "enterpriseFeature5": "Rajoittamaton määrä ylläpitäjiä",
-      "popular": "Suosituin"
+      "popular": "Suosituin",
+      "starterPrice": "Ilmainen",
+      "professionalPrice": "7.99€",
+      "enterprisePrice": "14.99€",
+      "priceSuffix": "/kk"
     },
     "faq": {
       "faq": "UKK",
@@ -140,42 +197,42 @@
       "description": "Löydä vastaukset yleisimpiin kysymyksiin Yhdisteristä.",
       "question1": "Onko Yhdisteri GDPR-yhteensopiva?",
       "answer1": "Kyllä. Yhdisteri on rakennettu GDPR-vaatimukset huomioiden. Tarjoamme työkaluja suostumusten hallintaan, tietopyyntöihin ja oikeuteen tulla unohdetuksi.",
-      "question2": "Voinko muokata laskupohjia?",
-      "answer2": "Kyllä, voit muokata laskupohjia yhdistyksesi logolla ja tiedoilla säilyttääksesi brändi-ilmeen.",
       "question3": "Voiko useampi henkilö hallita yhdistystä?",
       "answer3": "Kyllä, suunnitelmastasi riippuen voit määrittää useita ylläpitäjiä eri käyttöoikeuksilla hallitsemaan yhdistyksen eri osa-alueita.",
       "question4": "Onko mobiilisovellus saatavilla?",
-      "answer4": "Yhdisteri toimii täysin responsiivisesti kaikilla laitteilla, mutta mobiilisovellusta kehitetään parhaillaan.",
-      "question5": "Voinko tuoda olemassa olevat jäseneni?",
-      "answer5": "Kyllä, voit tuoda jäsenet Excel-, CSV- tai muissa formaateissa. Tarjoamme myös apua tietojen siirrossa suuremmille yhdistyksille."
+      "answer4": "Yhdisteri toimii täysin responsiivisesti kaikilla laitteilla, mutta mobiilisovellusta kehitetään parhaillaan."
     },
     "cta": {
       "title": "Valmis muuttamaan yhdistyksesi toimintaa?",
       "description": "Liity muiden yhdistysten joukkoon, jotka käyttävät Yhdisteriä tehostaakseen toimintaansa.",
       "getStarted": "Aloita",
       "requestDemo": "Pyydä demo"
-    },
-    "footer": {
-      "description": "Yhdisteri on alusta yhdistysten hallintaan. Se auttaa hallitsemaan jäsenrekistereitä, laskutusta ja tehostamaan toimintaa yhdessä paikassa.",
-      "product": "Tuote",
-      "company": "Yritys",
-      "resources": "Resurssit",
-      "blog": "Blogi",
-      "documentation": "Dokumentaatio",
-      "guides": "Oppaat",
-      "support": "Tuki",
-      "about": "Tietoa meistä",
-      "contact": "Yhteystiedot",
-      "privacy": "Tietosuojakäytäntö",
-      "terms": "Käyttöehdot",
-      "allRightsReserved": "Kaikki oikeudet pidätetään.",
-      "features": "Ominaisuudet",
-      "pricing": "Hinnoittelu",
-      "demo": "Demo",
-      "roadmap": "Tiekartta"
     }
   },
+  "Footer": {
+    "description": "Yhdisteri on alusta yhdistysten hallintaan. Se auttaa hallitsemaan jäsenrekistereitä, laskutusta ja tehostamaan toimintaa yhdessä paikassa.",
+    "product": "Tuote",
+    "company": "Yritys",
+    "resources": "Resurssit",
+    "blog": "Blogi",
+    "documentation": "Dokumentaatio",
+    "guides": "Oppaat",
+    "support": "Tuki",
+    "about": "Tietoa meistä",
+    "contact": "Yhteystiedot",
+    "privacy": "Tietosuojakäytäntö",
+    "terms": "Käyttöehdot",
+    "allRightsReserved": "Kaikki oikeudet pidätetään.",
+    "features": "Ominaisuudet",
+    "pricing": "Hinnoittelu",
+    "demo": "Demo",
+    "roadmap": "Tulevaisuuden suunnitelmat"
+  },
   "DemoRequestForm": {
+    "title": "Pyydä demo",
+    "description": "Kokeile Yhdisterin jäsenhallintaa yhdessä meidän edustajan kanssa",
+    "haveQuestions": "Onko kysymyksiä?",
+    "emailAddress": "joni@pohina.group",
     "thankYou": "Kiitos mielenkiinnostasi!",
     "thankYouMessage": "Olemme vastaanottaneet demopyyntösi ja otamme sinuun pian yhteyttä sopiaksemme henkilökohtaisen esittelyn Yhdisteristä.",
     "requestAnotherDemo": "Pyydä toinen demo",
@@ -446,7 +503,15 @@
     "deleteAccount": "Poista tili",
     "deleteAccountDescription": "Poista tilisi",
     "profileUpdatedSuccessfully": "Profiili päivitetty onnistuneesti",
-    "profileUpdateFailed": "Profiilin päivitys epäonnistui"
+    "profileUpdateFailed": "Profiilin päivitys epäonnistui",
+    "openMenu": "Avaa valikko",
+    "actions": "Toiminnot",
+    "deactivate": "Poista käytöstä",
+    "delete": "Poista",
+    "confirmDeletion": "Vahvista poisto",
+    "areYouSureYouWantToDeleteThisMember": "Haluatko varmasti poistaa tämän jäsenen?",
+    "thisActionCannotBeUndone": "Tätä toimintoa ei voi peruuttaa",
+    "joined": "Liittynyt"
   },
   "Organization": {
     "organizationCode": "Organisaation koodi",

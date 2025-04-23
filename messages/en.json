@@ -74,6 +74,60 @@
       "completeSetup": "Complete Setup"
     }
   },
+  "Roadmap": {
+    "title": "Product Roadmap",
+    "description": "Our vision for the future and what we're building next. Stay up to date with our development plans and upcoming features.",
+    "allCategories": "All",
+    "status": {
+      "completed": "Completed",
+      "in-progress": "In Progress",
+      "planned": "Planned"
+    },
+    "categories": {
+      "Core Features": "Core Features",
+      "UI/UX": "UI/UX",
+      "Platform Expansion": "Platform Expansion",
+      "Developer Tools": "Developer Tools",
+      "Enterprise": "Enterprise"
+    },
+    "items": {
+      "1": {
+        "title": "User Authentication",
+        "description": "Implement secure user authentication with social login options."
+      },
+      "2": {
+        "title": "Dashboard Redesign",
+        "description": "Complete overhaul of the main dashboard with improved analytics and visualizations."
+      },
+      "3": {
+        "title": "Real-time Notifications",
+        "description": "Add WebSocket support for instant notifications and updates."
+      },
+      "4": {
+        "title": "Mobile App Beta",
+        "description": "Launch beta version of our mobile application for iOS and Android."
+      },
+      "5": {
+        "title": "API v2.0",
+        "description": "Release of our completely redesigned API with improved performance and new endpoints."
+      },
+      "6": {
+        "title": "Advanced Analytics",
+        "description": "Implement machine learning powered insights and predictive analytics."
+      },
+      "7": {
+        "title": "Enterprise Features",
+        "description": "Role-based access control, audit logs, and compliance reporting."
+      },
+      "8": {
+        "title": "Marketplace Launch",
+        "description": "Launch of plugin marketplace allowing third-party integrations."
+      }
+    },
+    "feedbackTitle": "Have a Feature Request?",
+    "feedbackDescription": "We're always looking to improve. If you have ideas for features you'd like to see on our roadmap, we'd love to hear from you.",
+    "submitFeedback": "Submit Feedback"
+  },
   "Home": {
     "meta": {
       "title": "Yhdisteri",
@@ -184,7 +238,7 @@
       "getStarted": "Get Started",
       "requestDemo": "Request Demo"
     },
-    "footer": {
+    "Footer": {
       "description": "Yhdisteri is a platform for managing associations. It helps associations manage member registers, handle billing, and streamline operations all in one place.",
       "product": "Product",
       "company": "Company",

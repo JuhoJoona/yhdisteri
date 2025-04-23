@@ -10,9 +10,9 @@ export default async function PlanPage() {
     planId: string
   ) {
     'use server';
-    console.log('submitOrganization', organization, planId);
+
     const response = await createOrganization(organization, planId);
-    console.log('response', response);
+
     if (response && response.organization?.id) {
       redirect(`/admin/dashboard`);
     } else {
@@ -21,7 +21,7 @@ export default async function PlanPage() {
   }
 
   const plans = await getPlans();
-  console.log('plans', plans);
+
   if (!plans || plans.length === 0) {
     return <div>No plans found</div>;
   }

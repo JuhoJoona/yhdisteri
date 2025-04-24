@@ -474,8 +474,8 @@ export default async function Home({
           </div>
         </section>
       </main>
-
-      <footer className="border-t py-12 md:py-16">
+      
+      <footer className="border-t py-12 md:py-16 justify-self-center">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col space-y-4">

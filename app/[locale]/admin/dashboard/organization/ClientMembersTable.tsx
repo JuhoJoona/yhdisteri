@@ -91,7 +91,6 @@ const MembersTable = ({
     // Already handled by state changes
   };
 
-  // Reset filters
   const resetFilters = () => {
     setSearch('');
     setFilterStatus('all');
@@ -99,9 +98,45 @@ const MembersTable = ({
     setSortDirection('asc');
   };
 
-  // Handle tab change
   const handleTabChange = (value: string) => {
     setFilterStatus(value);
+  };
+
+  const convertToCSV = (members: OrganizationMember[]): string => {
+    const headers = ['First Name', 'Last Name', 'Email', 'Status', 'Join Date'];
+    const rows = members.map((member) => [
+      member.firstName || '',
+      member.lastName || '',
+      member.email || '',
+      member.status || '',
+      member.joinDate || '',
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+    ].join('\n');
+
+    return csvContent;
+  };
+
+  // Function to trigger download
+  const handleExportMembers = () => {
+    const csvContent = convertToCSV(members);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute(
+      'download',
+      `members-export-${new Date().toISOString().split('T')[0]}.csv`
+    );
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -128,22 +163,16 @@ const MembersTable = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <form action="/api/export-members">
-                  <input
-                    type="hidden"
-                    name="organizationId"
-                    value={organizationId}
-                  />
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className="self-start sm:self-auto"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    {t('exportMembers')}
-                  </Button>
-                </form>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="self-start sm:self-auto"
+                  onClick={handleExportMembers}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {t('exportMembers')}
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{t('exportMembersDescription')}</p>
@@ -164,7 +193,7 @@ const MembersTable = ({
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by name or email..."
+                  placeholder={t('search')}
                   className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 />
                 {search && (
@@ -176,7 +205,7 @@ const MembersTable = ({
                     onClick={() => setSearch('')}
                   >
                     <X className="h-4 w-4" />
-                    <span className="sr-only">Clear search</span>
+                    <span className="sr-only">{t('clearSearch')}</span>
                   </Button>
                 )}
               </div>

@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 export default function AddressForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const t = useTranslations('OrganizationCreate.address');
+  const t = useTranslations('OrganizationCreate');
   async function saveAddress(formData: FormData) {
     const organization = JSON.parse(
       localStorage.getItem('organization') || '{}'

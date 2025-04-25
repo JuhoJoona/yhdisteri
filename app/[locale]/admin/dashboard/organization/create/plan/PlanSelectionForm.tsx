@@ -1,7 +1,6 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import {
   Card,
@@ -31,7 +30,7 @@ export default function PlanSelectionForm({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const t = useTranslations('OrganizationCreate.plan');
+  const t = useTranslations('OrganizationCreatePlan');
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -77,7 +76,7 @@ export default function PlanSelectionForm({
                   </div>
                   <div className="text-right">
                     <p className="font-medium">
-                      ${plan.price}/{plan.interval}
+                      {plan.price}/{plan.interval}
                     </p>
                     {plan.isPopular && (
                       <span className="text-xs text-primary">

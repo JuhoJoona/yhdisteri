@@ -588,6 +588,7 @@ export interface components {
       interval?: 'month' | 'year';
       organizationId?: string;
       stripeProductId?: string;
+      accessCode?: string;
       /** Format: date-time */
       createdAt?: string;
       /** Format: date-time */
@@ -1151,6 +1152,7 @@ export interface operations {
           price: number;
           interval: string;
           stripeProductId?: string;
+          accessCode?: string;
         };
       };
     };

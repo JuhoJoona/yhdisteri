@@ -135,6 +135,11 @@ const OrganizationPage = async ({
                     ? t('canReceivePayments')
                     : t('cannotReceivePayments')}
                 </span>
+                <span className="text-xs text-muted-foreground">
+                  {organization.organization?.paymentsActive
+                    ? t('canReceivePaymentsDescription')
+                    : t('cannotReceivePaymentsDescription')}
+                </span>
               </div>
             </div>
           </div>

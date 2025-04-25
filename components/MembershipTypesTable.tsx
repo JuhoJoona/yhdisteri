@@ -29,6 +29,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { createMembershipType } from '@/lib/services/plansClientService';
 import { toast } from 'sonner';
+import { Switch } from './ui/switch';
 
 const MembershipTypesTable = ({
   membershipTypes,
@@ -46,15 +47,38 @@ const MembershipTypesTable = ({
     description: '',
     price: '',
     interval: '',
+    hasAccessCode: false,
+    accessCode: '',
   });
 
   console.log('stripeAccountConnected', stripeAccountConnected);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setNewTypeData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const generateAccessCode = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 5; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  };
+
+  const handleAccessCodeSwitch = (checked: boolean) => {
+    setNewTypeData((prev) => ({
+      ...prev,
+      hasAccessCode: checked,
+      accessCode: checked ? generateAccessCode() : '',
+    }));
   };
 
   const handleAddMembershipType = async (e: React.FormEvent) => {
@@ -67,11 +91,21 @@ const MembershipTypesTable = ({
       stripeProductId: '',
       price: newTypeData.price,
       interval: newTypeData.interval as 'month' | 'year',
+      accessCode: newTypeData.hasAccessCode
+        ? newTypeData.accessCode
+        : undefined,
     };
     await createMembershipType(organizationId, membershipType);
-    setIsAddDialogOpen(false); // Close dialog on submit for now
+    setIsAddDialogOpen(false);
 
-    setNewTypeData({ name: '', description: '', price: '', interval: '' });
+    setNewTypeData({
+      name: '',
+      description: '',
+      price: '',
+      interval: '',
+      hasAccessCode: false,
+      accessCode: '',
+    });
   };
 
   return (
@@ -165,7 +199,7 @@ const MembershipTypesTable = ({
                     type="number"
                     value={newTypeData.price}
                     onChange={handleInputChange}
-                    placeholder="e.g. 10"
+                    placeholder={t('formFieldPricePlaceholder')}
                     required
                     min="0"
                     step="0.01"
@@ -173,16 +207,43 @@ const MembershipTypesTable = ({
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="interval">{t('formFieldInterval')}</Label>
-                  <Input
+                  <select
                     id="interval"
                     name="interval"
                     value={newTypeData.interval}
                     onChange={handleInputChange}
-                    placeholder={t('formFieldIntervalPlaceholder')}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     required
-                  />
+                  >
+                    <option value="">
+                      {t('formFieldIntervalPlaceholder')}
+                    </option>
+                    <option value="month">{t('month')}</option>
+                    <option value="year">{t('year')}</option>
+                    <option value="once">{t('once')}</option>
+                  </select>
                 </div>
               </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="access-code"
+                  checked={newTypeData.hasAccessCode}
+                  onCheckedChange={handleAccessCodeSwitch}
+                />
+                <Label htmlFor="access-code">{t('requireAccessCode')}</Label>
+              </div>
+              {newTypeData.hasAccessCode && (
+                <div className="grid gap-2">
+                  <Label htmlFor="accessCode">{t('accessCode')}</Label>
+                  <Input
+                    id="accessCode"
+                    name="accessCode"
+                    value={newTypeData.accessCode}
+                    readOnly
+                    className="font-mono"
+                  />
+                </div>
+              )}
               <Button type="submit" className="w-full">
                 {t('addMembershipTypeButton')}
               </Button>

@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
 import { Organization } from '@/lib/types/organization';
 import { formatDateString } from '@/lib/utils';
-import { CreditCard, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { OwnMembershipInfo, OrganizationMember } from '@/lib/types/member';
 
@@ -186,26 +186,6 @@ const OrganizationDetails = async ({
                 <span className="font-medium">
                   {formatDateString(organization.organization?.createdAt)}
                 </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <CreditCard className="h-4 w-4 text-muted-foreground mr-2" />
-                  <span className="text-muted-foreground">
-                    {t('subscription')}
-                  </span>
-                </div>
-                <Badge
-                  variant="outline"
-                  className={
-                    organization.organization?.paymentsActive
-                      ? 'bg-green-50 text-green-700 border-green-200'
-                      : 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                  }
-                >
-                  {organization.organization?.paymentsActive
-                    ? t('canReceivePayments')
-                    : t('cannotReceivePayments')}
-                </Badge>
               </div>
             </CardContent>
           </Card>

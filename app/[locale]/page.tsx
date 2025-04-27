@@ -4,6 +4,7 @@ import { ChevronRight, Users, CreditCard, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { createClient } from '@/lib/server';
 
 export async function generateMetadata({
   params,
@@ -25,6 +26,9 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const supabaseClient = await createClient();
+  const { data: sessionData } = await supabaseClient.auth.getUser();
+
   const t = await getTranslations({ locale, namespace: 'Home' });
   const getPriceSuffix = (planName: string) => {
     switch (planName) {
@@ -381,8 +385,8 @@ export default async function Home({
                   >
                     <Link
                       href={
-                        plan.cta === t('pricing.enterpriseCta')
-                          ? '/demo'
+                        sessionData?.user
+                          ? `/admin/dashboard/organization/create?plan=${plan.name.toLocaleLowerCase()}`
                           : '/sign-up'
                       }
                     >

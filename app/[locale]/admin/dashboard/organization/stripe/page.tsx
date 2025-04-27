@@ -76,29 +76,29 @@ export default function Home() {
 
   const buttonBaseStyle =
     'px-6 py-3 rounded-md text-white font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150 ease-in-out';
-  const primaryButtonStyle = `${buttonBaseStyle} bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50`;
-  const loadingButtonStyle = `${buttonBaseStyle} bg-gray-400 cursor-not-allowed`;
+  const primaryButtonStyle = `${buttonBaseStyle} bg-indigo-600 dark:bg-indigo-800 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50`;
+  const loadingButtonStyle = `${buttonBaseStyle} bg-gray-400 dark:bg-gray-400 cursor-not-allowed`;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 sm:p-10 shadow-lg rounded-xl">
+    <div className="min-h-screen  flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8  p-8 sm:p-10 shadow-lg rounded-xl">
         <div className="flex flex-col items-center">
           <BrandLogo />
           {!connectedAccountId ? (
             <>
-              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
                 {t('connectStripeAccount')}
               </h2>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm text-gray-600 dark:text-white">
                 {t('connectStripeAccountDescription')}
               </p>
             </>
           ) : (
             <>
-              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
                 {t('completeYourAccountSetup')}
               </h2>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm text-gray-600 dark:text-white">
                 {t('completeYourAccountSetupDescription')}
               </p>
             </>

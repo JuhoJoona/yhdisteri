@@ -4,7 +4,36 @@
     "dark": "Tumma",
     "system": "Järjestelmä"
   },
-
+  "CreateOrganization": {
+    "createOrganization": "Luo organisaatio",
+    "enterOrganizationInfo": "Syötä organisaation perustiedot",
+    "organizationName": "Organisaation nimi",
+    "creating": "Luodaan...",
+    "next": "Seuraava"
+  },
+  "OrganizationCreate": {
+    "title": "Täytä yhdistyksesi osoitetiedot",
+    "description": "Syötä yhdistyksesi osoitetiedot",
+    "street": "Katuosoite",
+    "city": "Kaupunki",
+    "zipCode": "Postinumero",
+    "streetPlaceholder": "Anna katuosoitteesi",
+    "cityPlaceholder": "Anna kaupunkisi",
+    "zipCodePlaceholder": "Anna postinumerosi",
+    "next": "Seuraava",
+    "saving": "Tallennetaan..."
+  },
+  "OrganizationCreatePlan": {
+    "title": "Valitse yhdistyksellesi sopiva suunnitelma",
+    "description": "Tarjoamme erilaisia suunnitelmia eri kokoisille ja tarpeisille yhdistyksille.",
+    "starter": "Pronssi",
+    "professional": "Hopea",
+    "enterprise": "Platina",
+    "starterDescription": "Pienille yhdistyksille BETA testauksen ajan.",
+    "completeSetup": "Valmis",
+    "popular": "Suosituin",
+    "processing": "Käsitellään..."
+  },
   "Roadmap": {
     "title": "Tuotekehityksen Aikajana",
     "description": "Näkemys tulevaisuudestamme ja siitä, mitä rakennamme seuraavaksi. Pysy ajan tasalla kehityssuunnitelmistamme ja tulevista ominaisuuksista.",
@@ -374,6 +403,22 @@
     "areYouSure": "Haluatko varmasti liittyä tähän organisaatioon?"
   },
   "Member": {
+    "accessCodeMemberships": "Kutsukooditilaukset",
+    "enterAccessCode": "Syötä kutsukoodi",
+    "enterAccessCodeToView": "Syötä kutsukoodi lunastaaksesi jäsenyyden, johon tarvitsee kutsukoodin.",
+    "enterAccessCodeDescription": "Syötä kutsukoodi lunastaaksesi jäsenyyden, johon tarvitsee kutsukoodin.",
+    "exportMembersDescription": "Lataa jäsenet CSV-tiedostona",
+    "sortBy": "Järjestä",
+    "direction": "Suunta",
+    "ascending": "Nouseva",
+    "descending": "Laskeva",
+    "noMembersFound": "Ei jäseniä annetuilla hakuehdoilla",
+    "tryAdjustingSearchOrFilterCriteriaToFindWhatYouAreLookingFor": "Kokeile säätämään hakuehtoja tai suodatuskriteerejä saadaksesi tarkemman tuloksen",
+    "sort": "Järjestä",
+    "reset": "Nollaa",
+    "name": "Nimi",
+    "paymentStatus": "Maksuntila",
+    "notAvailable": "Ei saatavilla",
     "manageYourOrganizationMembers": "Hallitse organisaatiosi jäseniä",
     "exportMembers": "Vie jäsenet",
     "search": "Haku",
@@ -514,6 +559,9 @@
     "joined": "Liittynyt"
   },
   "Organization": {
+    "requireAccessCode": "Jäsenyyden aktivointi vaatii kutsukoodin",
+    "accessCode": "Kutsukoodi",
+    "once": "Kertamaksu",
     "organizationCode": "Organisaation koodi",
     "dashboard": "Hallintapaneeli",
     "organizationDetails": "Organisaation tiedot",
@@ -542,11 +590,15 @@
     "formFieldDescriptionPlaceholder": "Anna jäsenyystyypin kuvaus",
     "formFieldPrice": "Hinta",
     "formFieldPricePlaceholder": "Anna jäsenyystyypin hinta",
-    "formFieldInterval": "Väli",
-    "formFieldIntervalPlaceholder": "Anna jäsenyystyypin väli",
+    "formFieldInterval": "Laskutusväli",
+    "formFieldIntervalPlaceholder": "Anna jäsenmaksun laskutusväli",
     "addMembershipTypeButton": "Lisää jäsenyystyyppi",
     "year": "Vuosi",
-    "month": "Kuukausi"
+    "month": "Kuukausi",
+    "cannotReceivePayments": "Ei voi vastaanottaa maksuja",
+    "canReceivePayments": "Voit vastaanottaa maksuja",
+    "cannotReceivePaymentsDescription": "Voit aktivoida maksutapahtumien vastaanottamisen tästä sivusta.",
+    "canReceivePaymentsDescription": "Voit vastaanottaa maksuja jäseniltä Stripe-tililläsi."
   },
   "MemberDashboard": {
     "memberDashboard": "Jäsenen hallintapaneeli",
@@ -682,5 +734,8 @@
     "deleteAccount": "Poista tili",
     "deleting": "Poistetaan...",
     "deleteAccountDescription": "Tätä toimintoa ei voi peruuttaa. Kaikki tietosi poistetaan pysyvästi palvelimiltamme. Tämä toimenpide on peruuttamaton."
+  },
+  "errors": {
+    "invalidCredentials": "Virheellinen sähköpostiosoite tai salasana"
   }
 }

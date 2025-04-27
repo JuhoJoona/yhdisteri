@@ -1,6 +1,5 @@
-import BasicInfoForm from "./BasicInfoForm"
+import BasicInfoForm from './BasicInfoForm';
 
-export default function CreateOrganizationPage() {
-  return <BasicInfoForm />
+export default async function CreateOrganizationPage() {
+  return <BasicInfoForm />;
 }
-

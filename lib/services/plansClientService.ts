@@ -30,6 +30,7 @@ export const createMembershipType = async (
         price: parseFloat(membershipType.price || '0'),
         interval: membershipType.interval || '',
         stripeProductId: membershipType.stripeProductId || '',
+        accessCode: membershipType.accessCode || '',
       },
     }
   );

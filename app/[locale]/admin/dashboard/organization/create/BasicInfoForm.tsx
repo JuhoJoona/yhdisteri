@@ -1,7 +1,6 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import {
   Card,
@@ -16,10 +15,12 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function BasicInfoForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations('CreateOrganization');
 
   function createOrganization(formData: FormData) {
     localStorage.setItem(
@@ -37,17 +38,15 @@ export default function BasicInfoForm() {
   }
 
   return (
-    <Card>
+    <Card className="w-full max-w-md mx-auto dark:bg-black">
       <CardHeader>
-        <CardTitle>Create Organization</CardTitle>
-        <CardDescription>
-          Enter your organization&apos;s basic information
-        </CardDescription>
+        <CardTitle>{t('createOrganization')}</CardTitle>
+        <CardDescription>{t('enterOrganizationInfo')}</CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2 mb-4">
-            <Label htmlFor="name">Organization Name</Label>
+            <Label htmlFor="name">{t('organizationName')}</Label>
             <Input id="name" name="name" required />
           </div>
         </CardContent>
@@ -56,10 +55,10 @@ export default function BasicInfoForm() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating...
+                {t('creating')}
               </>
             ) : (
-              'Next'
+              t('next')
             )}
           </Button>
         </CardFooter>

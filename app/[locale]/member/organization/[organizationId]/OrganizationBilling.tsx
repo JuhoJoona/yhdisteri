@@ -12,10 +12,17 @@ import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
 import { OwnMembershipInfo } from '@/lib/types/member';
 import { OrganizationMembershipType } from '@/lib/types/plans';
-import { CreditCard, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import {
+  CreditCard,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  Key,
+} from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import AccessCodeInput from './AccessCodeInput';
 
 const OrganizationBilling = async ({
   membershipInfo,
@@ -27,6 +34,12 @@ const OrganizationBilling = async ({
   locale: string;
 }) => {
   const t = await getTranslations({ locale, namespace: 'Member' });
+  console.log('membershipTypes', membershipTypes);
+  // Split membership types into regular and access code types
+  const regularMembershipTypes =
+    membershipTypes?.filter((type) => !type.accessCode) || [];
+  const accessCodeMembershipTypes =
+    membershipTypes?.filter((type) => type.accessCode) || [];
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -143,7 +156,8 @@ const OrganizationBilling = async ({
         </div>
 
         {/* Available Membership Types */}
-        <div>
+        <div className="space-y-6">
+          {/* Regular Membership Types */}
           <Card>
             <CardHeader>
               <CardTitle>{t('availableMemberships')}</CardTitle>
@@ -153,9 +167,9 @@ const OrganizationBilling = async ({
                   : t('selectYourFirstMembership')}
               </CardDescription>
             </CardHeader>
-            {membershipTypes ? (
+            {regularMembershipTypes.length > 0 ? (
               <CardContent className="space-y-4">
-                {membershipTypes.map((type) => (
+                {regularMembershipTypes.map((type) => (
                   <Card key={type.id} className="border">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start">
@@ -192,6 +206,26 @@ const OrganizationBilling = async ({
               </CardContent>
             )}
           </Card>
+
+          {/* Access Code Membership Types */}
+          {accessCodeMembershipTypes.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Key className="h-4 w-4" />
+                  {t('accessCodeMemberships')}
+                </CardTitle>
+                <CardDescription>{t('enterAccessCodeToView')}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <AccessCodeInput
+                    accessCodeMembershipTypes={accessCodeMembershipTypes}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </TabsContent>

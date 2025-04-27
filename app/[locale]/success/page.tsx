@@ -12,18 +12,18 @@ export default async function PaymentSuccessPage({
   const t = await getTranslations({ locale, namespace: 'Payment' });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen  p-6">
       <div className="relative mb-10">
-        <div className="w-24 h-24 rounded-full border-4 border-gray-200 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full border-4 border-gray-200 dark:border-white flex items-center justify-center">
           <div className={`transition-all duration-700`}>
-            <Check size={40} strokeWidth={3} className="text-black" />
+            <Check size={40} strokeWidth={3} color="green" />
           </div>
         </div>
         <div
-          className={`absolute inset-0 rounded-full border-4 border-black transition-all duration-1000`}
+          className={`absolute inset-0 rounded-full border-4 border-black dark:border-white transition-all duration-1000`}
         ></div>
         <div
-          className={`absolute inset-0 rounded-full border-2 border-black transition-all duration-1500 delay-200`}
+          className={`absolute inset-0 rounded-full border-2 border-black dark:border-white transition-all duration-1500 delay-200`}
         ></div>
       </div>
 

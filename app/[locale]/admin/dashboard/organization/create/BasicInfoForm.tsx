@@ -17,7 +17,7 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-export default function BasicInfoForm({ plan }: { plan: string }) {
+export default function BasicInfoForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const t = useTranslations('CreateOrganization');

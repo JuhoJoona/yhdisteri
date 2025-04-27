@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
 import { Organization } from '@/lib/types/organization';
 import { formatDateString } from '@/lib/utils';
-import { CreditCard, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { OwnMembershipInfo, OrganizationMember } from '@/lib/types/member';
 

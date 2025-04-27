@@ -734,5 +734,8 @@
     "deleteAccount": "Poista tili",
     "deleting": "Poistetaan...",
     "deleteAccountDescription": "Tätä toimintoa ei voi peruuttaa. Kaikki tietosi poistetaan pysyvästi palvelimiltamme. Tämä toimenpide on peruuttamaton."
+  },
+  "errors": {
+    "invalidCredentials": "Virheellinen sähköpostiosoite tai salasana"
   }
 }

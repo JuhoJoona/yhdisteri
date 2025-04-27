@@ -32,7 +32,7 @@ export default async function SignInPage({
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
           {t('common.signIn')}
         </h2>
       </div>
@@ -87,12 +87,12 @@ export default async function SignInPage({
             <Link
               href={`/${locale}/sign-up?redirect=${redirectDestination}&code=${code}`}
             >
-              <h3 className="text-sm text-gray-500 hover:text-gray-700 hover:underline">
+              <h3 className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
                 {t('common.dontHaveAccount')}
               </h3>
             </Link>
             <Link href="/privacy-policy">
-              <h3 className="text-sm text-gray-500 hover:text-gray-700 hover:underline">
+              <h3 className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
                 {t('common.privacyPolicy')}
               </h3>
             </Link>

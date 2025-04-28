@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Footer = async ({ locale }: { locale: string }) => {
   const t = await getTranslations({ locale, namespace: 'Footer' });
   return (
-    <footer className="border-t py-12 md:py-16">
+    <footer className="border-t py-12 md:py-16 justify-self-center">
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col space-y-4">
